@@ -277,13 +277,24 @@ ggplot(df_class, aes(x = Sample, y = Abundance, fill = gbr268_Class)) +
     facet_wrap(~ organ_position, scales = "free_x", ncol = 3) +
     theme_bw() +
     labs(title = "Abondances relatives des principales classes fongiques (> 2%) par zone",
-         x = "Échantillons (ordonnés par la lumière reçue)",
+         x = "Échantillons ",
          y = "Abondance relative",
          fill = "Classe fongique") +
     theme(legend.position = "bottom",
           axis.text.x = element_blank(), # Masquer les noms d'échantillons pour plus de clarté
           axis.ticks.x = element_blank())
 
+ggplot(df_class, aes(x = project, y = Abundance, fill = gbr268_Class)) +
+    geom_bar(stat = "identity", position = "fill", color = NA) +
+    facet_wrap(~ organ_position, scales = "free_x", ncol = 3) +
+    theme_bw() +
+    labs(title = "Abondances relatives des principales classes fongiques (> 2%) par zone",
+         x = "Échantillons ",
+         y = "Abondance relative",
+         fill = "Classe fongique") +
+    theme(legend.position = "bottom",
+          axis.text.x = element_blank(), # Masquer les noms d'échantillons pour plus de clarté
+          axis.ticks.x = element_blank())
 
 
 ```
