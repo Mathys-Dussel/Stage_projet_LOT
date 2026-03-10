@@ -217,6 +217,8 @@ jaccard_dist <- vegdist(otu_table > 0, method = "jaccard")
 
 ### Méthodes d’ordination
 
+Ordinations globales
+
 ```{r}
 ps_hellinger <- transform_sample_counts(ps, function(x) sqrt(x / sum(x)))
 nmds_bray <- ordinate(ps_hellinger, method = "NMDS", distance = "bray")
@@ -226,23 +228,17 @@ plot_ordination(ps_hellinger, nmds_bray, color = "organ", shape = "position") +
     theme_bw() +
     labs(title = "NMDS - Bray-Curtis (Hellinger)")
 
-plot_ordination(ps, nmds_bray, color = "organ", shape = "project") +
+plot_ordination(ps_hellinger, nmds_bray, color = "organ", shape = "project") +
     geom_point(size = 3, alpha = 0.8) +
     theme_bw() +
     labs(title = "NMDS - Bray-Curtis")
 
-plot_ordination(ps, nmds_bray, color = "project", shape = "organ") +
+plot_ordination(ps_hellinger, nmds_bray, color = "project", shape = "organ") +
     geom_point(size = 3, alpha = 0.8) +
     theme_bw() +
     labs(title = "NMDS - Bray-Curtis")
 
-plot_ordination(ps, nmds_bray, color = "plant_family", shape = "project") +
-    geom_point(size = 3, alpha = 0.8) +
-    theme_bw() +
-    labs(title = "NMDS - Bray-Curtis")
-
-
-plot_ordination(ps, nmds_bray, color = "plant_genus", shape = "project") +
+plot_ordination(ps_hellinger, nmds_bray, color = "plant_family", shape = "project") +
     geom_point(size = 3, alpha = 0.8) +
     theme_bw() +
     labs(title = "NMDS - Bray-Curtis")
@@ -250,78 +246,43 @@ plot_ordination(ps, nmds_bray, color = "plant_genus", shape = "project") +
 
 
 ```
-visualisation de la diversité bêta avec PCoA
-```{r}
 
-pcoa_bray <- ordinate(ps, method = "PCoA", distance = "bray")
-
-plot_ordination(ps, pcoa_bray, color = "organ", shape = "position") +
-    geom_point(size = 3, alpha = 0.8) +
-    theme_bw() +
-    labs(title = "PCoA - Bray-Curtis")  
-
-plot_ordination(ps, pcoa_bray, color = "project", shape = "organ") +
-    geom_point(size = 3, alpha = 0.8) +
-    theme_bw() +
-    labs(title = "PCoA - Bray-Curtis")  
-
-```
 
 On observe que le milieu (LOT1, 2 ou 3) influe grandement sur les communautés obtenues. On peut donc chercher à determiner quelles sunt les différences majeurs entre les différents projets LOT sans prendre ne compte les otu, simplement savoir si par exemple les espèces (ou famille ou genre) de plantes changent en fonction du LOT.
 
 ```{r}{r nom_du_bloc}
-library(vegan)
-
-metadata <- as(sample_data(ps), "data.frame")
 
 library(dplyr)
-adonis2(bray_dist ~ project, data = metadata, permutations = 99)
+library(phyloseq)
+library(ggplot2)
+
+# Transformation en abondances relatives
+ps_rel <- transform_sample_counts(ps, function(x) x / sum(x))
+
+# Aggrégation au niveau de la classe taxonomique
+ps_class <- tax_glom(ps_rel, taxrank = "gbr268_Class", NArm = FALSE)
+
+# Filtrer pour ne garder que les classes avec une abondance relative moyenne > 2%
+ps_class_filtered <- filter_taxa(ps_class, function(x) mean(x) > 0.02, TRUE)
+
+# Conversion de l'objet phyloseq en data.frame
+df_class <- psmelt(ps_class_filtered)
+
+# Créer une variable combinée pour organe et position
+df_class$organ_position <- interaction(df_class$organ, df_class$position, sep = " - ")
 
 
-
-table(metadata$project, metadata$plant_family)
-table(metadata$project, metadata$plant_genus)
-table(metadata$project, metadata$plant_species)
-
-ggplot(metadata, aes(x = project, fill = plant_family)) +
-    geom_bar(position = "fill", color = "black", alpha = 0.8) +
+ggplot(df_class, aes(x = Sample, y = Abundance, fill = gbr268_Class)) +
+    geom_bar(stat = "identity", position = "fill", color = NA) +
+    facet_wrap(~ organ_position, scales = "free_x", ncol = 3) +
     theme_bw() +
-    labs(title = "Composition en familles de plantes selon le projet LOT",
-             x = "Projet LOT",
-             y = "Abondance relative (échantillons)",
-             fill = "Famille de plante")
-
-ggplot(metadata, aes(x = project, fill = plant_genus)) +
-    geom_bar(position = "fill", color = "black", alpha = 0.8) +
-    theme_bw() +
-    labs(title = "Composition en genres de plantes selon le projet LOT",
-             x = "Projet LOT",
-             y = "Abondance relative (échantillons)",
-             fill = "Genre de plante")
-
-ggplot(metadata, aes(x = project, fill = plant_species)) +
-    geom_bar(position = "fill", color = "black", alpha = 0.8) +
-    theme_bw() +
-    labs(title = "Composition en espèces de plantes selon le projet LOT",
-             x = "Projet LOT",
-             y = "Abondance relative",
-             fill = "Espèce de plante")
-
-
-adonis2(bray_dist ~ plant_family, data = metadata, permutations = 99)
-
-
-perm2= adonis2(bray_dist ~ plant_genus, data = metadata, permutations = 99)
-
-
-perm3= adonis2(bray_dist ~ plant_species, data = metadata, permutations = 99)
-
-perm4= adonis2(bray_dist ~ plant_family + project, data = metadata, permutations = 99)
-
-
-perm4=adonis2(bray_dist ~ project * organ * position, data = metadata, permutations = 99)
-
-
+    labs(title = "Abondances relatives des principales classes fongiques (> 2%) par zone",
+         x = "Échantillons (ordonnés par la lumière reçue)",
+         y = "Abondance relative",
+         fill = "Classe fongique") +
+    theme(legend.position = "bottom",
+          axis.text.x = element_blank(), # Masquer les noms d'échantillons pour plus de clarté
+          axis.ticks.x = element_blank())
 
 
 
