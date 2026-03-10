@@ -1,0 +1,366 @@
+---
+title: "Analyses LOT"
+author: "Mathys"
+date: "`r format(Sys.Date(), '%Y-%m-%d')`"
+format:
+    html: 
+        code-fold: true
+
+execute:
+    echo: true
+    warning: false
+    error: false
+---
+
+# Introduction
+
+## Problématique de l'étude (état de l’art)
+
+Les forêts tropicales abritent une exceptionnelle biodiversité végétale et microbienne, qui joue un rôle crucial dans le fonctionnement des écosystèmes et les cycles biogéochimiques. Parmi cette diversité, les plantes épiphytes vasculaires constituent une composante essentielle de la canopée tropicale, contribuant à la rétention d’eau, au recyclage des nutriments et à la structuration des communautés associées.
+Cependant, la diversité et le rôle des communautés microbiennes, et en particulier fongiques, associées aux épiphytes restent encore largement méconnus. Comprendre la composition et l’assemblage de ces communautés représente donc un enjeu de premier plan pour mieux appréhender les interactions plante- microorganismes en canopée et leurs implications écologiques dans le fonctionnement des forêts tropicales.
+
+### Question centrale
+Dans quelle mesure le filtrage environnemental à l'échelle du micro-habitat (type d'organe et profondeur tissulaire) dicte-t-il l'assemblage des communautés fongiques chez les épiphytes vasculaires tropicaux, comparativement à l'identité de la plante hôte et au contexte biogéographique ?
+
+## Objectifs précis du stage 
+
+L’objectif est d’explorer la composition et l’assemblage des communautés fongiques chez les plantes épiphytes vasculaires. Plus spécifiquement, l’étude porte sur les racines et les feuilles, en distinguant la surface et l’intérieur des tissus. Nous anticipons que les communautés fongiques différeront selon les groupes taxonomiques d’épiphytes. Nous faisons également l’hypothèse que les racines et les feuilles hébergeront des communautés distinctes, reflétant les stratégies fonctionnelles déployées par ces plantes pour acquérir l’eau et les nutriments. Enfin, nous supposons que les communautés fongiques varieront entre les tissus internes et les surfaces, en raison des contrastes marqués entre ces deux environnements.
+
+## Outils et méthodes mis en œuvre
+
+Pour répondre à cet objectif, différentes espèces de plantes épiphytes vasculaires ont été échantillonnées au Pérou et en Colombie dans le cadre du programme ‘Life on Trees’. Sur chaque individu, une jeune feuille, une feuille âgée et des racines ont été récoltées. Les microorganismes présents en surface ont d’abord été collectés à l’aide de bandes de coton imbibées de CTAB, puis les microorganismes présents à l’intérieur des tissus ont été obtenus après stérilisation de surface des organes. Les communautés fongiques ont été caractérisées par une approche de métabarcoding haut débit ciblant la région ITS, marqueur de référence pour l’étude de la diversité fongique. Les produits PCR ont été séquencés en Illumina MiSeq. Après traitement bioinformatique une table de contingence des séquences par échantillon a été produite.
+L’analyse de ces données sera réalisée au cours du stage afin de répondre aux différentes hypothèses. Dans un premier temps, la diversité alpha sera caractérisée en utilisant différents indices de biodiversité (richesse spécifique, Shannon, Simpson, etc.), afin d’évaluer les patrons de diversité en fonction des groupes taxonomiques d’épiphytes et des micro-habitats (feuilles vs. racines, surface vs. intérieur). Dans un second temps, la diversité bêta sera explorée par le calcul de distances de dissimilarité (ex. Bray-Curtis, Jaccard) et par des méthodes d’ordination (NMDS, PCoA) permettant de visualiser la structuration des communautés fongiques selon (1) la taxonomie des épiphytes vasculaires, (2) le type d’organe, et (3) le compartiment (surface vs tissus internes). Ces analyses seront complétées par des tests statistiques multivariés (PERMANOVA) afin de tester la significativité des facteurs discriminants. Enfin, des approches complémentaires pourront être envisagées, telles que l’identification des taxons indicateurs ou l’inférence de réseaux de co-occurrence pour explorer les interactions potentielles entre groupes fongiques.
+
+# Analyses préliminaires
+
+Avant de se lancer dans les analyses de diversité alpha et bêta, il est important de faire un état des lieux des données disponibles. Nous allons d'abord charger les données et faire un nettoyage préliminaire pour s'assurer que nous avons les bonnes variables à notre disposition pour les analyses.
+
+Ensuite nous allons réaliser les analyses de diversité alpha, en utilisant différents indices de biodiversité (richesse spécifique, Shannon, Simpson, etc.), afin d’évaluer les patrons de diversité en fonction des groupes taxonomiques d’épiphytes et des micro-habitats (feuilles vs. racines, surface vs. intérieur).
+
+Puis nous analysons les diversités beta 
+
+```{r, echo=FALSE, results='hide'}
+setwd("~/Documents/Etudes/Stage_projet_LOT/CRBE/données")
+```
+
+
+## Analyses de diversité alpha
+
+Premierement faire un data_frame avec les échantillons et les variables d’intérêt (genre, famille, espèce de plante, etc.)
+
+```{r, results='hide'}
+
+library(phyloseq)
+library(ggplot2)
+library(ggpubr)
+library(patchwork)
+
+ps <- readRDS("donnees_nettoyees.rds")
+sample_names(ps) <- gsub("\\.", "-", sub("^X", "", sample_names(ps)))
+
+df_alpha <- estimate_richness(ps, measures = c("Observed", "Shannon", "Simpson")) |>
+  cbind(sample_data(ps)) |>
+  transform(
+    expShannon = exp(Shannon),
+    invSimpson = 1/Simpson,
+    grp = interaction(organ, position, project)
+  )
+
+stats_global <- lapply(df_alpha[c("Observed", "expShannon", "invSimpson")], 
+                       function(x) kruskal.test(x ~ df_alpha$grp)$p.value)
+print(stats_global)
+
+
+plot_sig_heatmap <- function(df, metric, title) {
+  pw <- pairwise.wilcox.test(df[[metric]], df$grp, p.adjust.method = "BH")$p.value |>
+    as.table() |>
+    as.data.frame() |>
+    na.omit()
+  
+  ggplot(pw, aes(Var1, Var2, fill = Freq)) +
+    geom_tile(color = "white") +
+    geom_text(aes(label = cut(Freq, c(-Inf, 0.001, 0.01, 0.05, Inf), labels = c("***", "**", "*", "ns")))) +
+    scale_fill_gradient2(low = "firebrick", mid = "white", high = "steelblue", midpoint = 0.05) +
+    theme_minimal() + 
+    theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+    labs(title = title, x = "", y = "", fill = "p-value")
+}
+
+
+plot_sig_heatmap(df_alpha, "Observed", "Significativité - Observed")
+plot_sig_heatmap(df_alpha, "expShannon", "Significativité - ExpShannon")
+plot_sig_heatmap(df_alpha, "invSimpson", "Significativité - InvSimpson")
+
+```
+
+Quelques graphiques pour visualiser la diversité alpha en fonction des différentes variables d’intérêt (organ, position, plant_family, plant_genus, plant_species, project)
+
+
+```{r}
+library(ggplot2)
+library(ggpubr)
+library(patchwork)
+
+plot_groupes <- function(df, x, y, facet_by) {
+    ggplot(df, aes(x = .data[[x]], y = .data[[y]], fill = .data[[x]])) +
+        geom_violin(alpha = 0.7, trim = FALSE) +
+        geom_pwc(method = "wilcox.test", label = "p.signif", hide.ns = TRUE) +
+        facet_wrap(vars(.data[[facet_by]])) + 
+        theme_bw() +
+        theme(axis.text.x = element_text(angle = 45, hjust = 1), legend.position = "bottom")
+}
+
+wrap_plots(
+    plot_groupes(df_alpha, "project", "Observed", "organ"),
+    plot_groupes(df_alpha, "position", "Observed", "organ"),
+    plot_groupes(df_alpha, "project", "Observed", "position"),
+    ncol = 3
+) + plot_annotation(title = "Richesse Spécifique par Catégorie")
+
+wrap_plots(
+    plot_groupes(df_alpha, "project", "expShannon", "organ"),
+    plot_groupes(df_alpha, "position", "expShannon", "organ"),
+    plot_groupes(df_alpha, "project", "expShannon", "position"),
+    ncol = 3
+) + plot_annotation(title = "ExpShannon par Catégorie")
+
+
+wrap_plots(
+    plot_groupes(df_alpha, "organ", "Observed", "project"),
+    plot_groupes(df_alpha, "organ", "Observed", "position"),
+    plot_groupes(df_alpha, "position", "Observed", "project"),
+    ncol = 3
+) + plot_annotation(title = "Richesse Spécifique par Catégorie")
+
+wrap_plots(
+    plot_groupes(df_alpha, "organ", "expShannon", "project"),
+    plot_groupes(df_alpha, "organ", "expShannon", "position"),
+    plot_groupes(df_alpha, "position", "expShannon", "project"),
+    ncol = 3
+) + plot_annotation(title = "ExpShannon par Catégorie")
+
+
+```
+
+
+
+
+Même analyse mais en utilisant les fonctions de phyloseq pour calculer la diversité alpha et faire les graphiques
+
+```{r}
+
+
+alpha_meas <- c("Observed", "Chao1", "Shannon", "Simpson")
+p <- plot_richness(ps, x = "project", measures = alpha_meas, color = "organ")
+p + theme_bw() + theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
+
+Graphique UpSetR
+
+```{r}
+# Catégories: old_leaf endophyte, old_root endophyte, young_leaf endophyte, young_root endophyte, old_leaf epiphyte, old_root epiphyte, young_leaf epiphyte, young_root epiphyte
+
+library(UpSetR)
+
+meta <- data.frame(sample_data(ps))
+meta$category <- paste(meta$age, meta$organ, meta$position, sep = "_")
+
+taxa_list <- split(rownames(meta), meta$category) |>
+  lapply(function(samples) {
+    taxa_sums <- taxa_sums(prune_samples(samples, ps))
+    names(taxa_sums[taxa_sums > 0])
+  })
+
+upset(fromList(taxa_list), nsets = length(taxa_list), order.by = "freq", 
+      main.bar.color = "forestgreen", sets.bar.color = "steelblue")
+```
+
+
+
+```{r}
+library(circlize)
+
+categories <- names(taxa_list)
+shared_mx <- matrix(0, nrow = length(categories), ncol = length(categories), 
+                    dimnames = list(categories, categories))
+
+for (i in seq_along(categories)) {
+  for (j in seq_along(categories)) {
+    if (i != j) {
+      shared_mx[i, j] <- length(intersect(taxa_list[[i]], taxa_list[[j]]))
+    }
+  }
+}
+
+chordDiagram(shared_mx, transparency = 0.3, annotationTrack = c("name", "grid"))
+```
+
+
+## Analyses de diversité bêta
+
+### Calcul de distances de dissimilarité 
+
+Bray-Curtis:
+```{r}
+library(vegan)
+otu_table <- as(otu_table(ps), "matrix")
+bray_dist <- vegdist(otu_table, method = "bray")
+```
+
+
+Jaccard:
+```{r}
+jaccard_dist <- vegdist(otu_table > 0, method = "jaccard")
+```
+
+### Méthodes d’ordination
+
+```{r}
+ps_hellinger <- transform_sample_counts(ps, function(x) sqrt(x / sum(x)))
+nmds_bray <- ordinate(ps_hellinger, method = "NMDS", distance = "bray")
+
+plot_ordination(ps_hellinger, nmds_bray, color = "organ", shape = "position") +
+    geom_point(size = 3, alpha = 0.8) +
+    theme_bw() +
+    labs(title = "NMDS - Bray-Curtis (Hellinger)")
+
+plot_ordination(ps, nmds_bray, color = "organ", shape = "project") +
+    geom_point(size = 3, alpha = 0.8) +
+    theme_bw() +
+    labs(title = "NMDS - Bray-Curtis")
+
+plot_ordination(ps, nmds_bray, color = "project", shape = "organ") +
+    geom_point(size = 3, alpha = 0.8) +
+    theme_bw() +
+    labs(title = "NMDS - Bray-Curtis")
+
+plot_ordination(ps, nmds_bray, color = "plant_family", shape = "project") +
+    geom_point(size = 3, alpha = 0.8) +
+    theme_bw() +
+    labs(title = "NMDS - Bray-Curtis")
+
+
+plot_ordination(ps, nmds_bray, color = "plant_genus", shape = "project") +
+    geom_point(size = 3, alpha = 0.8) +
+    theme_bw() +
+    labs(title = "NMDS - Bray-Curtis")
+
+
+
+```
+visualisation de la diversité bêta avec PCoA
+```{r}
+
+pcoa_bray <- ordinate(ps, method = "PCoA", distance = "bray")
+
+plot_ordination(ps, pcoa_bray, color = "organ", shape = "position") +
+    geom_point(size = 3, alpha = 0.8) +
+    theme_bw() +
+    labs(title = "PCoA - Bray-Curtis")  
+
+plot_ordination(ps, pcoa_bray, color = "project", shape = "organ") +
+    geom_point(size = 3, alpha = 0.8) +
+    theme_bw() +
+    labs(title = "PCoA - Bray-Curtis")  
+
+```
+
+On observe que le milieu (LOT1, 2 ou 3) influe grandement sur les communautés obtenues. On peut donc chercher à determiner quelles sunt les différences majeurs entre les différents projets LOT sans prendre ne compte les otu, simplement savoir si par exemple les espèces (ou famille ou genre) de plantes changent en fonction du LOT.
+
+```{r}{r nom_du_bloc}
+library(vegan)
+
+metadata <- as(sample_data(ps), "data.frame")
+
+library(dplyr)
+adonis2(bray_dist ~ project, data = metadata, permutations = 99)
+
+
+
+table(metadata$project, metadata$plant_family)
+table(metadata$project, metadata$plant_genus)
+table(metadata$project, metadata$plant_species)
+
+ggplot(metadata, aes(x = project, fill = plant_family)) +
+    geom_bar(position = "fill", color = "black", alpha = 0.8) +
+    theme_bw() +
+    labs(title = "Composition en familles de plantes selon le projet LOT",
+             x = "Projet LOT",
+             y = "Abondance relative (échantillons)",
+             fill = "Famille de plante")
+
+ggplot(metadata, aes(x = project, fill = plant_genus)) +
+    geom_bar(position = "fill", color = "black", alpha = 0.8) +
+    theme_bw() +
+    labs(title = "Composition en genres de plantes selon le projet LOT",
+             x = "Projet LOT",
+             y = "Abondance relative (échantillons)",
+             fill = "Genre de plante")
+
+ggplot(metadata, aes(x = project, fill = plant_species)) +
+    geom_bar(position = "fill", color = "black", alpha = 0.8) +
+    theme_bw() +
+    labs(title = "Composition en espèces de plantes selon le projet LOT",
+             x = "Projet LOT",
+             y = "Abondance relative",
+             fill = "Espèce de plante")
+
+
+adonis2(bray_dist ~ plant_family, data = metadata, permutations = 99)
+
+
+perm2= adonis2(bray_dist ~ plant_genus, data = metadata, permutations = 99)
+
+
+perm3= adonis2(bray_dist ~ plant_species, data = metadata, permutations = 99)
+
+perm4= adonis2(bray_dist ~ plant_family + project, data = metadata, permutations = 99)
+
+
+perm4=adonis2(bray_dist ~ project * organ * position, data = metadata, permutations = 99)
+
+
+
+
+
+```
+
+
+
+Espèces indicatrices:
+```{r}
+library(indicspecies)
+
+groups <- metadata$project
+indicator_taxa <- multipatt(otu_table, groups, func = "IndVal.g", control = how(nperm = 99))
+summary(indicator_taxa)
+
+# subset abondance et prevalence
+
+# core microbiota
+
+```
+
+
+
+
+
+
+# de coté
+Inférence de réseaux de co-occurrence pour explorer les interactions potentielles entre groupes fongiques.
+```{r}
+
+library(igraph)
+
+top_taxa <- names(sort(taxa_sums(ps), decreasing = TRUE))[1:200]
+ps_sub <- prune_taxa(top_taxa, ps)
+
+ig <- make_network(ps_sub, type = "taxa", max.dist = 0.9)
+
+plot_network(ig, ps_sub, type = "taxa",color="gbr268_Class", label = NULL) +
+    theme_minimal() +
+    labs(title = "Réseau de co-occurrence (Top 200 taxons)",
+             color = "Class")
+```

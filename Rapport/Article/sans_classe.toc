@@ -1,0 +1,20 @@
+\babel@toc {french}{}\relax 
+\contentsline {section}{\numberline {1}Introduction}{5}{section.1}%
+\contentsline {section}{\numberline {2}Matériel et Méthodes}{7}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Sujet d'étude}{7}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Analyse statistique}{14}{subsection.2.2}%
+\contentsline {subsubsection}{\numberline {2.2.1}Description des données}{14}{subsubsection.2.2.1}%
+\contentsline {subsubsection}{\numberline {2.2.2}Analyses floristiques: structure et diversité des communautés végétales}{14}{subsubsection.2.2.2}%
+\contentsline {subsubsection}{\numberline {2.2.3}Composition floristique des communautés végétales}{15}{subsubsection.2.2.3}%
+\contentsline {subsubsection}{\numberline {2.2.4}Analyses fonctionnelles: stratégies CSR}{15}{subsubsection.2.2.4}%
+\contentsline {subsubsection}{\numberline {2.2.5}Analyses faunistiques}{15}{subsubsection.2.2.5}%
+\contentsline {section}{\numberline {3}Résultats}{16}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Analyses floristiques}{16}{subsection.3.1}%
+\contentsline {subsubsection}{\numberline {3.1.1}Structure et diversité des communautés végétales}{16}{subsubsection.3.1.1}%
+\contentsline {subsubsection}{\numberline {3.1.2}Composition floristique (NMDS)}{18}{subsubsection.3.1.2}%
+\contentsline {subsubsection}{\numberline {3.1.3}Stratégies fonctionnelles (Modèle CSR)}{19}{subsubsection.3.1.3}%
+\contentsline {subsection}{\numberline {3.2}Analyses faunistiques}{21}{subsection.3.2}%
+\contentsline {subsubsection}{\numberline {3.2.1}Structure et diversité des communautés animales}{21}{subsubsection.3.2.1}%
+\contentsline {section}{\numberline {4}Discussion}{22}{section.4}%
+\contentsline {section}{\numberline {5}Conclusion}{25}{section.5}%
+\contentsline {section}{\numberline {6}Remerciements}{27}{section.6}%

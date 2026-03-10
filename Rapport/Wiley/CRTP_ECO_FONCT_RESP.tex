@@ -1,0 +1,51 @@
+\documentclass[]{wiley-article}
+\bibliographystyle{apalike}
+
+\usepackage{siunitx}
+\usepackage{booktabs} % Pour des tableaux professionnels
+\usepackage{xcolor}
+\usepackage{eso-pic}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{tikz}
+\usetikzlibrary{shapes, arrows.meta, positioning, backgrounds, fit, calc, decorations.pathreplacing, shadows}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+
+\usepackage{amsmath, amssymb}
+\usepackage{chemformula} % Pour l'écriture propre de \ch{CO2}
+\usepackage{siunitx}     % Pour les unités
+
+% Configuration des marges
+\geometry{bottom=15mm}
+
+\AddToShipoutPictureBG*{%
+  \AtPageUpperLeft{%
+    \raisebox{-30mm}{\makebox[\dimexpr\paperwidth-10mm\relax][r]{%
+      \includegraphics[height=15mm]{figures/Logo_UT3.jpg}%
+    }}%
+  }%
+}
+
+\AddToShipoutPictureBG*{%
+  \AtPageUpperLeft{%
+    \raisebox{-40mm}{\makebox[\dimexpr\paperwidth-14mm\relax][r]{%
+      \includegraphics[height=10mm]{figures/Logo-FSI_web.jpg}%
+    }}%
+  }%
+}
+
+\papertype{Rapport de stage}
+\paperfield{M1 BEE}
+\title{Titre du rapport de stage}
+\author{Dussel Mathys}
+
+\affil{Faculté de sciences et ingénierie, Université Toulouse III -- Paul Sabatier}
+
+\begin{document}
+\maketitle
+
+
+\end{document}

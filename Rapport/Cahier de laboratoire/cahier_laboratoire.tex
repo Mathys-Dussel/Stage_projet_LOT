@@ -1,0 +1,207 @@
+\documentclass[12pt,a4paper]{report}
+
+% Packages essentiels
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage[many]{tcolorbox}
+\usepackage{tabularx}
+\usepackage{mdframed}
+\usepackage{lipsum} % Pour le faux texte
+
+% Configuration de la page
+\geometry{
+    top=2.5cm,
+    bottom=2.5cm,
+    left=2.5cm,
+    right=2.5cm
+}
+
+% Couleurs personnalisées
+\definecolor{labblue}{RGB}{20, 75, 125}
+\definecolor{labgreen}{RGB}{40, 120, 60}
+\definecolor{labred}{RGB}{160, 30, 30}
+\definecolor{labgray}{RGB}{240, 240, 240}
+
+% Configuration des liens hypertexte
+\hypersetup{
+    colorlinks=true,
+    linkcolor=labblue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    pdftitle={Cahier de Laboratoire},
+}
+
+% Configuration des en-têtes et pieds de page
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textcolor{labblue}{\textbf{Cahier de Laboratoire}}}
+\fancyhead[R]{\leftmark}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% Environnement personnalisé pour une expérience
+\newtcolorbox{Méthodologie}[2][]{
+    enhanced,
+    colback=labgray!50!white,
+    colframe=labblue,
+    coltitle=white,
+    fonttitle=\bfseries\Large,
+    title={Méthodologie : #2},
+    attach boxed title to top left={yshift=-2mm, xshift=5mm},
+    boxed title style={colback=labblue, rounded corners},
+    drop fuzzy shadow,
+    #1
+}
+
+% Environnement pour les objectifs
+\newtcolorbox{objectifs}{
+    colback=labgreen!5,
+    colframe=labgreen,
+    fonttitle=\bfseries,
+    title=Objectifs visés
+}
+
+% Environnement pour les remarques/problèmes
+\newtcolorbox{attention}{
+    colback=labred!5,
+    colframe=labred,
+    fonttitle=\bfseries,
+    title=Remarques \& Difficultés,
+    arc=3mm
+}
+
+\begin{document}
+
+% Page de garde
+\begin{titlepage}
+    \centering
+    \vspace*{2cm}
+    
+    {\Huge \bfseries \textcolor{labblue}{Cahier de Laboratoire}}\par
+    \vspace{1.5cm}
+    
+    {\Large \textbf{Projet LOT - CRBE}}\par
+    \vspace{0.5cm}
+    {\large Stage de Recherche}\par
+    
+    \vspace{3cm}
+    
+    \begin{tcolorbox}[colback=white, colframe=labblue, width=10cm, arc=5mm, center]
+        \centering
+        \textbf{Auteur :} Mathys\\
+        \textbf{Date de début :} \today
+    \end{tcolorbox}
+    
+    \vfill
+    
+    {\large Année Universitaire 2023 - 2024}\par
+\end{titlepage}
+
+% Table des matières
+\tableofcontents
+\newpage
+
+%---------------------------------------------------
+% DEBUT DU CONTENU DU CAHIER
+%---------------------------------------------------
+
+\chapter{Semaine 1 : Phase de préparation}
+
+\section{Lundi 9 Mars}
+
+\begin{objectifs}
+    \begin{itemize}
+        \item Familiarisation avec les données du projet LOT.
+        \item Déterminer quels indices de diversité $\alpha$ seront pertinents pour l'analyse. Puis commencer à les calculer.
+        \item Faire un peu de bibliographie pour connaitres quelles analyses sont couramment utilisées pour les analyses de communautés fongiques.
+    \end{itemize}
+\end{objectifs}
+
+
+\vspace{0.5cm}
+
+\begin{Méthodologie}{}
+    Création d'un fichier Quarto (.qmd) pour suivre mes avancées annoter mon code.
+    Création d'un repository Github pour le versionning de mon code.
+
+    Lecture du rapport de stage d'une ancienne stagière de M2 sur le projet 
+
+    \textbf{Préparation des données}
+    \begin{itemize}
+        \item Le nom données aux samples ne sont pas adaptés a une utilisation sur R, donc uniformiser les noms d'échantillons
+        \item Nettoyage du fichier phyloseq
+        \item Création de dataframe avec les métadonnées pour simplifier les calcules et la manipulation des indices qui seront calculés.
+    \end{itemize}
+
+    \textbf{Calcul des indices de diversité $\alpha$}
+    \begin{itemize}
+        \item 3 Indices sembles particulièrements robustes et pertinants: \textbf{Richesse spécifique}, \textbf{ExpShannon} et \textbf{InvSimpson}.
+        \item calcul des indices avec la fonction \texttt{estimate\_richness()}
+    \end{itemize}  
+
+    \textbf{Test de significativité des indices de diversité $\alpha$}
+    \begin{itemize}
+        \item Le but est de déterminer si les indices de diversité $\alpha$ sont significativement différents entre les différentes conditions expérimentales (ex: entre les différents projets (LOT), les différents organes (racines, vieilles et jeunes feuilles) et positions (endo ou épiphytes)).
+        \item Le test utilisé fut le \texttt{pairwise.wilcox.test()} avec correction de Benjamini-Hochberg pour les comparaisons multiples.
+        \item Les résultats (p-values) sont ensuite visualisés à l'aide de heatmaps pour identifier les comparaisons significatives.
+    \end{itemize}  
+        \textbf{Visualisation des comparaisons d'indices de diversité $\alpha$}
+    \begin{itemize}
+        \item Le but est de comparer graphimement les indices de diversité alpha en fonction des différentes modalités.
+        \item Pour ce faire j'ai utilisé des boxplots avec les indices de diversité $\alpha$ en ordonnée, les modalités d'une première variable en absisse (ex: projet, organe ou position) et les modalités d'une deuxième variable en couleur.
+        \item On a donc 4 plots (2 R.S. et 2 ExpShannon) contenant chacuns 3 graphiques. Les combinaisons sont faites de manière à ce que chaque modalitès soient illustées et testées entre elles.
+    \end{itemize}  
+
+\end{Méthodologie}
+
+\vspace{0.5cm}
+
+\begin{attention}
+    Il à été assez compliqué de reformater automatiquement les noms d'échantillons, ça à été chronophage.
+    Revoir et améliorer les tests utilisée et la lisibilité des graphiques (faire une legende commune en bas).
+    Verifier que les indices de richesse spécifique et ExpShannon suffisent à eux seuls pour caractériser la diversité alpha, ou si d'autres indices sont nécessaires.
+\end{attention}
+
+\section{Mardi 10 Mars}
+
+\begin{objectifs}
+    \begin{itemize}
+        \item Biblo pour connaitre vers quelles analyses de diversité bêta se tourner.
+        \item Commencer à faire des analyses de diversité bêta.
+        \item Trouver une question écologique centrale à laquelle répondre avec les analyses de diversité bêta.
+    \end{itemize}
+\end{objectifs}
+
+\begin{Méthodologie}{}
+    \textbf{Création d'un UpSet plot pour visualiser les OTUs partagés entre les différentes modalités} 
+
+    \textbf{Calcul de distances de dissimilarité}
+    \begin{itemize}
+        \item La première chose est de calculer les distances de dissimilarité entre les échantillons à partir de la table d'OTUs, pour cela j'ai utilisé la fonction \texttt{vegdist()} du package Vegan.
+        \item J'ai calculé plusieurs types de distances de dissimilarité pour comparer les résultats et voir lesquelles sont les plus pertinentes pour notre jeu de données. Les distances calculées sont : \textbf{Bray-Curtis} et \textbf{Jaccard}.
+    \end{itemize}   
+
+    \textbf{Visualisations de la diversité bêta par des ordinations}
+    \begin{itemize}
+        \item J'ai utilisé des méthodes d'ordination pour visualiser les distances de dissimilarité entre les échantillons. Les méthodes utilisées sont : \textbf{PCoA} (Principal Coordinates Analysis) et \textbf{NMDS} (Non-metric Multidimensional Scaling).
+        \item Les ordinations sont colorées en fonction des différentes modalités (projet, organe, position) pour voir s'il y a des regroupements d'échantillons en fonction de ces modalités.
+        \item Les NMDS et PCoA montrent surtout des regroupements très marqués en fonction des différents projets et des organes, mais pas de regroupement clair en fonction de la position (endo ou épiphytes), ni par la taxonomie des plantes analysées.
+    \end{itemize}   
+
+    \textbf{Tests PERMANOVA pour évaluer la significativité des regroupements observés dans les ordinations}
+    \begin{itemize}
+        \item 
+    \end{itemize}   
+
+\end{Méthodologie}
+
+
+
+\end{document}
