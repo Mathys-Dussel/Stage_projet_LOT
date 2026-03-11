@@ -12,6 +12,8 @@ execute:
     error: false
 ---
 
+
+
 # Introduction
 
 ## Problématique de l'étude (état de l’art)
@@ -156,6 +158,40 @@ p + theme_bw() + theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 ```
 
+Diagramme de venn pour visualiser les taxons partagés entre les différents projets LOT et entre les différents organes.
+
+```{r}
+library(ggVennDiagram)
+
+
+meta <- data.frame(sample_data(ps))
+samples_by_project <- split(rownames(meta), meta$project)
+
+taxa_by_project <- lapply(samples_by_project, function(samples) {
+  ps_sub <- prune_samples(samples, ps)
+  ts <- taxa_sums(ps_sub)
+  names(ts[ts > 0])
+})
+
+ggVennDiagram(taxa_by_project) +
+  scale_fill_gradient(low = "white", high = "forestgreen") +
+  labs(title = "Diagramme de Venn des taxons partagés entre les projets LOT",
+       fill = "Nombre de taxons") 
+
+
+samples_by_organ <- split(rownames(meta), meta$organ)
+
+taxa_by_organ <- lapply(samples_by_organ, function(samples) {
+  ps_sub <- prune_samples(samples, ps)
+  ts <- taxa_sums(ps_sub)
+  names(ts[ts > 0])
+})      
+
+gVennDiagram(taxa_by_organ) +
+  scale_fill_gradient(low = "white", high = "forestgreen") +
+  labs(title = "Diagramme de Venn des taxons partagés entre les organes",
+        fill = "Nombre de taxons")
+```
 
 Graphique UpSetR
 
@@ -220,7 +256,7 @@ chordDiagram(df_chord, transparency = 0.3, annotationTrack = c("name", "grid"))
 
 ps_rel <- transform_sample_counts(ps, function(x) x / sum(x))
 
-ps_class<- tax_glom(ps_rel, taxrank = "gbr268_Class ", NArm = FALSE)
+ps_class<- tax_glom(ps_rel, taxrank = "gbr268_Class", NArm = FALSE)
 
 df_class <- psmelt(ps_class)
 
@@ -235,6 +271,8 @@ circos.clear()
 chordDiagram(df_chord, transparency = 0.3, annotationTrack = c("name", "grid"))
 
 ```
+
+
 
 
 ## Analyses de diversité bêta
