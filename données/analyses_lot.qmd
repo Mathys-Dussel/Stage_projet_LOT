@@ -165,6 +165,11 @@ wrap_plots(
 ) + plot_annotation(title = "Richesse Spécifique par Catégorie")
 ```
 
+Ce graphique détaille la richesse spécifique observée en croisant les différents facteurs de l'étude (organe, projet et position spatiale). On constate que la tendance globale se maintient à l'échelle des projets : les échantillons de surface (épiphytes) et les racines abritent systématiquement une plus grande diversité de taxons que les tissus internes (endophytes) et les feuilles, indépendamment du site d'échantillonnage (LOT1, LOT2 ou LOT3). 
+
+
+
+
 ```{r}
 # label: EXPSH-LOT
 wrap_plots(
@@ -190,6 +195,8 @@ p <- plot_richness(ps, x = "project", measures = alpha_meas, color = "organ")
 p + theme_bw() + theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 ```
+
+L'analyse comparative des indices de diversité alpha (Richesse observée, Chao1, Shannon et Simpson) met en évidence une structuration des communautés fongiques fortement influencée par l'organe hôte et le projet (LOT). On constate en premier lieu un effet "LOT" marqué, le LOT1 abritant globalement les niveaux de richesse spécifique et de diversité les plus élevés par rapport aux LOT2 et LOT3. Plus important encore, les différents organes affichent des signatures écologiques contrastées. Les racines constituent un réservoir de biodiversité remarquablement constant et structurellement équilibré, comme en témoignent leurs indices de Simpson très denses et proches de 1 (traduisant une forte équitabilité sans dominance écrasante d'une espèce). À l'inverse, les communautés foliaires (feuilles jeunes et âgées) sont beaucoup plus hétérogènes : bien qu'elles puissent être riches, elles présentent des chutes brutales de l'indice de Simpson, indiquant que ces micro-habitats de surface ou de tissus aériens sont fréquemment hyper-dominés par quelques taxons fongiques ultra-majoritaires.
 
 
 On realise un diagramme de Venn pour visualiser les OTUs partagés entre les différents organes et Projets. 
@@ -230,6 +237,12 @@ ggVennDiagram(taxa_by_organ) +
         fill = "Nombre de taxons")
 ```
 
+
+Le premier diagramme de Venn illustre la répartition des taxons fongiques mis en évidence lors des différentes phases du projet (LOT1, LOT2 et LOT3). Il apparaît qu'une proportion restreinte du microbiote, soit 9 % des taxons (2 117 OTUs), constitue le "cœur" partagé conjointement par les trois projets. La majorité de la diversité fongique est en réalité spécifique à chaque campagne : près de 68 % des taxons sont uniques à une seule session d'échantillonnage (25 % exclusivement dans le LOT1, 24 % dans le LOT2, et 19 % dans le LOT3). Ces résultats soulignent une forte variabilité compositionnelle d'un projet à l'autre, suggérant que le contexte spatio-temporel spécifique à chaque prélèvement ou l'identité précise des plantes échantillonnées à chaque fois dictent l'écrasante majorité des espèces fongiques rencontrées, plutôt qu'un "microbiome de base" fongique de la canopée qui serait constant et systématiquement distribué.
+
+Le second diagramme compare quant à lui les communautés fongiques à l'échelle des micro-habitats, en distinguant les racines, les jeunes feuilles et les vieilles feuilles de ces plantes épiphytes. Contrairement à la forte spécificité observée entre les projets, on note ici une convergence écologique marquée à l’échelle de l’individu : le cœur du microbiome partagé représente 39 % de la richesse totale (soit près de 9 500 taxons présents à la fois sur l’ensemble des organes). On observe par ailleurs que les racines abritent la plus grande proportion de taxons spécialisés, avec 17 % des OTUs (4 154 taxons) qui leur sont strictement inféodés, ce qui rejoint les constats de diversité plus élevée faits avec les indices alpha. En revanche, les feuilles (jeunes et vieilles) hébergent bien moins de taxons qui leur sont propres (seulement 7 % de taxons exclusifs pour chaque âge de feuille), suggérant qu'une grande partie des champignons présents sur le feuillage est issue d'un réservoir microbien partagé et circulant au sein de la plante elle-même ou de son environnement proche.
+
+
 Etant donné qu'avec une nombre de modalités superieur à 3, les diagrammes de Venn deviennent difficiles à interpréter, on peut aussi faire des diagrammes d'UpSet pour visualiser les intersections entre les différentes catégories d'échantillons (par exemple, en fonction de l'organe, de la position et du projet).
 
 ```{r}
@@ -251,7 +264,12 @@ taxa_list <- split(rownames(meta), meta$category) |>
 
 upset(fromList(taxa_list), nsets = length(taxa_list), order.by = "freq", 
       main.bar.color = "forestgreen", sets.bar.color = "steelblue")
+
+
 ```
+
+Ce diagramme d'UpSet détaille précisément le partage des taxons fongiques en croisant simultanément le type d'organe (racine, jeune ou vieille feuille) et le compartiment tissulaire (épiphyte pour la surface vs endophyte pour l'intérieur). L'observation majeure qui s'en dégage est la très forte dominance d'un microbiome "cœur" généraliste : l'intersection de loin la plus importante (plus de 3 000 taxons, première barre verte) correspond aux espèces présentes simultanément dans l'intégralité des six micro-habitats étudiés. Toutefois, l'analyse des intersections secondaires et de la taille totale des groupes (barres bleues à gauche) confirme le rôle prépondérant du système racinaire en tant que réservoir de diversité. Les racines, qu'elles soient considérées en surface ou en intériorité, accumulent le plus grand nombre total de taxons et sont impliquées dans les principales sous-intersections spécialisées (comme les taxons exclusifs aux tissus et surfaces racinaires). À l'inverse, les cortèges fongiques stricts de la surface des feuilles (jeunes ou âgées) sont les moins riches, indiquant une spécialisation microbienne beaucoup plus forte au niveau des racines qu'au niveau des surfaces aériennes.
+
 
 Il est aussi possible de faire des diagrammes en corde pour visualiser les associations entre les OTUs et les différentes catégories d'échantillons (par exemple, en fonction de l'organe, de la position et du projet).
 
@@ -360,6 +378,7 @@ plot_ordination(ps_hellinger, nmds_bray, color = "organ", shape = "project") +
 plot_ordination(ps_hellinger, nmds_bray, color = "project", shape = "organ") +
     geom_point(size = 3, alpha = 0.8) +
     theme_bw() +
+    stat_ellipse(aes(group = project)) +
     labs(title = "NMDS - Bray-Curtis")
 
 plot_ordination(ps_hellinger, nmds_bray, color = "plant_family", shape = "project") +
@@ -367,10 +386,44 @@ plot_ordination(ps_hellinger, nmds_bray, color = "plant_family", shape = "projec
     theme_bw() +
     labs(title = "NMDS - Bray-Curtis")
 
-
-
 ```
 
+On voit ici un effet prédominant de type de projet (LOT) sur le groupement des espèces. Il devient donc interessant de faire des ordinations à l'intérieur de chaque projet pour voir si les autres facteurs (organe, position, famille de plante) ont un effet structurant plus marqué à l'échelle de chaque projet.
+
+```{r}
+#| label: ordination-LOT
+
+ps_lot1 <- subset_samples(ps_hellinger, project == "LOT1")
+nmds_lot1 <- ordinate(ps_lot1, method = "NMDS", distance = "bray")
+
+  plot_ordination(ps_lot1, nmds_lot1, color = "organ", shape = "position") +
+    geom_point(size = 3, alpha = 0.8) +
+    stat_ellipse(aes(group = organ)) +
+    theme_bw() +
+    labs(title = "NMDS - Projet LOT1 (Bray-Curtis) avec ellipses de confiance")
+
+  plot_ordination(ps_lot1, nmds_lot1, color = "plant_family", shape = "organ") +
+    geom_point(size = 3, alpha = 0.8) +
+    stat_ellipse(aes(group = plant_family)) +
+    theme_bw() +
+    labs(title = "NMDS - Projet LOT1 par Famille de plante avec ellipses")
+
+ps_lot2 <- subset_samples(ps_hellinger, project == "LOT2")
+nmds_lot2 <- ordinate(ps_lot2, method = "NMDS", distance = "bray")
+
+plot_ordination(ps_lot2, nmds_lot2, color = "organ", shape = "position") +
+    geom_point(size = 3, alpha = 0.8) +
+    stat_ellipse(aes(group = organ)) +
+    theme_bw() +
+    labs(title = "NMDS - Projet LOT2 (Bray-Curtis) avec ellipses de confiance") 
+
+plot_ordination(ps_lot2, nmds_lot2, color = "plant_family", shape = "organ") +
+    geom_point(size = 3, alpha = 0.8) +
+    stat_ellipse(aes(group = plant_family)) +
+    theme_bw() +
+    labs(title = "NMDS - Projet LOT2 par Famille de plante avec ellipses")
+
+```
 
 Il est interessant de visualiser les abondances relatives des principales classes fongiques (> 2%) par zone (organe x position) pour voir s'il y a des patrons de distribution particuliers en fonction de ces micro-habitats. On peut faire cela en utilisant la fonction `ggplot2` pour créer des graphiques à barres empilées, en utilisant les données agrégées au niveau de la classe fongique et en les facettant par organ_position.
 
@@ -472,9 +525,64 @@ print(p_core_lines)
 ```
 
 
+```{r} 
+#| label: rarefaction-inext
 
 
+library(iNEXT)
+library(ggplot2)
 
+otu_mat <- as(otu_table(ps), "matrix")
+if (!taxa_are_rows(ps)) {
+  otu_mat <- t(otu_mat)
+}
+
+out_inext <- iNEXT(otu_mat, 
+                  q = 0,     
+                  datatype = "abundance", 
+                  nboot = 0,       
+                  endpoint = 2000)   
+
+ggiNEXT(out_inext, type = 1, facet.var = "Order.q") +
+  theme_bw() +
+  labs(title = "Courbes de raréfaction et d'extrapolation (q=0 et q=1)",
+       x = "Nombre de séquences",
+       y = "Diversité") +
+  theme(legend.position = "none")
+
+```
+
+```{r}
+  #| label: rarefaction-vegan
+
+  library(vegan)
+
+  otu_vegan <- as(otu_table(ps), "matrix")
+  if (taxa_are_rows(ps)) {
+    otu_vegan <- t(otu_vegan)
+  }
+
+  rarecurve(otu_vegan, step = 100, label = FALSE, col = "steelblue",
+            main = "Courbes de raréfaction (vegan)",
+            xlab = "Nombre de séquences", 
+            ylab = "Espèces observées")
+```
+
+```{r}
+  #| label: rarefaction-vegan
+  library(iNEXT.3D)
+
+  otu_inext3d <- as(otu_table(ps), "matrix")
+  if (!taxa_are_rows(ps)) {
+    otu_inext3d <- t(otu_inext3d)
+  }
+
+  out_inext3d <- iNEXT3D(data = otu_inext3d, diversity = "TD", q = c(0, 1, 2), datatype = "abundance")
+
+  ggiNEXT3D(out_inext3d, type = 1) +
+    theme_bw() +
+    labs(title = "Courbes de raréfaction avec iNEXT.3D")
+```
 
 # De coté car inexploitable pour le moment, mais à garder en tête pour la suite du stage
 
