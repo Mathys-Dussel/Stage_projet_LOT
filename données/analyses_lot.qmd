@@ -531,9 +531,12 @@ print(p_core_lines)
 
 library(iNEXT)
 library(ggplot2)
+library(phyloseq)
 
-otu_mat <- as(otu_table(ps), "matrix")
-if (!taxa_are_rows(ps)) {
+ps_phylum <- tax_glom(ps, taxrank = "gbr268_Phylum", NArm = FALSE)
+
+otu_mat <- as(otu_table(ps_phylum), "matrix")
+if (!taxa_are_rows(ps_phylum)) {
   otu_mat <- t(otu_mat)
 }
 
@@ -543,13 +546,50 @@ out_inext <- iNEXT(otu_mat,
                   nboot = 0,       
                   endpoint = 2000)   
 
-ggiNEXT(out_inext, type = 1, facet.var = "Order.q") +
+ggiNEXT(out_inext, type = 1, facet.var = "None") +
+  scale_shape_manual(values = rep(16, 100)) +
   theme_bw() +
-  labs(title = "Courbes de raréfaction et d'extrapolation (q=0 et q=1)",
+  labs(title = "Courbes de raréfaction et d'extrapolation par phylum (q=0)",
        x = "Nombre de séquences",
        y = "Diversité") +
   theme(legend.position = "none")
 
+  library(tidyr)
+  library(dplyr)
+
+  # Extraire la table des OTU et la table taxonomique
+  otu_mat <- as(otu_table(ps), "matrix")
+  if (!taxa_are_rows(ps)) {
+    otu_mat <- t(otu_mat)
+  }
+  tax_mat <- as(tax_table(ps), "matrix")
+
+  # Combiner et agréger les données pour obtenir une matrice [OTUs x Phylums]
+  df <- as.data.frame(otu_mat)
+  df$Phylum <- tax_mat[rownames(df), "gbr268_Phylum"]
+
+  otu_phylum_mat <- df |>
+    pivot_longer(cols = -Phylum, names_to = "Sample", values_to = "Abundance") |>
+    group_by(Phylum, OTU = rep(rownames(df), times = ncol(otu_mat))) |>
+    summarise(Abundance = sum(Abundance), .groups = "drop") |>
+    pivot_wider(names_from = Phylum, values_from = Abundance, values_fill = 0) |>
+    tibble::column_to_rownames("OTU") |>
+    as.matrix()
+    saveRDS(otu_phylum_mat, "otu_phylum_mat.rds")
+write.table(otu_phylum_mat, file = "otu_phylum_mat.txt", sep = "\t", quote = FALSE, col.names = NA)
+out_inext <- iNEXT(otu_phylum_mat, 
+                    q = 0,     
+                    datatype = "abundance", 
+                    nboot = 0,       
+                    endpoint = 4000)   
+  
+saveRDS(out_inext, "out_inext.rds")
+
+  ggiNEXT(out_inext, type = 1, facet.var = "None") +
+    theme_bw() +
+    labs(title = "Courbes de raréfaction en OTUs par phylum (q=0)",
+         x = "Nombre total de séquences",
+         y = "Diversité en OTUs")
 ```
 
 ```{r}
@@ -557,15 +597,16 @@ ggiNEXT(out_inext, type = 1, facet.var = "Order.q") +
 
   library(vegan)
 
-  otu_vegan <- as(otu_table(ps), "matrix")
-  if (taxa_are_rows(ps)) {
+  ps_class <- tax_glom(ps, taxrank = "gbr268_Class", NArm = FALSE)
+  otu_vegan <- as(otu_table(ps_class), "matrix")
+  if (taxa_are_rows(ps_class)) {
     otu_vegan <- t(otu_vegan)
   }
 
   rarecurve(otu_vegan, step = 100, label = FALSE, col = "steelblue",
-            main = "Courbes de raréfaction (vegan)",
+            main = "Courbes de raréfaction par classe (vegan)",
             xlab = "Nombre de séquences", 
-            ylab = "Espèces observées")
+            ylab = "Classes observées")
 ```
 
 ```{r}
