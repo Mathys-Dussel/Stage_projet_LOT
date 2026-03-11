@@ -48,10 +48,10 @@ setwd("~/Documents/Etudes/Stage_projet_LOT/CRBE/données")
 
 ## Analyses de diversité alpha
 
-Premierement faire un data_frame avec les échantillons et les variables d’intérêt (genre, famille, espèce de plante, etc.)
+Premierement, mettre en forme les données pour les analyses de diversité alpha. Les noms d'echantillons sont actuellement sous la forme "X1.2.3" et nous allons les transformer en "1-2-3" pour faciliter les manipulations ultérieures.
 
-```{r, results='hide'}
-
+```{r }
+#| label: prep-données
 library(phyloseq)
 library(ggplot2)
 library(ggpubr)
@@ -60,17 +60,31 @@ library(patchwork)
 ps <- readRDS("donnees_nettoyees.rds")
 sample_names(ps) <- gsub("\\.", "-", sub("^X", "", sample_names(ps)))
 
-df_alpha <- estimate_richness(ps, measures = c("Observed", "Shannon", "Simpson")) |>
+```
+
+Ensuite, on peut calculer les indices de diversité alpha pour chaque échantillon et les ajouter à la table de métadonnées pour faciliter les analyses statistiques et les visualisations.
+On a choisi de calculer la richesse observée (Observed) et l'indice de Shannon, puis on a transformé l'indice de Shannon en expShannon pour faciliter l'interprétation. On a aussi créé une variable "grp" qui combine les informations d'organe, de position et de projet pour faciliter les comparaisons entre les différentes modalités.
+
+
+
+```{r }
+#| label: calcul-diversite-alpha
+
+df_alpha <- estimate_richness(ps, measures = c("Observed", "Shannon")) |>
   cbind(sample_data(ps)) |>
   transform(
     expShannon = exp(Shannon),
-    invSimpson = 1/Simpson,
     grp = interaction(organ, position, project)
   )
+```
 
-stats_global <- lapply(df_alpha[c("Observed", "expShannon", "invSimpson")], 
+Il est ensuite possible de faire des tests statistiques pour évaluer si les différences observées entre les différentes modalités sont significatives. Par exemple, on peut utiliser le test de Kruskal-Wallis pour comparer les indices de diversité alpha entre les différents groupes.
+
+```{r }
+#| label: test-stat-diversite-alpha
+stats_global <- lapply(df_alpha[c("Observed", "expShannon")], 
                        function(x) kruskal.test(x ~ df_alpha$grp)$p.value)
-print(stats_global)
+
 
 
 plot_sig_heatmap <- function(df, metric, title) {
@@ -91,14 +105,16 @@ plot_sig_heatmap <- function(df, metric, title) {
 
 plot_sig_heatmap(df_alpha, "Observed", "Significativité - Observed")
 plot_sig_heatmap(df_alpha, "expShannon", "Significativité - ExpShannon")
-plot_sig_heatmap(df_alpha, "invSimpson", "Significativité - InvSimpson")
 
 ```
 
-Quelques graphiques pour visualiser la diversité alpha en fonction des différentes variables d’intérêt (organ, position, plant_family, plant_genus, plant_species, project)
+
+Nous pouvons également visualiser les différences de diversité alpha entre les différentes modalités à l'aide de graphiques de type violon, en utilisant la fonction `ggplot2` et en ajoutant des annotations pour indiquer les significativités des différences entre les groupes.
 
 
 ```{r}
+#| label: graph-diversite-alpha
+
 library(ggplot2)
 library(ggpubr)
 library(patchwork)
@@ -150,6 +166,7 @@ wrap_plots(
 Même analyse mais en utilisant les fonctions de phyloseq pour calculer la diversité alpha et faire les graphiques
 
 ```{r}
+#| label: phyloseq-diversite-alpha
 
 
 alpha_meas <- c("Observed", "Chao1", "Shannon", "Simpson")
@@ -158,9 +175,13 @@ p + theme_bw() + theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 ```
 
-Diagramme de venn pour visualiser les taxons partagés entre les différents projets LOT et entre les différents organes.
+
+On realise un diagramme de Venn pour visualiser les OTUs partagés entre les différents organes et Projets. 
 
 ```{r}
+#| label: venn-diagram-projet-organ
+
+
 library(ggVennDiagram)
 
 
@@ -187,15 +208,18 @@ taxa_by_organ <- lapply(samples_by_organ, function(samples) {
   names(ts[ts > 0])
 })      
 
-gVennDiagram(taxa_by_organ) +
+ggVennDiagram(taxa_by_organ) +
   scale_fill_gradient(low = "white", high = "forestgreen") +
   labs(title = "Diagramme de Venn des taxons partagés entre les organes",
         fill = "Nombre de taxons")
 ```
 
-Graphique UpSetR
+Etant donné qu'avec une nombre de modalités superieur à 3, les diagrammes de Venn deviennent difficiles à interpréter, on peut aussi faire des diagrammes d'UpSet pour visualiser les intersections entre les différentes catégories d'échantillons (par exemple, en fonction de l'organe, de la position et du projet).
 
 ```{r}
+#| label: upset-diagram
+
+
 # Catégories: old_leaf endophyte, old_root endophyte, young_leaf endophyte, young_root endophyte, old_leaf epiphyte, old_root epiphyte, young_leaf epiphyte, young_root epiphyte
 
 library(UpSetR)
@@ -213,9 +237,12 @@ upset(fromList(taxa_list), nsets = length(taxa_list), order.by = "freq",
       main.bar.color = "forestgreen", sets.bar.color = "steelblue")
 ```
 
-
+Il est aussi possible de faire des diagrammes en corde pour visualiser les associations entre les OTUs et les différentes catégories d'échantillons (par exemple, en fonction de l'organe, de la position et du projet).
 
 ```{r}
+#| label: chord-diagram
+
+
 library(circlize)
 
 categories <- names(taxa_list)
@@ -279,24 +306,29 @@ chordDiagram(df_chord, transparency = 0.3, annotationTrack = c("name", "grid"))
 
 ### Calcul de distances de dissimilarité 
 
-Bray-Curtis:
+
+On commence par calculer les distances de dissimilarité entre les échantillons en utilisant différentes métriques, telles que la distance de Bray-Curtis et la distance de Jaccard. Ces distances nous permettront d'évaluer les différences de composition des communautés fongiques entre les différents groupes d'échantillons (par exemple, en fonction de l'organe, de la position et du projet).
 ```{r}
+#| label: bray-curtis-Jaccard-distance
+
 library(vegan)
 otu_table <- as(otu_table(ps), "matrix")
 bray_dist <- vegdist(otu_table, method = "bray")
-```
 
-
-Jaccard:
-```{r}
 jaccard_dist <- vegdist(otu_table > 0, method = "jaccard")
 ```
 
+
+
 ### Méthodes d’ordination
 
-Ordinations globales
+Desormais, on peut utiliser les distances de dissimilarité calculées pour réaliser des ordinations, telles que le NMDS (Non-metric Multidimensional Scaling) ou le PCoA (Principal Coordinates Analysis), afin de visualiser la structuration des communautés fongiques selon les différents facteurs (1) la taxonomie des épiphytes vasculaires, (2) le type d’organe, et (3) le compartiment (surface vs tissus internes). Ces ordinations nous permettront d'identifier les regroupements d'échantillons en fonction de ces facteurs et d'évaluer l'influence relative de chacun d'eux sur la composition des communautés fongiques.
 
 ```{r}
+
+#| label: ordination-nmds-globales
+
+
 ps_hellinger <- transform_sample_counts(ps, function(x) sqrt(x / sum(x)))
 nmds_bray <- ordinate(ps_hellinger, method = "NMDS", distance = "bray")
 
@@ -325,9 +357,12 @@ plot_ordination(ps_hellinger, nmds_bray, color = "plant_family", shape = "projec
 ```
 
 
-On observe que le milieu (LOT1, 2 ou 3) influe grandement sur les communautés obtenues. On peut donc chercher à determiner quelles sunt les différences majeurs entre les différents projets LOT sans prendre ne compte les otu, simplement savoir si par exemple les espèces (ou famille ou genre) de plantes changent en fonction du LOT.
+Il est interessant de visualiser les abondances relatives des principales classes fongiques (> 2%) par zone (organe x position) pour voir s'il y a des patrons de distribution particuliers en fonction de ces micro-habitats. On peut faire cela en utilisant la fonction `ggplot2` pour créer des graphiques à barres empilées, en utilisant les données agrégées au niveau de la classe fongique et en les facettant par organ_position.
 
 ```{r}{r nom_du_bloc}
+
+#| label: abondance-relative-classes-par-lot-organes
+
 
 library(dplyr)
 library(phyloseq)
@@ -373,9 +408,13 @@ ggplot(df_class, aes(x = project, y = Abundance, fill = gbr268_Class)) +
 ```
 
 
+Les espèces indicatrices sont des taxons qui sont fortement associés à une condition ou un groupe particulier. Identifier les espèces indicatrices peut nous aider à comprendre quelles espèces sont les plus caractéristiques de chaque groupe d'échantillons (par exemple, en fonction de l'organe, de la position et du projet) et à identifier des taxons potentiellement importants pour les interactions plante-microorganisme dans ces micro-habitats.
 
-Espèces indicatrices:
-```{r}
+```{r , results='hide'}
+
+#| label: indicators-species-microbiota
+
+
 library(indicspecies)
 library(phyloseq)
 metadata <- data.frame(sample_data(ps))
@@ -424,9 +463,14 @@ print(p_core_lines)
 
 
 
-# de coté
-Inférence de réseaux de co-occurrence pour explorer les interactions potentielles entre groupes fongiques.
+# De coté car inexploitable pour le moment, mais à garder en tête pour la suite du stage
+
+Utilisation du paquet `igraph` pour construire un réseau de co-occurrence entre les taxons fongiques, en utilisant les données de la table d'abondance. On peut ensuite visualiser ce réseau pour identifier les associations potentielles entre les différents taxons et voir s'il y a des regroupements particuliers en fonction des catégories d'échantillons (par exemple, en fonction de l'organe, de la position et du projet).
+
 ```{r}
+
+#| label: cooccurrence-network
+
 
 library(igraph)
 
