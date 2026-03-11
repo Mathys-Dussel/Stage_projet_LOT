@@ -240,7 +240,6 @@ upset(fromList(taxa_list), nsets = length(taxa_list), order.by = "freq",
 Il est aussi possible de faire des diagrammes en corde pour visualiser les associations entre les OTUs et les différentes catégories d'échantillons (par exemple, en fonction de l'organe, de la position et du projet).
 
 ```{r}
-
 #| label: chord-diagram
 
 
@@ -326,7 +325,6 @@ jaccard_dist <- vegdist(otu_table > 0, method = "jaccard")
 Desormais, on peut utiliser les distances de dissimilarité calculées pour réaliser des ordinations, telles que le NMDS (Non-metric Multidimensional Scaling) ou le PCoA (Principal Coordinates Analysis), afin de visualiser la structuration des communautés fongiques selon les différents facteurs (1) la taxonomie des épiphytes vasculaires, (2) le type d’organe, et (3) le compartiment (surface vs tissus internes). Ces ordinations nous permettront d'identifier les regroupements d'échantillons en fonction de ces facteurs et d'évaluer l'influence relative de chacun d'eux sur la composition des communautés fongiques.
 
 ```{r}
-
 #| label: ordination-nmds-globales
 
 
@@ -360,8 +358,7 @@ plot_ordination(ps_hellinger, nmds_bray, color = "plant_family", shape = "projec
 
 Il est interessant de visualiser les abondances relatives des principales classes fongiques (> 2%) par zone (organe x position) pour voir s'il y a des patrons de distribution particuliers en fonction de ces micro-habitats. On peut faire cela en utilisant la fonction `ggplot2` pour créer des graphiques à barres empilées, en utilisant les données agrégées au niveau de la classe fongique et en les facettant par organ_position.
 
-```{r}{r nom_du_bloc}
-
+```{r}
 #| label: abondance-relative-classes-par-lot-organes
 
 
@@ -412,7 +409,6 @@ ggplot(df_class, aes(x = project, y = Abundance, fill = gbr268_Class)) +
 Les espèces indicatrices sont des taxons qui sont fortement associés à une condition ou un groupe particulier. Identifier les espèces indicatrices peut nous aider à comprendre quelles espèces sont les plus caractéristiques de chaque groupe d'échantillons (par exemple, en fonction de l'organe, de la position et du projet) et à identifier des taxons potentiellement importants pour les interactions plante-microorganisme dans ces micro-habitats.
 
 ```{r , results='hide'}
-
 #| label: indicators-species-microbiota
 
 
@@ -469,7 +465,6 @@ print(p_core_lines)
 Utilisation du paquet `igraph` pour construire un réseau de co-occurrence entre les taxons fongiques, en utilisant les données de la table d'abondance. On peut ensuite visualiser ce réseau pour identifier les associations potentielles entre les différents taxons et voir s'il y a des regroupements particuliers en fonction des catégories d'échantillons (par exemple, en fonction de l'organe, de la position et du projet).
 
 ```{r}
-
 #| label: cooccurrence-network
 
 
