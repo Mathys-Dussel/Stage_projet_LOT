@@ -383,9 +383,39 @@ groups <- metadata$project
 indicator_taxa <- multipatt(otu_table, groups, func = "IndVal.g", control = how(nperm = 99))
 summary(indicator_taxa)
 
-# subset abondance et prevalence
 
-# core microbiota
+library(microbiome)
+library(ggplot2)
+library(RColorBrewer)
+
+# Transformer les données en abondance relative (compositional)
+ps_rel <- transform(ps, "compositional")
+
+# Définir les seuils de détection et de prévalence
+detections <- 10^seq(log10(1e-4), log10(1), length = 10)
+prevalences <- seq(0.5, 1, 0.1)
+
+# Core Heatmap
+p_core_heatmap <- plot_core(ps_rel, 
+        plot.type = "heatmap", 
+        colours = rev(brewer.pal(5, "Spectral")),
+        prevalences = prevalences, 
+        detections = detections, 
+        min.prevalence = 0.5) +
+  labs(title = "Core Microbiota - Heatmap") +
+  theme_bw()
+
+print(p_core_heatmap)
+
+# Core Lines Plot
+p_core_lines <- plot_core(ps_rel, 
+              plot.type = "lineplot", 
+              prevalences = prevalences, 
+              detections = detections) +
+  labs(title = "Core Microbiota - Line Plot") +
+  theme_bw()
+
+print(p_core_lines)
 
 ```
 
