@@ -396,6 +396,62 @@ plot_ordination(ps_hellinger, nmds_bray, color = "plant_", shape = "project") +
 
 ```
 
+Il faut desormais tester statistiquement les association, on commence par construire un lm mais on se doute qu'il ne sera pas valide car les données ne présument pas de résidus normaux et les variances homogènes.
+
+```{r}
+#| label: test-lm
+
+
+metadata_global <- as(sample_data(ps), "data.frame")
+modele_lm <- lm(nmds_bray$points[, 1] ~ organ + plant_family+project, data = metadata_global)
+summary(modele_lm)
+shapiro.test(residuals(modele_lm))
+
+par(mfrow = c(2, 2))
+plot(modele_lm)
+par(mfrow = c(1, 1))
+```
+
+En effet le test de Shapiro-Wilk indique que les résidus ne suivent pas une distribution normale (p < 0.05), ce qui remet en question la validité du modèle linéaire pour ces données. De plus, les graphiques de diagnostic montrent des écarts par rapport aux hypothèses de normalité et d'homoscédasticité, avec des résidus qui ne sont pas distribués de manière aléatoire autour de zéro et une tendance à l'augmentation de la variance des résidus pour les valeurs prédites plus élevées. Ces observations suggèrent que les données ne répondent pas aux conditions nécessaires pour appliquer un modèle linéaire classique, et qu'il serait plus approprié d'utiliser des méthodes non paramétriques ou des modèles alternatifs qui ne reposent pas sur ces hypothèses.
+
+On test donc l'homogénéité des dispersions multivariées (betadisper) pour vérifier si les variances sont homogènes entre les groupes, ce qui est une condition préalable pour les tests de PERMANOVA.
+
+
+```{r}
+
+metadata_global <- as(sample_data(ps), "data.frame")
+
+dispersion_organ <- betadisper(bray_dist, metadata_global$organ)
+permutest(dispersion_organ, permutations = 999)
+plot(dispersion_organ, main = "Homogénéité des dispersions multivariées (Organe)")
+
+dispersion_family <- betadisper(bray_dist, metadata_global$plant_family)
+permutest(dispersion_family, permutations = 999)
+plot(dispersion_family, main = "Homogénéité des dispersions multivariées (Famille de plante)")
+```
+
+Les dispersions sont homogènes, on peut donc procéder à des tests de PERMANOVA pour évaluer l'effet de chaque facteur (organe, famille de plante, projet) sur la composition des communautés fongiques, ainsi que les interactions potentielles entre ces facteurs.
+
+```{r}
+
+library(vegan)
+
+adonis2(
+  bray_dist ~ project * organ + plant_family, 
+  data = metadata_global, 
+  permutations = 999
+)
+
+adonis2(
+  bray_dist ~ project + organ + plant_family, 
+  data = metadata_global, 
+  by = "margin", 
+  permutations = 999
+)
+
+
+```
+
 On voit ici un effet prédominant de type de projet (LOT) sur le groupement des espèces. Il devient donc interessant de faire des ordinations à l'intérieur de chaque projet pour voir si les autres facteurs (organe, position, famille de plante) ont un effet structurant plus marqué à l'échelle de chaque projet.
 
 ```{r}
