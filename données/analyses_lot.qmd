@@ -82,28 +82,39 @@ Il est ensuite possible de faire des tests statistiques pour évaluer si les dif
 
 ```{r }
 #| label: test-stat-diversite-alpha
-stats_global <- lapply(df_alpha[c("Observed", "expShannon")], 
-                       function(x) kruskal.test(x ~ df_alpha$grp)$p.value)
 
 
+valeurs_p_kruskal <- lapply(
+  df_alpha[c("Observed", "expShannon")], 
+  function(metrique) kruskal.test(metrique ~ df_alpha$grp)$p.value
+)
 
-plot_sig_heatmap <- function(df, metric, title) {
-  pw <- pairwise.wilcox.test(df[[metric]], df$grp, p.adjust.method = "BH")$p.value |>
+plot_sig_heatmap <- function(donnees, metrique, titre) {
+  
+
+  resultats_wilcoxon <- pairwise.wilcox.test(
+    donnees[[metrique]], 
+    donnees$grp, 
+    p.adjust.method = "BH"
+  )$p.value
+  
+  donnees_graphique <- resultats_wilcoxon |>
     as.table() |>
     as.data.frame() |>
     na.omit()
   
-  ggplot(pw, aes(Var1, Var2, fill = Freq)) +
+  ggplot(donnees_graphique, aes(x = Var1, y = Var2, fill = Freq)) +
     geom_tile(color = "white") +
-    geom_text(aes(label = cut(Freq, c(-Inf, 0.001, 0.01, 0.05, Inf), labels = c("***", "**", "*", "ns")))) +
-    scale_fill_gradient2(low = "firebrick", mid = "white", high = "steelblue", midpoint = 0.05) +
+    geom_text(aes(label = cut(Freq, 
+                              breaks = c(-Inf, 0.001, 0.01, 0.05, Inf), 
+                              labels = c("***", "**", "*", "ns")))) +
+    scale_fill_gradient2(low = "firebrick", mid = "red", high = "white", midpoint = 0.05) +
     theme_minimal() + 
     theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-    labs(title = title, x = "", y = "", fill = "p-value")
+    labs(title = titre, x = "Groupes", y = "Groupes comparés", fill = "Valeur p")
 }
 
-
-plot_sig_heatmap(df_alpha, "Observed", "Significativité - Observed")
+plot_sig_heatmap(df_alpha, "Observed", "Significativité - Richesse Observée")
 plot_sig_heatmap(df_alpha, "expShannon", "Significativité - ExpShannon")
 
 ```
@@ -190,8 +201,8 @@ Même analyse mais en utilisant les fonctions de phyloseq pour calculer la diver
 #| label: phyloseq-diversite-alpha
 
 
-alpha_meas <- c("Observed", "Chao1", "Shannon", "Simpson")
-p <- plot_richness(ps, x = "project", measures = alpha_meas, color = "organ")
+alpha_div <- c("Observed", "Chao1", "Shannon", "Simpson")
+p <- plot_richness(ps, x = "project", measures = alpha_div, color = "organ")
 p + theme_bw() + theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 ```
@@ -208,33 +219,30 @@ On realise un diagramme de Venn pour visualiser les OTUs partagés entre les dif
 library(ggVennDiagram)
 
 
-meta <- data.frame(sample_data(ps))
-samples_by_project <- split(rownames(meta), meta$project)
+extraire_taxons <- function(physeq, variable) {
+  meta <- as.data.frame(sample_data(physeq))
+  groupes <- split(rownames(meta), meta[[variable]])
+  
+  lapply(groupes, function(echantillons) {
+    sous_ps <- prune_samples(echantillons, physeq)
+    abondances <- taxa_sums(sous_ps)
+    names(abondances[abondances > 0])
+  })
+}
 
-taxa_by_project <- lapply(samples_by_project, function(samples) {
-  ps_sub <- prune_samples(samples, ps)
-  ts <- taxa_sums(ps_sub)
-  names(ts[ts > 0])
-})
+taxons_par_projet <- extraire_taxons(ps, "project")
 
-ggVennDiagram(taxa_by_project) +
+ggVennDiagram(taxons_par_projet) +
   scale_fill_gradient(low = "white", high = "forestgreen") +
-  labs(title = "Diagramme de Venn des taxons partagés entre les projets LOT",
+  labs(title = "Taxons partagés entre les projets LOT",
        fill = "Nombre de taxons") 
 
+taxons_par_organe <- extraire_taxons(ps, "organ")
 
-samples_by_organ <- split(rownames(meta), meta$organ)
-
-taxa_by_organ <- lapply(samples_by_organ, function(samples) {
-  ps_sub <- prune_samples(samples, ps)
-  ts <- taxa_sums(ps_sub)
-  names(ts[ts > 0])
-})      
-
-ggVennDiagram(taxa_by_organ) +
+ggVennDiagram(taxons_par_organe) +
   scale_fill_gradient(low = "white", high = "forestgreen") +
-  labs(title = "Diagramme de Venn des taxons partagés entre les organes",
-        fill = "Nombre de taxons")
+  labs(title = "Taxons partagés entre les organes",
+       fill = "Nombre de taxons")
 ```
 
 
@@ -375,13 +383,13 @@ plot_ordination(ps_hellinger, nmds_bray, color = "organ", shape = "project") +
     theme_bw() +
     labs(title = "NMDS - Bray-Curtis")
 
-plot_ordination(ps_hellinger, nmds_bray, color = "project", shape = "organ") +
-    geom_point(size = 3, alpha = 0.8) +
+plot_ordination(ps_hellinger, nmds_bray, color = "project") +
+    geom_point(aes(shape = organ), size = 3, alpha = 0.8) +
     theme_bw() +
     stat_ellipse(aes(group = project)) +
     labs(title = "NMDS - Bray-Curtis")
 
-plot_ordination(ps_hellinger, nmds_bray, color = "plant_family", shape = "project") +
+plot_ordination(ps_hellinger, nmds_bray, color = "plant_", shape = "project") +
     geom_point(size = 3, alpha = 0.8) +
     theme_bw() +
     labs(title = "NMDS - Bray-Curtis")
@@ -391,39 +399,102 @@ plot_ordination(ps_hellinger, nmds_bray, color = "plant_family", shape = "projec
 On voit ici un effet prédominant de type de projet (LOT) sur le groupement des espèces. Il devient donc interessant de faire des ordinations à l'intérieur de chaque projet pour voir si les autres facteurs (organe, position, famille de plante) ont un effet structurant plus marqué à l'échelle de chaque projet.
 
 ```{r}
-#| label: ordination-LOT
+#| label: ordination-LOT-1
 
 ps_lot1 <- subset_samples(ps_hellinger, project == "LOT1")
 nmds_lot1 <- ordinate(ps_lot1, method = "NMDS", distance = "bray")
 
-  plot_ordination(ps_lot1, nmds_lot1, color = "organ", shape = "position") +
-    geom_point(size = 3, alpha = 0.8) +
-    stat_ellipse(aes(group = organ)) +
-    theme_bw() +
-    labs(title = "NMDS - Projet LOT1 (Bray-Curtis) avec ellipses de confiance")
+bray_dist_lot1 <- vegdist(as(otu_table(ps_lot1), "matrix"), method = "bray")
+meta_lot1 <- as(sample_data(ps_lot1), "data.frame")
 
-  plot_ordination(ps_lot1, nmds_lot1, color = "plant_family", shape = "organ") +
-    geom_point(size = 3, alpha = 0.8) +
-    stat_ellipse(aes(group = plant_family)) +
-    theme_bw() +
-    labs(title = "NMDS - Projet LOT1 par Famille de plante avec ellipses")
+plot_ordination(ps_lot1, nmds_lot1, color = "organ") +
+  geom_point(aes(shape = position), size = 3, alpha = 0.8) +
+  stat_ellipse(aes(group = organ)) +
+  theme_bw() +
+  labs(title = "NMDS - Projet LOT1 (Bray-Curtis, Hellinger) avec ellipses de confiance")
+
+
+permanova_lot1_organ <- adonis2(bray_dist_lot1 ~ organ, data = meta_lot1, permutations = 999)
+print(permanova_lot1_organ)
+
+
+
+plot_ordination(ps_lot1, nmds_lot1, color = "plant_family") +
+  geom_point(aes(shape = organ), size = 3, alpha = 0.8) +
+  stat_ellipse(aes(group = plant_family)) +
+  theme_bw() +
+  labs(title = "NMDS - Projet LOT1 (Hellinger) par Famille de plante avec ellipses")
+
+permanova_lot1_family <- adonis2(bray_dist_lot1 ~ plant_family, data = meta_lot1, permutations = 999)
+print(permanova_lot1_family)
+
+
+
+```
+
+```{r}
+#| label: ordination-LOT-2
 
 ps_lot2 <- subset_samples(ps_hellinger, project == "LOT2")
 nmds_lot2 <- ordinate(ps_lot2, method = "NMDS", distance = "bray")
 
-plot_ordination(ps_lot2, nmds_lot2, color = "organ", shape = "position") +
-    geom_point(size = 3, alpha = 0.8) +
+bray_dist_lot2 <- vegdist(as(otu_table(ps_lot2), "matrix"), method = "bray")
+meta_lot2 <- as(sample_data(ps_lot2), "data.frame")
+
+plot_ordination(ps_lot2, nmds_lot2, color = "organ") +
+    geom_point(aes(shape = position), size = 3, alpha = 0.8) +
     stat_ellipse(aes(group = organ)) +
     theme_bw() +
     labs(title = "NMDS - Projet LOT2 (Bray-Curtis) avec ellipses de confiance") 
 
-plot_ordination(ps_lot2, nmds_lot2, color = "plant_family", shape = "organ") +
-    geom_point(size = 3, alpha = 0.8) +
+
+
+permanova_lot2_organ <- adonis2(bray_dist_lot2 ~ organ, data = meta_lot2, permutations = 999)
+print(permanova_lot2_organ)
+
+
+
+plot_ordination(ps_lot2, nmds_lot2, color = "plant_family") +
+    geom_point(aes(shape = organ), size = 3, alpha = 0.8) +
     stat_ellipse(aes(group = plant_family)) +
     theme_bw() +
     labs(title = "NMDS - Projet LOT2 par Famille de plante avec ellipses")
 
+permanova_lot2_family <- adonis2(bray_dist_lot2 ~ plant_family, data = meta_lot2, permutations = 999)
+print(permanova_lot2_family)
 ```
+
+
+```{r}
+#| label: ordination-LOT-3
+
+ps_lot3 <- subset_samples(ps_hellinger, project == "LOT3")
+nmds_lot3 <- ordinate(ps_lot3, method = "NMDS", distance = "bray")
+bray_dist_lot3 <- vegdist(as(otu_table(ps_lot3), "matrix"), method = "bray")
+meta_lot3 <- as(sample_data(ps_lot3), "data.frame")
+
+plot_ordination(ps_lot3, nmds_lot3, color = "organ") +
+    geom_point(aes(shape = position), size = 3, alpha = 0.8) +
+    stat_ellipse(aes(group = organ)) +
+    theme_bw() +
+    labs(title = "NMDS - Projet LOT3 (Bray-Curtis) avec ellipses de confiance") 
+
+permanova_lot3_organ <- adonis2(bray_dist_lot3 ~ organ, data = meta_lot3, permutations = 999)
+print(permanova_lot3_organ)
+
+plot_ordination(ps_lot3, nmds_lot3, color = "plant_family") +
+    geom_point(aes(shape = organ), size = 3, alpha = 0.8) +
+    stat_ellipse(aes(group = plant_family)) +
+    theme_bw() +
+    labs(title = "NMDS - Projet LOT3 par Famille de plante avec ellipses")
+
+permanova_lot3_family <- adonis2(bray_dist_lot3 ~ plant_family, data = meta_lot3, permutations = 999)
+print(permanova_lot3_family)
+```
+
+
+
+
 
 Il est interessant de visualiser les abondances relatives des principales classes fongiques (> 2%) par zone (organe x position) pour voir s'il y a des patrons de distribution particuliers en fonction de ces micro-habitats. On peut faire cela en utilisant la fonction `ggplot2` pour créer des graphiques à barres empilées, en utilisant les données agrégées au niveau de la classe fongique et en les facettant par organ_position.
 
@@ -441,7 +512,6 @@ ps_class <- tax_glom(ps_rel, taxrank = "gbr268_Class", NArm = FALSE)
 
 ps_class_filtered <- filter_taxa(ps_class, function(x) mean(x) > 0.02, TRUE)
 
-# Conversion de l'objet phyloseq en data.frame
 df_class <- psmelt(ps_class_filtered)
 
 df_class$organ_position <- interaction(df_class$organ, df_class$position, sep = " - ")
@@ -487,143 +557,15 @@ metadata <- data.frame(sample_data(ps))
 groups <- metadata$project
 indicator_taxa <- multipatt(otu_table, groups, func = "IndVal.g", control = how(nperm = 99))
 summary(indicator_taxa)
-
-
-library(microbiome)
-library(ggplot2)
-library(RColorBrewer)
-
-# Transformer les données en abondance relative (compositional)
-ps_rel <- transform(ps, "compositional")
-
-# Définir les seuils de détection et de prévalence
-detections <- 10^seq(log10(1e-4), log10(1), length = 10)
-prevalences <- seq(0.5, 1, 0.1)
-
-# Core Heatmap
-p_core_heatmap <- plot_core(ps_rel, 
-        plot.type = "heatmap", 
-        colours = rev(brewer.pal(5, "Spectral")),
-        prevalences = prevalences, 
-        detections = detections, 
-        min.prevalence = 0.5) +
-  labs(title = "Core Microbiota - Heatmap") +
-  theme_bw()
-
-print(p_core_heatmap)
-
-# Core Lines Plot
-p_core_lines <- plot_core(ps_rel, 
-              plot.type = "lineplot", 
-              prevalences = prevalences, 
-              detections = detections) +
+ detections) +
   labs(title = "Core Microbiota - Line Plot") +
   theme_bw()
 
-print(p_core_lines)
 
 ```
 
 
-```{r} 
-#| label: rarefaction-inext
 
-
-library(iNEXT)
-library(ggplot2)
-library(phyloseq)
-
-ps_phylum <- tax_glom(ps, taxrank = "gbr268_Phylum", NArm = FALSE)
-
-otu_mat <- as(otu_table(ps_phylum), "matrix")
-if (!taxa_are_rows(ps_phylum)) {
-  otu_mat <- t(otu_mat)
-}
-
-out_inext <- iNEXT(otu_mat, 
-                  q = 0,     
-                  datatype = "abundance", 
-                  nboot = 0,       
-                  endpoint = 2000)   
-
-ggiNEXT(out_inext, type = 1, facet.var = "None") +
-  scale_shape_manual(values = rep(16, 100)) +
-  theme_bw() +
-  labs(title = "Courbes de raréfaction et d'extrapolation par phylum (q=0)",
-       x = "Nombre de séquences",
-       y = "Diversité") +
-  theme(legend.position = "none")
-
-  library(tidyr)
-  library(dplyr)
-
-  # Extraire la table des OTU et la table taxonomique
-  otu_mat <- as(otu_table(ps), "matrix")
-  if (!taxa_are_rows(ps)) {
-    otu_mat <- t(otu_mat)
-  }
-  tax_mat <- as(tax_table(ps), "matrix")
-
-  # Combiner et agréger les données pour obtenir une matrice [OTUs x Phylums]
-  df <- as.data.frame(otu_mat)
-  df$Phylum <- tax_mat[rownames(df), "gbr268_Phylum"]
-
-  otu_phylum_mat <- df |>
-    pivot_longer(cols = -Phylum, names_to = "Sample", values_to = "Abundance") |>
-    group_by(Phylum, OTU = rep(rownames(df), times = ncol(otu_mat))) |>
-    summarise(Abundance = sum(Abundance), .groups = "drop") |>
-    pivot_wider(names_from = Phylum, values_from = Abundance, values_fill = 0) |>
-    tibble::column_to_rownames("OTU") |>
-    as.matrix()
-    saveRDS(otu_phylum_mat, "otu_phylum_mat.rds")
-write.table(otu_phylum_mat, file = "otu_phylum_mat.txt", sep = "\t", quote = FALSE, col.names = NA)
-out_inext <- iNEXT(otu_phylum_mat, 
-                    q = 0,     
-                    datatype = "abundance", 
-                    nboot = 0,       
-                    endpoint = 4000)   
-  
-saveRDS(out_inext, "out_inext.rds")
-
-  ggiNEXT(out_inext, type = 1, facet.var = "None") +
-    theme_bw() +
-    labs(title = "Courbes de raréfaction en OTUs par phylum (q=0)",
-         x = "Nombre total de séquences",
-         y = "Diversité en OTUs")
-```
-
-```{r}
-  #| label: rarefaction-vegan
-
-  library(vegan)
-
-  ps_class <- tax_glom(ps, taxrank = "gbr268_Class", NArm = FALSE)
-  otu_vegan <- as(otu_table(ps_class), "matrix")
-  if (taxa_are_rows(ps_class)) {
-    otu_vegan <- t(otu_vegan)
-  }
-
-  rarecurve(otu_vegan, step = 100, label = FALSE, col = "steelblue",
-            main = "Courbes de raréfaction par classe (vegan)",
-            xlab = "Nombre de séquences", 
-            ylab = "Classes observées")
-```
-
-```{r}
-  #| label: rarefaction-vegan
-  library(iNEXT.3D)
-
-  otu_inext3d <- as(otu_table(ps), "matrix")
-  if (!taxa_are_rows(ps)) {
-    otu_inext3d <- t(otu_inext3d)
-  }
-
-  out_inext3d <- iNEXT3D(data = otu_inext3d, diversity = "TD", q = c(0, 1, 2), datatype = "abundance")
-
-  ggiNEXT3D(out_inext3d, type = 1) +
-    theme_bw() +
-    labs(title = "Courbes de raréfaction avec iNEXT.3D")
-```
 
 # De coté car inexploitable pour le moment, mais à garder en tête pour la suite du stage
 
@@ -644,4 +586,208 @@ plot_network(ig, ps_sub, type = "taxa",color="gbr268_Class", label = NULL) +
     theme_minimal() +
     labs(title = "Réseau de co-occurrence (Top 200 taxons)",
              color = "Class")
+```
+
+
+```{r} 
+#| label: rarefaction-inext
+
+# # library(iNEXT)
+# # library(ggplot2)
+# # library(phyloseq)
+# 
+# ps_phylum <- tax_glom(ps, taxrank = "gbr268_Phylum", NArm = FALSE)
+# 
+# otu_mat <- as(otu_table(ps_phylum), "matrix")
+# if (!taxa_are_rows(ps_phylum)) {
+#   otu_mat <- t(otu_mat)
+# }
+# 
+# out_inext <- iNEXT(otu_mat, 
+#                   q = 0,     
+#                   datatype = "abundance", 
+#                   nboot = 0,       
+#                   endpoint = 2000)   
+# 
+# ggiNEXT(out_inext, type = 1, facet.var = "None") +
+#   scale_shape_manual(values = rep(16, 100)) +
+#   theme_bw() +
+#   labs(title = "Courbes de raréfaction et d'extrapolation par phylum (q=0)",
+#        x = "Nombre de séquences",
+#        y = "Diversité") +
+#   theme(legend.position = "none")
+# 
+#   library(tidyr)
+#   library(dplyr)
+# 
+#   # Extraire la table des OTU et la table taxonomique
+#   otu_mat <- as(otu_table(ps), "matrix")
+#   if (!taxa_are_rows(ps)) {
+#     otu_mat <- t(otu_mat)
+#   }
+#   tax_mat <- as(tax_table(ps), "matrix")
+# 
+#   # Combiner et agréger les données pour obtenir une matrice [OTUs x Phylums]
+#   df <- as.data.frame(otu_mat)
+#   df$Phylum <- tax_mat[rownames(df), "gbr268_Phylum"]
+# 
+#   otu_phylum_mat <- df |>
+#     pivot_longer(cols = -Phylum, names_to = "Sample", values_to = "Abundance") |>
+#     group_by(Phylum, OTU = rep(rownames(df), times = ncol(otu_mat))) |>
+#     summarise(Abundance = sum(Abundance), .groups = "drop") |>
+#     pivot_wider(names_from = Phylum, values_from = Abundance, values_fill = 0) |>
+#     tibble::column_to_rownames("OTU") |>
+#     as.matrix()
+#     saveRDS(otu_phylum_mat, "otu_phylum_mat.rds")
+# write.table(otu_phylum_mat, file = "otu_phylum_mat.txt", sep = "\t", quote = FALSE, col.names = NA)
+# out_inext <- iNEXT(otu_phylum_mat, 
+#                     q = 0,     
+#                     datatype = "abundance", 
+#                     nboot = 0,       
+#                     endpoint = 4000)   
+#   
+# saveRDS(out_inext, "out_inext.rds")
+# 
+#   ggiNEXT(out_inext, type = 1, facet.var = "None") +
+#     theme_bw() +
+#     labs(title = "Courbes de raréfaction en OTUs par phylum (q=0)",
+#          x = "Nombre total de séquences",
+#          y = "Diversité en OTUs")
+```
+
+```{r}
+# | label: trait-analysis
+# Charger les bibliothèques nécessaires
+library(fungaltraits)
+library(phyloseq)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(ggpubr)
+library(patchwork)
+library(FactoMineR)
+library(factoextra)
+
+# Extraction et nettoyage des données de phyloseq
+sam_df <- data.frame(sample_data(ps))
+sam_df$Sample <- rownames(sam_df)
+
+otu_df <- data.frame(otu_table(ps))
+if (!taxa_are_rows(ps)) otu_df <- data.frame(t(otu_table(ps)))
+otu_df$OTU <- rownames(otu_df)
+
+tax_df <- data.frame(tax_table(ps))
+tax_df$OTU <- rownames(tax_df)
+
+# Trouver la colonne des espèces
+species_col <- grep("(?i)species", colnames(tax_df), value = TRUE)[1]
+if (is.na(species_col)) species_col <- colnames(tax_df)[ncol(tax_df)]
+
+# Nettoyage des noms d'espèces
+tax_df$espece_clean <- tolower(gsub("_", " ", tax_df[[species_col]]))
+especes_uniques <- unique(na.omit(tax_df$espece_clean))
+
+# Base de données FungalTraits
+ft_db <- fungal_traits()
+col_species_ft <- grep("(?i)species", colnames(ft_db), value = TRUE)[1]
+ft_db$espece_clean <- tolower(gsub("_", " ", ft_db[[col_species_ft]]))
+
+# Associer les traits aux espèces de notre jeu de données
+df_especes <- data.frame(espece_clean = especes_uniques)
+especes_traits <- df_especes %>%
+  left_join(ft_db, by = "espece_clean") %>%
+  filter(!is.na(.data[[col_species_ft]]))
+
+# Supprimer les colonnes avec trop de valeurs manquantes
+taux_remplissage <- colSums(!is.na(especes_traits)) / nrow(especes_traits)
+especes_identifiees_clean <- especes_traits[, taux_remplissage >= 0.5]
+
+print(paste("Nombre d'espèces avec informations dans FungalTraits :", nrow(especes_identifiees_clean)))
+
+# Mettre en forme longue les abondances
+otu_long <- otu_df %>%
+  pivot_longer(col = -OTU, names_to = "Sample", values_to = "Abundance") %>%
+  filter(Abundance > 0)
+
+# Combiner abondances, métadonnées, taxonomie et traits
+donnees_completes <- otu_long %>%
+  left_join(sam_df, by = "Sample") %>%
+  left_join(tax_df[, c("OTU", "espece_clean")], by = "OTU") %>%
+  inner_join(especes_identifiees_clean, by = "espece_clean")
+
+# Identification des colonnes pertinentes
+col_lifestyle <- grep("(?i)lifestyle|guild", colnames(donnees_completes), value = TRUE)[1]
+col_organe    <- grep("(?i)organ|tissue|compartment", colnames(sam_df), value = TRUE)[1]
+col_projet    <- grep("(?i)project|projet", colnames(sam_df), value = TRUE)[1]
+col_famille   <- grep("(?i)family|famille", colnames(sam_df), value = TRUE)[1]
+
+# Fonction pour tracer les proportions de mode de vie
+plot_lifestyle <- function(df, x_var, fill_var, title_suffix) {
+  if (is.na(x_var) || is.na(fill_var)) return(NULL)
+  
+  df %>%
+    filter(!is.na(.data[[x_var]]), !is.na(.data[[fill_var]])) %>%
+    ggplot(aes(x = .data[[x_var]], fill = .data[[fill_var]])) +
+    geom_bar(position = "fill") +
+    theme_minimal() +
+    labs(y = "Proportion", title = paste("Mode de vie par", title_suffix), fill = "Mode de vie") +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+}
+
+# Fonction simplifiée pour un test du Chi-2
+run_chi2_test <- function(df, var1, var2, label) {
+  if (is.na(var1) || is.na(var2)) return(NULL)
+  
+  df_clean <- df %>% filter(!is.na(.data[[var1]]), !is.na(.data[[var2]]))
+  tbl <- table(df_clean[[var1]], df_clean[[var2]])
+  
+  cat("\n---", label, "---\n")
+  print(suppressWarnings(chisq.test(tbl, simulate.p.value = TRUE)))
+}
+
+# Génération des résultats si les colonnes sont trouvées
+if (!is.na(col_lifestyle)) {
+  
+  print(plot_lifestyle(donnees_completes, col_organe, col_lifestyle, "Organe"))
+  run_chi2_test(donnees_completes, col_organe, col_lifestyle, "Test : Organe vs Mode de vie")
+  
+  print(plot_lifestyle(donnees_completes, col_projet, col_lifestyle, "Projet"))
+  
+  print(plot_lifestyle(donnees_completes, col_famille, col_lifestyle, "Famille de plante"))
+  run_chi2_test(donnees_completes, col_famille, col_lifestyle, "Test : Famille vs Mode de vie")
+  
+  # Heatmap des différences entre familles de plantes
+  if (!is.na(col_famille)) {
+    df_fam <- donnees_completes %>% filter(!is.na(.data[[col_famille]]), !is.na(.data[[col_lifestyle]]))
+    familles <- unique(df_fam[[col_famille]])
+    
+    calc_pval <- function(f1, f2) {
+      if (f1 == f2) return(1)
+      sub_df <- df_fam[df_fam[[col_famille]] %in% c(f1, f2), ]
+      tbl <- table(sub_df[[col_famille]], sub_df[[col_lifestyle]])
+      if (nrow(tbl) > 1 && ncol(tbl) > 1) {
+        suppressWarnings(chisq.test(tbl, simulate.p.value = TRUE)$p.value)
+      } else {
+        NA
+      }
+    }
+    
+    pval_df <- expand.grid(Famille1 = familles, Famille2 = familles)
+    pval_df$p_value <- mapply(calc_pval, pval_df$Famille1, pval_df$Famille2)
+    pval_df$signif <- ifelse(!is.na(pval_df$p_value) & pval_df$p_value < 0.05, "*", "")
+    
+    p_heatmap <- ggplot(pval_df, aes(x = Famille1, y = Famille2, fill = p_value)) +
+      geom_tile(color = "white") +
+      geom_text(aes(label = signif), size = 6) +
+      scale_fill_gradient2(low = "green", mid = "white", high = "red", midpoint = 0.1, 
+                           limits = c(0, 1), name = "P-value", na.value = "grey80") +
+      theme_minimal() +
+      labs(title = "Significativité des différences de mode de vie entre familles",
+           x = "Famille", y = "Famille") +
+      theme(axis.text.x = element_text(angle = 45, hjust = 1))
+    
+    print(p_heatmap)
+  }
+}
+
 ```
