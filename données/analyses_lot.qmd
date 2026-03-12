@@ -369,9 +369,28 @@ Desormais, on peut utiliser les distances de dissimilarité calculées pour réa
 ```{r}
 #| label: ordination-nmds-globales
 
-
+library(vegan)
 ps_hellinger <- transform_sample_counts(ps, function(x) sqrt(x / sum(x)))
+
 nmds_bray <- ordinate(ps_hellinger, method = "NMDS", distance = "bray")
+
+nmds_bray <- ordinate(ps_hellinger, method = "NMDS", distance = "bray", k = 3)
+
+print(paste("Valeur de stress :", round(nmds_bray$stress, 3)))
+stressplot(nmds_bray, main = "Shepard plot")
+
+library(goeveg)
+dimcheckMDS(as(otu_table(ps_hellinger), "matrix"), distance = "bray", k = 6, trymax = 20)
+
+
+
+
+nmds_bray <- ordinate(ps_hellinger, method = "PCoA", distance = "bray")
+
+
+
+
+
 
 plot_ordination(ps_hellinger, nmds_bray, color = "organ", shape = "position") +
     geom_point(size = 3, alpha = 0.8) +
@@ -418,6 +437,7 @@ On test donc l'homogénéité des dispersions multivariées (betadisper) pour v�
 
 
 ```{r}
+# | label: test-homogeneite-dispersion
 
 metadata_global <- as(sample_data(ps), "data.frame")
 
@@ -433,6 +453,7 @@ plot(dispersion_family, main = "Homogénéité des dispersions multivariées (Fa
 Les dispersions sont homogènes, on peut donc procéder à des tests de PERMANOVA pour évaluer l'effet de chaque facteur (organe, famille de plante, projet) sur la composition des communautés fongiques, ainsi que les interactions potentielles entre ces facteurs.
 
 ```{r}
+# | label: test-permanova-globales
 
 library(vegan)
 
@@ -442,13 +463,15 @@ adonis2(
   permutations = 999
 )
 
+# pour tester l'effet de project en contrôlant pour organ et plant_family
+
 adonis2(
   bray_dist ~ project + organ + plant_family, 
   data = metadata_global, 
   by = "margin", 
   permutations = 999
 )
-
+# on fait margin pour tester l'effet de chaque facteur en contrôlant pour les autres, ce qui est plus pertinent dans ce cas où les facteurs sont potentiellement confondus (par exemple, certains organes peuvent être sur-représentés dans certains projets).
 
 ```
 
@@ -460,8 +483,13 @@ On voit ici un effet prédominant de type de projet (LOT) sur le groupement des 
 ps_lot1 <- subset_samples(ps_hellinger, project == "LOT1")
 nmds_lot1 <- ordinate(ps_lot1, method = "NMDS", distance = "bray")
 
+stressplot(nmds_lot1, main = "Shepard plot")
+
 bray_dist_lot1 <- vegdist(as(otu_table(ps_lot1), "matrix"), method = "bray")
 meta_lot1 <- as(sample_data(ps_lot1), "data.frame")
+
+
+
 
 plot_ordination(ps_lot1, nmds_lot1, color = "organ") +
   geom_point(aes(shape = position), size = 3, alpha = 0.8) +
@@ -470,8 +498,10 @@ plot_ordination(ps_lot1, nmds_lot1, color = "organ") +
   labs(title = "NMDS - Projet LOT1 (Bray-Curtis, Hellinger) avec ellipses de confiance")
 
 
-permanova_lot1_organ <- adonis2(bray_dist_lot1 ~ organ, data = meta_lot1, permutations = 999)
-print(permanova_lot1_organ)
+
+adonis2(bray_dist_lot1 ~ organ, data = meta_lot1, permutations = 999)
+
+
 
 
 
@@ -481,9 +511,7 @@ plot_ordination(ps_lot1, nmds_lot1, color = "plant_family") +
   theme_bw() +
   labs(title = "NMDS - Projet LOT1 (Hellinger) par Famille de plante avec ellipses")
 
-permanova_lot1_family <- adonis2(bray_dist_lot1 ~ plant_family, data = meta_lot1, permutations = 999)
-print(permanova_lot1_family)
-
+adonis2(bray_dist_lot1 ~ plant_family, data = meta_lot1, permutations = 999)
 
 
 ```
@@ -493,6 +521,8 @@ print(permanova_lot1_family)
 
 ps_lot2 <- subset_samples(ps_hellinger, project == "LOT2")
 nmds_lot2 <- ordinate(ps_lot2, method = "NMDS", distance = "bray")
+
+stressplot(nmds_lot2, main = "Shepard plot")
 
 bray_dist_lot2 <- vegdist(as(otu_table(ps_lot2), "matrix"), method = "bray")
 meta_lot2 <- as(sample_data(ps_lot2), "data.frame")
@@ -505,8 +535,7 @@ plot_ordination(ps_lot2, nmds_lot2, color = "organ") +
 
 
 
-permanova_lot2_organ <- adonis2(bray_dist_lot2 ~ organ, data = meta_lot2, permutations = 999)
-print(permanova_lot2_organ)
+adonis2(bray_dist_lot2 ~ organ, data = meta_lot2, permutations = 999)
 
 
 
@@ -516,8 +545,7 @@ plot_ordination(ps_lot2, nmds_lot2, color = "plant_family") +
     theme_bw() +
     labs(title = "NMDS - Projet LOT2 par Famille de plante avec ellipses")
 
-permanova_lot2_family <- adonis2(bray_dist_lot2 ~ plant_family, data = meta_lot2, permutations = 999)
-print(permanova_lot2_family)
+adonis2(bray_dist_lot2 ~ plant_family, data = meta_lot2, permutations = 999)
 ```
 
 
@@ -535,8 +563,7 @@ plot_ordination(ps_lot3, nmds_lot3, color = "organ") +
     theme_bw() +
     labs(title = "NMDS - Projet LOT3 (Bray-Curtis) avec ellipses de confiance") 
 
-permanova_lot3_organ <- adonis2(bray_dist_lot3 ~ organ, data = meta_lot3, permutations = 999)
-print(permanova_lot3_organ)
+adonis2(bray_dist_lot3 ~ organ, data = meta_lot3, permutations = 999)
 
 plot_ordination(ps_lot3, nmds_lot3, color = "plant_family") +
     geom_point(aes(shape = organ), size = 3, alpha = 0.8) +
@@ -544,8 +571,7 @@ plot_ordination(ps_lot3, nmds_lot3, color = "plant_family") +
     theme_bw() +
     labs(title = "NMDS - Projet LOT3 par Famille de plante avec ellipses")
 
-permanova_lot3_family <- adonis2(bray_dist_lot3 ~ plant_family, data = meta_lot3, permutations = 999)
-print(permanova_lot3_family)
+adonis2(bray_dist_lot3 ~ plant_family, data = meta_lot3, permutations = 999)
 ```
 
 
