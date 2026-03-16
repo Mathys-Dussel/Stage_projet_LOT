@@ -188,6 +188,7 @@ glm_humi_temp_exp <- glm.nb(ExpShannon ~ Mean_Humi * Mean_Temp, data = df_richne
 summary(glm_humi_temp_exp)
 
 
+
 library(DHARMa)
 
 # Diagnostics pour Observed
@@ -201,3 +202,8 @@ simulationOutput_humi_temp_exp <- simulateResiduals(fittedModel = glm_humi_temp_
 testUniformity(simulationOutput_humi_temp_exp)
 testDispersion(simulationOutput_humi_temp_exp)
 testZeroInflation(simulationOutput_humi_temp_exp)
+
+
+library(interactions)
+interact_plot(glm_humi_temp_obs, pred = Mean_Humi, modx = Mean_Temp)
+interact_plot(glm_humi_temp_exp, pred = Mean_Humi, modx = Mean_Temp)
