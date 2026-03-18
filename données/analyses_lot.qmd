@@ -60,6 +60,10 @@ library(patchwork)
 ps <- readRDS("donnees_nettoyees.rds")
 sample_names(ps) <- gsub("\\.", "-", sub("^X", "", sample_names(ps)))
 
+familles_a_enlever <- c("Famille1", "Famille2") 
+
+ps <- subset_samples(ps, !plant_family %in% familles_a_enlever)
+ps <- prune_taxa(taxa_sums(ps) > 0, ps)
 ```
 
 Ensuite, on peut calculer les indices de diversité alpha pour chaque échantillon et les ajouter à la table de métadonnées pour faciliter les analyses statistiques et les visualisations.

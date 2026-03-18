@@ -74,10 +74,11 @@ head(ZONES_LOT_123)
 ZONES_LOT_123$TreeZone[ZONES_LOT_123$TreeZone == 3] <- 2
 ZONES_LOT_123$TreeZone[ZONES_LOT_123$TreeZone == 6] <- 5
 
-ZONES_LOT_123$TreeZone[ZONES_LOT_123$TreeZone == 1] <- "Bottom"
-ZONES_LOT_123$TreeZone[ZONES_LOT_123$TreeZone == 2] <- "Heart"
-ZONES_LOT_123$TreeZone[ZONES_LOT_123$TreeZone == 4] <- "top_trunk"
-ZONES_LOT_123$TreeZone[ZONES_LOT_123$TreeZone == 5] <- "periph_canopy"
+ZONES_LOT_123$TreeZone <- as.character(ZONES_LOT_123$TreeZone)
+ZONES_LOT_123$TreeZone[ZONES_LOT_123$TreeZone == "1"] <- "Bottom"
+ZONES_LOT_123$TreeZone[ZONES_LOT_123$TreeZone == "2"] <- "Heart"
+ZONES_LOT_123$TreeZone[ZONES_LOT_123$TreeZone == "4"] <- "top_trunk"
+ZONES_LOT_123$TreeZone[ZONES_LOT_123$TreeZone == "5"] <- "periph_canopy"
 
 head(ZONES_LOT_123)
 
@@ -95,17 +96,37 @@ sample_names(ps) <- gsub("\\.", "-", sub("^X", "", sample_names(ps)))
 
 sample_data(ps)$LOT_sampleID <- gsub("/.*", "", sample_data(ps)$LOT_sampleID)
 
-sample_data(ps)$TreeZone <- ZONES_LOT_123$TreeZone[match(sample_data(ps)$LOT_sampleID, ZONES_LOT_123$LOT.SampleCode)]
 
-sample_data(ps)$plant_family <- ifelse(is.na(sample_data(ps)$plant_family), 
-                                 ZONES_LOT_123$Family[match(sample_data(ps)$LOT_sampleID, ZONES_LOT_123$LOT.SampleCode)], 
-                                 sample_data(ps)$plant_family)
 
-sample_data(ps)$plant_genus <- ifelse(is.na(sample_data(ps)$plant_genus), 
-                                ZONES_LOT_123$genus[match(sample_data(ps)$LOT_sampleID, ZONES_LOT_123$LOT.SampleCode)], 
-                                sample_data(ps)$plant_genus)
 
-sample_data(ps)$plant_species <- ifelse(is.na(sample_data(ps)$plant_species), 
-                                  ZONES_LOT_123$species[match(sample_data(ps)$LOT_sampleID, ZONES_LOT_123$LOT.SampleCode)], 
-                                  sample_data(ps)$plant_species)
 
+
+
+library(dplyr)
+
+# 1. On nettoie ZONES_LOT_123 pour ne garder qu'une ligne par échantillon
+# On utilise distinct() pour supprimer les doublons parfaits
+zones_clean <- ZONES_LOT_123 %>%
+  select(LOT.SampleCode, TreeZone) %>%
+  distinct(LOT.SampleCode, .keep_all = TRUE)
+
+# 2. On refait la jointure sur le metadata original
+metadata <- data.frame(sample_data(ps))
+
+new_metadata <- metadata %>%
+  left_join(zones_clean, by = c("LOT_sampleID" = "LOT.SampleCode"))
+
+# 3. On remet les noms de lignes (cette fois la longueur sera identique)
+rownames(new_metadata) <- rownames(metadata)
+
+# 4. On réinjecte dans phyloseq
+sample_data(ps) <- sample_data(new_metadata)
+
+
+
+# Affiche les codes qui apparaissent plus d'une fois
+ZONES_LOT_123 %>% 
+  count(LOT.SampleCode) %>% 
+  filter(n > 1)
+
+  
