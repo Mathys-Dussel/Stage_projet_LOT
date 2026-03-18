@@ -94,11 +94,14 @@ library(patchwork)
 ps <- readRDS("donnees_nettoyees.rds")
 sample_names(ps) <- gsub("\\.", "-", sub("^X", "", sample_names(ps)))
 
+familles_a_enlever <- c("Moraceae", "Fabaceae") 
+
+ps <- subset_samples(ps, !plant_family %in% familles_a_enlever)
+ps <- prune_taxa(taxa_sums(ps) > 0, ps)
+
+
+
 sample_data(ps)$LOT_sampleID <- gsub("/.*", "", sample_data(ps)$LOT_sampleID)
-
-
-
-
 
 
 
@@ -129,4 +132,3 @@ ZONES_LOT_123 %>%
   count(LOT.SampleCode) %>% 
   filter(n > 1)
 
-  
