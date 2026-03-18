@@ -115,6 +115,7 @@ plot_sig_heatmap <- function(donnees, metrique, titre) {
 }
 
 plot_sig_heatmap(df_alpha, "Observed", "Significativité - Richesse Observée")
+
 plot_sig_heatmap(df_alpha, "expShannon", "Significativité - ExpShannon")
 
 ```
@@ -357,7 +358,7 @@ library(vegan)
 otu_table <- as(otu_table(ps), "matrix")
 bray_dist <- vegdist(otu_table, method = "bray")
 
-jaccard_dist <- vegdist(otu_table > 0, method = "jaccard")
+# jaccard_dist <- vegdist(otu_table > 0, method = "jaccard")
 ```
 
 
@@ -392,23 +393,23 @@ pcoa_bray <- ordinate(ps_hellinger, method = "PCoA", distance = "bray")
 
 
 
-plot_ordination(ps_hellinger, nmds_bray, color = "organ", shape = "position") +
+plot_ordination(ps_hellinger, nmds_bray_K3, color = "organ", shape = "position") +
     geom_point(size = 3, alpha = 0.8) +
     theme_bw() +
     labs(title = "NMDS - Bray-Curtis (Hellinger)")
 
-plot_ordination(ps_hellinger, nmds_bray, color = "organ", shape = "project") +
+plot_ordination(ps_hellinger, nmds_bray_K3, color = "organ", shape = "project") +
     geom_point(size = 3, alpha = 0.8) +
     theme_bw() +
     labs(title = "NMDS - Bray-Curtis")
 
-plot_ordination(ps_hellinger, nmds_bray, color = "project") +
+plot_ordination(ps_hellinger, nmds_bray_K3, color = "project") +
     geom_point(aes(shape = organ), size = 3, alpha = 0.8) +
     theme_bw() +
     stat_ellipse(aes(group = project)) +
     labs(title = "NMDS - Bray-Curtis")
 
-plot_ordination(ps_hellinger, nmds_bray, color = "plant_family", shape = "project") +
+plot_ordination(ps_hellinger, nmds_bray_K3, color = "plant_family", shape = "project") +
     geom_point(size = 3, alpha = 0.8) +
     theme_bw() +
     labs(title = "NMDS - Bray-Curtis")
@@ -435,13 +436,19 @@ Il faut desormais tester statistiquement les association, on commence par constr
 
 
 metadata_global <- as(sample_data(ps), "data.frame")
-modele_lm <- lm(nmds_bray$points[, 1] ~ organ + plant_family+project, data = metadata_global)
+modele_lm <- lm(nmds_bray_K3$points[, 1] ~ organ + plant_family+project, data = metadata_global)
 summary(modele_lm)
 shapiro.test(residuals(modele_lm))
 
 par(mfrow = c(2, 2))
 plot(modele_lm)
 par(mfrow = c(1, 1))
+
+library(MASS)
+
+adjusted_nmds <- round(nmds_bray_K3$points[, 1] - min(nmds_bray_K3$points[, 1]))
+glm_test=glm.nb(adjusted_nmds ~ organ + plant_family+project, data = metadata_global)
+summary(glm_test)
 ```
 
 En effet le test de Shapiro-Wilk indique que les résidus ne suivent pas une distribution normale (p < 0.05), ce qui remet en question la validité du modèle linéaire pour ces données. De plus, les graphiques de diagnostic montrent des écarts par rapport aux hypothèses de normalité et d'homoscédasticité, avec des résidus qui ne sont pas distribués de manière aléatoire autour de zéro et une tendance à l'augmentation de la variance des résidus pour les valeurs prédites plus élevées. Ces observations suggèrent que les données ne répondent pas aux conditions nécessaires pour appliquer un modèle linéaire classique, et qu'il serait plus approprié d'utiliser des méthodes non paramétriques ou des modèles alternatifs qui ne reposent pas sur ces hypothèses.
