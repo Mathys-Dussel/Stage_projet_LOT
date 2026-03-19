@@ -359,8 +359,9 @@ On commence par calculer les distances de dissimilarité entre les échantillons
 #| label: bray-curtis-Jaccard-distance
 
 library(vegan)
-otu_table <- as(otu_table(ps), "matrix")
-bray_dist <- vegdist(otu_table, method = "bray")
+ps_hellinger <- prune_samples(sample_sums(ps_hellinger) > 0, ps_hellinger)
+otu_hellinger <- as(otu_table(ps_hellinger), "matrix")
+bray_dist <- vegdist(otu_hellinger, method = "bray", na.rm = TRUE)
 
 # jaccard_dist <- vegdist(otu_table > 0, method = "jaccard")
 ```
@@ -372,51 +373,40 @@ bray_dist <- vegdist(otu_table, method = "bray")
 Desormais, on peut utiliser les distances de dissimilarité calculées pour réaliser des ordinations, telles que le NMDS (Non-metric Multidimensional Scaling) ou le PCoA (Principal Coordinates Analysis), afin de visualiser la structuration des communautés fongiques selon les différents facteurs (1) la taxonomie des épiphytes vasculaires, (2) le type d’organe, et (3) le compartiment (surface vs tissus internes). Ces ordinations nous permettront d'identifier les regroupements d'échantillons en fonction de ces facteurs et d'évaluer l'influence relative de chacun d'eux sur la composition des communautés fongiques.
 
 ```{r}
-#| label: ordination-nmds-globales
+#| label: mise-en-place-nmds-globales
 
 library(vegan)
 ps_hellinger <- transform_sample_counts(ps, function(x) sqrt(x / sum(x)))
+ps_hellinger <- prune_samples(sample_sums(ps_hellinger) > 0, ps_hellinger)
 
-nmds_bray_K2 <- ordinate(ps_hellinger, method = "NMDS", distance = "bray")
+#nmds_bray_K2 <- ordinate(ps_hellinger, method = "NMDS", distance = "bray")
 
 nmds_bray_K3 <- ordinate(ps_hellinger, method = "NMDS", distance = "bray", k = 3)
 
-round(nmds_bray$stress, 3)
-stressplot(nmds_bray, main = "Shepard plot")
 
 library(goeveg)
 dimcheckMDS(as(otu_table(ps_hellinger), "matrix"), distance = "bray", k = 5, trymax = 10)
+```
+
+```{r}
+#| label: nmds-globales
 
 
 
-
-pcoa_bray <- ordinate(ps_hellinger, method = "PCoA", distance = "bray")
-
-
-
+bray_dist <- vegdist(as(otu_table(ps_hellinger), "matrix"), method = "bray", na.rm = TRUE)
+perm1=adonis2(bray_dist ~ project + organ + position, by = "margin" ,data = as(sample_data(ps_hellinger), "data.frame"), permutations = 99)
+perm1
 
 
+plot_ordination(ps_hellinger, nmds_bray_K3, color = "project", shape = "organ") +
+  stat_ellipse(aes(group = project, fill = project), alpha = 0.1, geom = "polygon") +
+  annotate("text", x = Inf, y = Inf, 
+           label = paste0("PERMANOVA: R²=", round(perm1$R2[1], 2), ", p=", perm1$`Pr(>F)`[1]), 
+           hjust = 1.1, vjust = 1.5, size = 4, fontface = "italic") +
+  theme_bw() +
+  labs(title = "NMDS - Bray-Curtis (K=3)")
 
-plot_ordination(ps_hellinger, nmds_bray_K3, color = "organ", shape = "position") +
-    geom_point(size = 3, alpha = 0.8) +
-    theme_bw() +
-    labs(title = "NMDS - Bray-Curtis (Hellinger)")
 
-plot_ordination(ps_hellinger, nmds_bray_K3, color = "organ", shape = "project") +
-    geom_point(size = 3, alpha = 0.8) +
-    theme_bw() +
-    labs(title = "NMDS - Bray-Curtis")
-
-plot_ordination(ps_hellinger, nmds_bray_K3, color = "project") +
-    geom_point(aes(shape = organ), size = 3, alpha = 0.8) +
-    theme_bw() +
-    stat_ellipse(aes(group = project)) +
-    labs(title = "NMDS - Bray-Curtis")
-
-plot_ordination(ps_hellinger, nmds_bray_K3, color = "plant_family", shape = "project") +
-    geom_point(size = 3, alpha = 0.8) +
-    theme_bw() +
-    labs(title = "NMDS - Bray-Curtis")
 
 library(plotly)
 
@@ -430,7 +420,93 @@ plot_ly(nmds_3d_data, x = ~NMDS1, y = ~NMDS2, z = ~NMDS3,
   type = "scatter3d", mode = "markers", 
   marker = list(size = 5, opacity = 0.8)) %>%
   layout(title = "NMDS 3D - Bray-Curtis (K=3)")
+```
 
+```{r}
+#| label: nmds-projets
+
+ps_epiphytes <- subset_samples(ps_hellinger, position == "epiphyte")
+nmds_epi <- ordinate(ps_epiphytes, method = "NMDS", distance = "bray")
+
+bray_epi <- vegdist(as(otu_table(ps_epiphytes), "matrix"), method = "bray")
+perm_epi <- adonis2(bray_epi ~ organ, data = as(sample_data(ps_epiphytes), "data.frame"), permutations = 999)
+
+p_epi=plot_ordination(ps_epiphytes, nmds_epi, color = "organ", shape = "project") +
+  stat_ellipse(aes(group = organ, fill = organ), alpha = 0.1, geom = "polygon") +
+  annotate("text", x = Inf, y = Inf, 
+           label = paste0("PERMANOVA: R²=", round(perm_epi$R2[1], 2), ", p=", perm_epi$`Pr(>F)`[1]), 
+           hjust = 1.1, vjust = 1.5, size = 4, fontface = "italic") +
+  theme_bw() 
+
+perm_epi
+
+
+ps_endophytes <- subset_samples(ps_hellinger, position == "endophyte")
+nmds_endo <- ordinate(ps_endophytes, method = "NMDS", distance = "bray")
+
+bray_endo <- vegdist(as(otu_table(ps_endophytes), "matrix"), method = "bray")
+perm_endo <- adonis2(bray_endo ~ organ, data = as(sample_data(ps_endophytes), "data.frame"), permutations = 99)
+
+p_endo=plot_ordination(ps_endophytes, nmds_endo, color = "organ", shape = "project") +
+  stat_ellipse(aes(group = organ, fill = organ), alpha = 0.1, geom = "polygon") +
+  annotate("text", x = Inf, y = Inf, 
+           label = paste0("PERMANOVA: R²=", round(perm_endo$R2[1], 2), ", p=", perm_endo$`Pr(>F)`[1]), 
+           hjust = 1.1, vjust = 1.5, size = 4, fontface = "italic") +
+  theme_bw() 
+
+library(pathwork)
+(p_epi + p_endo) + 
+  plot_layout(guides = "collect") + 
+  plot_annotation(title = "Comparaison des ordinations NMDS (Épiphytes vs Endophytes)")
+```
+
+
+
+
+```{r}
+  #| label: nmds-feuilles-age
+
+  ps_leaves <- subset_samples(ps_hellinger, tolower(organ) %in% c("leaf", "leaves", "young_leaf", "old_leaf"))
+
+  ps_leaves <- prune_taxa(taxa_sums(ps_leaves) > 0, ps_leaves)
+
+  nmds_leaves <- ordinate(ps_leaves, method = "NMDS", distance = "bray")
+
+  bray_leaves <- vegdist(as(otu_table(ps_leaves), "matrix"), method = "bray", na.rm = TRUE)
+  df_meta_leaves <- as(sample_data(ps_leaves), "data.frame")
+  perm_leaves <- adonis2(bray_leaves ~ organ + position, data = df_meta_leaves, permutations = 999)
+
+  plot_ordination(ps_leaves, nmds_leaves, color = "organ", shape = "position") +
+    stat_ellipse(aes(group = organ, fill = organ), alpha = 0.1, geom = "polygon") +
+    annotate("text", x = Inf, y = Inf, 
+             label = paste0("Age PERMANOVA: R²=", round(perm_leaves$R2[1], 2), ", p=", perm_leaves$`Pr(>F)`[1]), 
+             hjust = 1.1, vjust = 1.5, size = 4, fontface = "italic") +
+    theme_bw() +
+    labs(title = "NMDS - Succession foliaire (Jeune vs Vieille feuille)",
+         color = "Âge",
+         shape = "Compartiment (Position)")
+
+
+
+```
+
+```{r}
+metadata_global <- as(sample_data(ps_hellinger), "data.frame")
+otu_hellinger <- as(otu_table(ps_hellinger), "matrix")
+if (taxa_are_rows(ps_hellinger)) {
+  otu_hellinger <- t(otu_hellinger)
+}
+
+vpa_result <- varpart(otu_hellinger, 
+                      ~ organ,
+                      ~ position,
+                      ~ plant_family, 
+                      ~ project, 
+                      data = metadata_global)
+
+plot(vpa_result, 
+     Xnames = c("Organe", "Position", "Hôte", "Projet"), 
+     bg = c("seagreen2", "skyblue2", "orange2"))
 ```
 
 Il faut desormais tester statistiquement les association, on commence par construire un lm mais on se doute qu'il ne sera pas valide car les données ne présument pas de résidus normaux et les variances homogènes.
@@ -475,157 +551,6 @@ plot(dispersion_family, main = "Homogénéité des dispersions multivariées (Fa
 ```
 
 Les dispersions sont homogènes, on peut donc procéder à des tests de PERMANOVA pour évaluer l'effet de chaque facteur (organe, famille de plante, projet) sur la composition des communautés fongiques, ainsi que les interactions potentielles entre ces facteurs.
-
-```{r}
-# | label: test-permanova-globales
-
-library(vegan)
-
-adonis2(
-  bray_dist ~ project * organ * plant_family * position, 
-  data = metadata_global, 
-  permutations = 99,
-  by = "terms"
-)
-
-adonis2(
-  bray_dist ~ project  * position, 
-  data = metadata_global, 
-  permutations = 99,
-  by = "terms"
-)
-
-adonis2(
-  bray_dist ~ project * organ , 
-  data = metadata_global, 
-  permutations = 99,
-  by = "terms"
-)
-
-adonis2(
-  bray_dist ~ project  * plant_family, 
-  data = metadata_global, 
-  permutations = 99,
-  by = "terms"
-)
-
-adonis2(
-  bray_dist ~ position  * plant_family, 
-  data = metadata_global, 
-  permutations = 99,
-  by = "terms"
-)
-
-adonis2(
-  bray_dist ~ position  * organ, 
-  data = metadata_global, 
-  permutations = 99,
-  by = "terms"
-)
-
-
-
-
-
-```
-
-On voit ici un effet prédominant de type de projet (LOT) sur le groupement des espèces. Il devient donc interessant de faire des ordinations à l'intérieur de chaque projet pour voir si les autres facteurs (organe, position, famille de plante) ont un effet structurant plus marqué à l'échelle de chaque projet.
-
-```{r}
-#| label: ordination-LOT-1
-
-ps_lot1 <- subset_samples(ps_hellinger, project == "LOT1")
-nmds_lot1 <- ordinate(ps_lot1, method = "NMDS", distance = "bray", k=3)
-
-stressplot(nmds_lot1, main = "Shepard plot")
-
-
-plot_ordination(ps_lot1, nmds_lot1, color = "organ") +
-  geom_point(aes(shape = position), size = 3, alpha = 0.8) +
-  stat_ellipse(aes(group = organ)) +
-  theme_bw() +
-  labs(title = "NMDS - Projet LOT1 (Bray-Curtis, Hellinger) avec ellipses de confiance")
-
-plot_ordination(ps_lot1, nmds_lot1, color = "plant_family") +
-  geom_point(aes(shape = organ), size = 3, alpha = 0.8) +
-  stat_ellipse(aes(group = plant_family)) +
-  theme_bw() +
-  labs(title = "NMDS - Projet LOT1 (Hellinger) par Famille de plante avec ellipses")
-
-
-
-
-
-bray_dist_lot1 <- vegdist(as(otu_table(ps_lot1), "matrix"), method = "bray")
-meta_lot1 <- as(sample_data(ps_lot1), "data.frame")
-
-
-adonis2(bray_dist_lot1 ~ position*plant_family*organ, data = meta_lot1, permutations = 99, by = "terms")
-
-adonis2(bray_dist_lot1 ~ plant_family, data = meta_lot1, permutations = 99, by = "terms")
-
-adonis2(bray_dist_lot1 ~ position*plant_family, data = meta_lot1, permutations = 999, by= "terms")
-
-
-```
-
-```{r}
-#| label: ordination-LOT-2
-
-ps_lot2 <- subset_samples(ps_hellinger, project == "LOT2")
-nmds_lot2 <- ordinate(ps_lot2, method = "NMDS", distance = "bray")
-
-stressplot(nmds_lot2, main = "Shepard plot")
-
-bray_dist_lot2 <- vegdist(as(otu_table(ps_lot2), "matrix"), method = "bray")
-meta_lot2 <- as(sample_data(ps_lot2), "data.frame")
-
-plot_ordination(ps_lot2, nmds_lot2, color = "organ") +
-    geom_point(aes(shape = position), size = 3, alpha = 0.8) +
-    stat_ellipse(aes(group = organ)) +
-    theme_bw() +
-    labs(title = "NMDS - Projet LOT2 (Bray-Curtis) avec ellipses de confiance") 
-
-
-
-adonis2(bray_dist_lot2 ~ organ, data = meta_lot2, permutations = 999)
-
-
-
-plot_ordination(ps_lot2, nmds_lot2, color = "plant_family") +
-    geom_point(aes(shape = organ), size = 3, alpha = 0.8) +
-    stat_ellipse(aes(group = plant_family)) +
-    theme_bw() +
-    labs(title = "NMDS - Projet LOT2 par Famille de plante avec ellipses")
-
-adonis2(bray_dist_lot2 ~ plant_family, data = meta_lot2, permutations = 999)
-```
-
-
-```{r}
-#| label: ordination-LOT-3
-
-ps_lot3 <- subset_samples(ps_hellinger, project == "LOT3")
-nmds_lot3 <- ordinate(ps_lot3, method = "NMDS", distance = "bray")
-bray_dist_lot3 <- vegdist(as(otu_table(ps_lot3), "matrix"), method = "bray")
-meta_lot3 <- as(sample_data(ps_lot3), "data.frame")
-
-plot_ordination(ps_lot3, nmds_lot3, color = "organ") +
-    geom_point(aes(shape = position), size = 3, alpha = 0.8) +
-    stat_ellipse(aes(group = organ)) +
-    theme_bw() +
-    labs(title = "NMDS - Projet LOT3 (Bray-Curtis) avec ellipses de confiance") 
-
-adonis2(bray_dist_lot3 ~ organ, data = meta_lot3, permutations = 999)
-
-plot_ordination(ps_lot3, nmds_lot3, color = "plant_family") +
-    geom_point(aes(shape = organ), size = 3, alpha = 0.8) +
-    stat_ellipse(aes(group = plant_family)) +
-    theme_bw() +
-    labs(title = "NMDS - Projet LOT3 par Famille de plante avec ellipses")
-
-adonis2(bray_dist_lot3 ~ plant_family, data = meta_lot3, permutations = 999)
-```
 
 
 
