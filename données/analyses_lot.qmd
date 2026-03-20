@@ -359,8 +359,13 @@ On commence par calculer les distances de dissimilarité entre les échantillons
 #| label: bray-curtis-Jaccard-distance
 
 library(vegan)
+
+ps_hellinger <- transform_sample_counts(ps, function(x) sqrt(x / sum(x)))
+
 ps_hellinger <- prune_samples(sample_sums(ps_hellinger) > 0, ps_hellinger)
+
 otu_hellinger <- as(otu_table(ps_hellinger), "matrix")
+
 bray_dist <- vegdist(otu_hellinger, method = "bray", na.rm = TRUE)
 
 # jaccard_dist <- vegdist(otu_table > 0, method = "jaccard")
@@ -375,9 +380,6 @@ Desormais, on peut utiliser les distances de dissimilarité calculées pour réa
 ```{r}
 #| label: mise-en-place-nmds-globales
 
-library(vegan)
-ps_hellinger <- transform_sample_counts(ps, function(x) sqrt(x / sum(x)))
-ps_hellinger <- prune_samples(sample_sums(ps_hellinger) > 0, ps_hellinger)
 
 #nmds_bray_K2 <- ordinate(ps_hellinger, method = "NMDS", distance = "bray")
 
@@ -385,6 +387,7 @@ nmds_bray_K3 <- ordinate(ps_hellinger, method = "NMDS", distance = "bray", k = 3
 
 
 library(goeveg)
+
 dimcheckMDS(as(otu_table(ps_hellinger), "matrix"), distance = "bray", k = 5, trymax = 10)
 ```
 
@@ -394,6 +397,7 @@ dimcheckMDS(as(otu_table(ps_hellinger), "matrix"), distance = "bray", k = 5, try
 
 
 bray_dist <- vegdist(as(otu_table(ps_hellinger), "matrix"), method = "bray", na.rm = TRUE)
+
 perm1=adonis2(bray_dist ~ project + organ + position, by = "margin" ,data = as(sample_data(ps_hellinger), "data.frame"), permutations = 99)
 perm1
 
@@ -461,6 +465,25 @@ library(pathwork)
 ```
 
 
+```{r}
+  #| label: nmds-feuilles-age
+
+  nmds_family <- ordinate(ps_hellinger, method = "NMDS", distance = "bray")
+
+  bray_family <- vegdist(as(otu_table(ps_hellinger), "matrix"), method = "bray", na.rm = TRUE)
+  df_meta_family <- as(sample_data(ps_hellinger), "data.frame")
+  perm_family <- adonis2(bray_family ~ plant_family, data = df_meta_family, permutations = 999)
+
+  plot_ordination(ps_hellinger, nmds_family, color = "plant_family") +
+    stat_ellipse(aes(group = plant_family, fill = plant_family), alpha = 0.1, geom = "polygon") +
+    annotate("text", x = Inf, y = Inf, 
+             label = paste0("PERMANOVA: R²=", round(perm_family$R2[1], 2), ", p=", perm_family$`Pr(>F)`[1]), 
+             hjust = 1.1, vjust = 1.5, size = 4, fontface = "italic") +
+    theme_bw() +
+    labs(title = "NMDS - Taxonomie des plantes (Famille)",
+         color = "Famille de plante")
+
+```
 
 
 ```{r}
@@ -608,20 +631,66 @@ ggplot(df_class, aes(x = project, y = Abundance, fill = gbr268_Class)) +
 Les espèces indicatrices sont des taxons qui sont fortement associés à une condition ou un groupe particulier. Identifier les espèces indicatrices peut nous aider à comprendre quelles espèces sont les plus caractéristiques de chaque groupe d'échantillons (par exemple, en fonction de l'organe, de la position et du projet) et à identifier des taxons potentiellement importants pour les interactions plante-microorganisme dans ces micro-habitats.
 
 ```{r , results='hide'}
-#| label: indicators-species-microbiota
+#| label: core-microbiota-analysis
+
+library(ggVennDiagram)
+library(microbiome)
+taxons_list <- list(
+  Root = core_members(subset_samples(ps, organ == "root"), detection = 0, prevalence = 0.001),
+  Young_Leaf = core_members(subset_samples(ps, organ == "young_leaf"), detection = 0, prevalence = 0.001),
+  Old_Leaf = core_members(subset_samples(ps, organ == "old_leaf"), detection = 0, prevalence = 0.001)
+)
+
+ggVennDiagram(taxons_list, label_alpha = 0) +
+  scale_fill_gradient(low = "#F4FAFE", high = "#4981BF") +
+  labs(title = "Partage des OTUs entre les organes") +
+  theme(legend.position = "none")
 
 
-library(indicspecies)
-library(phyloseq)
-metadata <- data.frame(sample_data(ps))
-groups <- metadata$project
-indicator_taxa <- multipatt(otu_table, groups, func = "IndVal.g", control = how(nperm = 99))
-summary(indicator_taxa)
- detections) +
-  labs(title = "Core Microbiota - Line Plot") +
-  theme_bw()
 
+ps_rel <- transform_sample_counts(ps, function(x) x / sum(x))
 
+tax_df <- as.data.frame(tax_table(ps_rel))
+
+new_labels <- tax_df %>%
+  mutate(
+    Phylum = ifelse(is.na(gbr268_Phylum), "Unclassified", gbr268_Phylum),
+    Family = ifelse(is.na(gbr268_Family), "Unclassified", gbr268_Family),
+    FullLabel = paste0(Phylum, ": ", Family, " (", rownames(tax_df), ")")
+  )
+
+taxa_names(ps_rel) <- new_labels$FullLabel
+
+ps_core <- core(ps_rel, detection = 0.001, prevalence = 0.2)
+
+library(microbiome)
+library(RColorBrewer)
+library(dplyr)
+
+ps_family <- tax_glom(ps, taxrank = "gbr268_Family", NArm = TRUE)
+
+ps_comp <- microbiome::transform(ps_family, "compositional")
+
+tax_df <- as.data.frame(tax_table(ps_comp))
+new_labels <- paste0(tax_df$gbr268_Phylum, ": ", tax_df$gbr268_Family)
+taxa_names(ps_comp) <- new_labels
+
+ps_core <- core(ps_comp, detection = 0.001, prevalence = 0.3)
+
+plot_core(ps_core, 
+          plot.type = "heatmap", 
+          prevalences = seq(0.1, 1, 0.1), 
+          detections = c(0.001, 0.005, 0.01, 0.05, 0.1),
+          colours = rev(brewer.pal(5, "RdYlBu"))) +
+  labs(x = "Seuil de Détection (Abondance Relative %)", 
+       y = "Taxonomie (Phylum: Famille)",
+       title = "Core Microbiota au niveau Famille") +
+  scale_x_discrete(labels = c("0.1%", "0.5%", "1%", "5%", "10%")) +
+  theme_bw() +
+  theme(
+    axis.text.y = element_text(size = 9, face = "bold"),
+    axis.text.x = element_text(size = 9)
+  )
 ```
 
 
@@ -635,89 +704,19 @@ Utilisation du paquet `igraph` pour construire un réseau de co-occurrence entre
 #| label: cooccurrence-network
 
 
-library(igraph)
 
-top_taxa <- names(sort(taxa_sums(ps), decreasing = TRUE))[1:200]
-ps_sub <- prune_taxa(top_taxa, ps)
-
-ig <- make_network(ps_sub, type = "taxa", max.dist = 0.9)
-
-plot_network(ig, ps_sub, type = "taxa",color="gbr268_Class", label = NULL) +
-    theme_minimal() +
-    labs(title = "Réseau de co-occurrence (Top 200 taxons)",
-             color = "Class")
 ```
 
 
 ```{r} 
 #| label: rarefaction-inext
 
-# # library(iNEXT)
-# # library(ggplot2)
-# # library(phyloseq)
-# 
-# ps_phylum <- tax_glom(ps, taxrank = "gbr268_Phylum", NArm = FALSE)
-# 
-# otu_mat <- as(otu_table(ps_phylum), "matrix")
-# if (!taxa_are_rows(ps_phylum)) {
-#   otu_mat <- t(otu_mat)
-# }
-# 
-# out_inext <- iNEXT(otu_mat, 
-#                   q = 0,     
-#                   datatype = "abundance", 
-#                   nboot = 0,       
-#                   endpoint = 2000)   
-# 
-# ggiNEXT(out_inext, type = 1, facet.var = "None") +
-#   scale_shape_manual(values = rep(16, 100)) +
-#   theme_bw() +
-#   labs(title = "Courbes de raréfaction et d'extrapolation par phylum (q=0)",
-#        x = "Nombre de séquences",
-#        y = "Diversité") +
-#   theme(legend.position = "none")
-# 
-#   library(tidyr)
-#   library(dplyr)
-# 
-#   # Extraire la table des OTU et la table taxonomique
-#   otu_mat <- as(otu_table(ps), "matrix")
-#   if (!taxa_are_rows(ps)) {
-#     otu_mat <- t(otu_mat)
-#   }
-#   tax_mat <- as(tax_table(ps), "matrix")
-# 
-#   # Combiner et agréger les données pour obtenir une matrice [OTUs x Phylums]
-#   df <- as.data.frame(otu_mat)
-#   df$Phylum <- tax_mat[rownames(df), "gbr268_Phylum"]
-# 
-#   otu_phylum_mat <- df |>
-#     pivot_longer(cols = -Phylum, names_to = "Sample", values_to = "Abundance") |>
-#     group_by(Phylum, OTU = rep(rownames(df), times = ncol(otu_mat))) |>
-#     summarise(Abundance = sum(Abundance), .groups = "drop") |>
-#     pivot_wider(names_from = Phylum, values_from = Abundance, values_fill = 0) |>
-#     tibble::column_to_rownames("OTU") |>
-#     as.matrix()
-#     saveRDS(otu_phylum_mat, "otu_phylum_mat.rds")
-# write.table(otu_phylum_mat, file = "otu_phylum_mat.txt", sep = "\t", quote = FALSE, col.names = NA)
-# out_inext <- iNEXT(otu_phylum_mat, 
-#                     q = 0,     
-#                     datatype = "abundance", 
-#                     nboot = 0,       
-#                     endpoint = 4000)   
-#   
-# saveRDS(out_inext, "out_inext.rds")
-# 
-#   ggiNEXT(out_inext, type = 1, facet.var = "None") +
-#     theme_bw() +
-#     labs(title = "Courbes de raréfaction en OTUs par phylum (q=0)",
-#          x = "Nombre total de séquences",
-#          y = "Diversité en OTUs")
+
+
 ```
 
 ```{r}
 # | label: trait-analysis
-# Charger les bibliothèques nécessaires
 library(fungaltraits)
 library(phyloseq)
 library(dplyr)
@@ -725,63 +724,51 @@ library(tidyr)
 library(ggplot2)
 library(ggpubr)
 library(patchwork)
-library(FactoMineR)
-library(factoextra)
 
-# Extraction et nettoyage des données de phyloseq
-sam_df <- data.frame(sample_data(ps))
+sam_df <- data.frame(sample_data(ps), check.names = FALSE)
 sam_df$Sample <- rownames(sam_df)
 
-otu_df <- data.frame(otu_table(ps))
-if (!taxa_are_rows(ps)) otu_df <- data.frame(t(otu_table(ps)))
+otu_df <- data.frame(otu_table(ps), check.names = FALSE)
+if (!taxa_are_rows(ps)) otu_df <- data.frame(t(otu_table(ps)), check.names = FALSE)
 otu_df$OTU <- rownames(otu_df)
 
-tax_df <- data.frame(tax_table(ps))
+tax_df <- data.frame(tax_table(ps), check.names = FALSE)
 tax_df$OTU <- rownames(tax_df)
 
-# Trouver la colonne des espèces
 species_col <- grep("(?i)species", colnames(tax_df), value = TRUE)[1]
 if (is.na(species_col)) species_col <- colnames(tax_df)[ncol(tax_df)]
 
-# Nettoyage des noms d'espèces
 tax_df$espece_clean <- tolower(gsub("_", " ", tax_df[[species_col]]))
 especes_uniques <- unique(na.omit(tax_df$espece_clean))
 
-# Base de données FungalTraits
 ft_db <- fungal_traits()
 col_species_ft <- grep("(?i)species", colnames(ft_db), value = TRUE)[1]
 ft_db$espece_clean <- tolower(gsub("_", " ", ft_db[[col_species_ft]]))
 
-# Associer les traits aux espèces de notre jeu de données
 df_especes <- data.frame(espece_clean = especes_uniques)
 especes_traits <- df_especes %>%
   left_join(ft_db, by = "espece_clean") %>%
   filter(!is.na(.data[[col_species_ft]]))
 
-# Supprimer les colonnes avec trop de valeurs manquantes
 taux_remplissage <- colSums(!is.na(especes_traits)) / nrow(especes_traits)
 especes_identifiees_clean <- especes_traits[, taux_remplissage >= 0.5]
 
 print(paste("Nombre d'espèces avec informations dans FungalTraits :", nrow(especes_identifiees_clean)))
 
-# Mettre en forme longue les abondances
 otu_long <- otu_df %>%
   pivot_longer(col = -OTU, names_to = "Sample", values_to = "Abundance") %>%
   filter(Abundance > 0)
 
-# Combiner abondances, métadonnées, taxonomie et traits
 donnees_completes <- otu_long %>%
   left_join(sam_df, by = "Sample") %>%
   left_join(tax_df[, c("OTU", "espece_clean")], by = "OTU") %>%
   inner_join(especes_identifiees_clean, by = "espece_clean")
 
-# Identification des colonnes pertinentes
 col_lifestyle <- grep("(?i)lifestyle|guild", colnames(donnees_completes), value = TRUE)[1]
 col_organe    <- grep("(?i)organ|tissue|compartment", colnames(sam_df), value = TRUE)[1]
-col_projet    <- grep("(?i)project|projet", colnames(sam_df), value = TRUE)[1]
+col_projet    <- grep("(?i)^(project|projet)$", colnames(sam_df), value = TRUE)[1]
 col_famille   <- grep("(?i)family|famille", colnames(sam_df), value = TRUE)[1]
 
-# Fonction pour tracer les proportions de mode de vie
 plot_lifestyle <- function(df, x_var, fill_var, title_suffix) {
   if (is.na(x_var) || is.na(fill_var)) return(NULL)
   
@@ -794,7 +781,6 @@ plot_lifestyle <- function(df, x_var, fill_var, title_suffix) {
     theme(axis.text.x = element_text(angle = 45, hjust = 1))
 }
 
-# Fonction simplifiée pour un test du Chi-2
 run_chi2_test <- function(df, var1, var2, label) {
   if (is.na(var1) || is.na(var2)) return(NULL)
   
@@ -805,7 +791,6 @@ run_chi2_test <- function(df, var1, var2, label) {
   print(suppressWarnings(chisq.test(tbl, simulate.p.value = TRUE)))
 }
 
-# Génération des résultats si les colonnes sont trouvées
 if (!is.na(col_lifestyle)) {
   
   print(plot_lifestyle(donnees_completes, col_organe, col_lifestyle, "Organe"))
@@ -816,7 +801,6 @@ if (!is.na(col_lifestyle)) {
   print(plot_lifestyle(donnees_completes, col_famille, col_lifestyle, "Famille de plante"))
   run_chi2_test(donnees_completes, col_famille, col_lifestyle, "Test : Famille vs Mode de vie")
   
-  # Heatmap des différences entre familles de plantes
   if (!is.na(col_famille)) {
     df_fam <- donnees_completes %>% filter(!is.na(.data[[col_famille]]), !is.na(.data[[col_lifestyle]]))
     familles <- unique(df_fam[[col_famille]])
@@ -849,5 +833,4 @@ if (!is.na(col_lifestyle)) {
     print(p_heatmap)
   }
 }
-
 ```
