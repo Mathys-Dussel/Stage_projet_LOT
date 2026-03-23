@@ -1,16 +1,20 @@
-setwd("~/Documents/Etudes/Stage_projet_LOT/CRBE/données/analyses_di")
+setwd("~/Documents/Etudes/Stage_projet_LOT/CRBE/Analyses")
 
-ps <- readRDS("ps_final.rds")
-df_alpha <- readRDS("df_alpha.rds")
+ps <- readRDS("~/Documents/Etudes/Stage_projet_LOT/CRBE/Analyses/donnees/donnees_nettoyees.rds")
+df_alpha <- readRDS("~/Documents/Etudes/Stage_projet_LOT/CRBE/Analyses/donnees/df_alpha.rds")
 
 library(phyloseq)
 library(ggplot2)
 library(ggpubr)
 library(patchwork)
 library(ggVennDiagram)
+library(dplyr)
 library(UpSetR)
 library(microbiome)
+library(circlize)
 
+
+######## Tests et visualisations pour les alpha-diversités ########
 
 valeurs_p_kruskal <- lapply(
   df_alpha[c("Observed", "expShannon")], 
@@ -48,9 +52,6 @@ plot_sig_heatmap(df_alpha, "expShannon", "Significativité - ExpShannon")
 
 
 
-library(ggplot2)
-library(ggpubr)
-library(patchwork)
 
 plot_groupes <- function(df, x, y, facet_by) {
     ggplot(df, aes(x = .data[[x]], y = .data[[y]], fill = .data[[x]])) +
@@ -91,6 +92,8 @@ wrap_plots(
 ) + plot_annotation(title = "ExpShannon par Catégorie")
 
 
+
+# avec la fonction native de phyloseq
 alpha_div <- c("Observed", "Chao1", "Shannon", "Simpson")
 p <- plot_richness(ps, x = "project", measures = alpha_div, color = "organ")
 p + theme_bw() + theme(axis.text.x = element_text(angle = 45, hjust = 1))
@@ -98,8 +101,8 @@ p + theme_bw() + theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 
 
-library(ggVennDiagram)
 
+# Diagramme de Venn 
 
 extraire_taxons <- function(physeq, variable) {
   meta <- as.data.frame(sample_data(physeq))
@@ -127,7 +130,8 @@ ggVennDiagram(taxons_par_organe) +
        fill = "Nombre de taxons")
 
 
-library(UpSetR)
+
+# Diagramme d'UpSet
 
 meta <- data.frame(sample_data(ps))
 meta$category <- paste(meta$age, meta$organ, meta$position, sep = "_")
@@ -145,9 +149,8 @@ upset(fromList(taxa_list), nsets = length(taxa_list), order.by = "freq",
 
 
 
+# Diagramme de Chord
 
-
-library(circlize)
 
 categories <- names(taxa_list)
 shared_mx <- matrix(0, nrow = length(categories), ncol = length(categories), 
@@ -165,8 +168,6 @@ chordDiagram(shared_mx, transparency = 0.3, annotationTrack = c("name", "grid"))
 
 
 
-library(dplyr)
-library(circlize)
 
 ps_rel <- transform_sample_counts(ps, function(x) x / sum(x))
 
@@ -200,3 +201,5 @@ df_chord <- df_class %>%
 
 circos.clear()
 chordDiagram(df_chord, transparency = 0.3, annotationTrack = c("name", "grid"))
+
+

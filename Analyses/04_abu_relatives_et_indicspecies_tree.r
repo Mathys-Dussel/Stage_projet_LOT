@@ -1,10 +1,19 @@
-setwd("~/Documents/Etudes/Stage_projet_LOT/CRBE/données/analyses_di")
+setwd("~/Documents/Etudes/Stage_projet_LOT/CRBE/Analyses")
 
-ps <- readRDS("ps_final.rds")
+ps <- readRDS("~/Documents/Etudes/Stage_projet_LOT/CRBE/Analyses/donnees/donnees_nettoyees.rds")
+
+
 
 library(dplyr)
 library(phyloseq)
 library(ggplot2)
+library(ggVennDiagram)
+library(microbiome)
+library(RColorBrewer)
+library(cluster)
+library(ape)
+library(ggtree)
+library(vegan)
 
 ps_rel <- transform_sample_counts(ps, function(x) x / sum(x))
 
@@ -42,8 +51,7 @@ ggplot(df_class, aes(x = project, y = Abundance, fill = gbr268_Class)) +
           axis.ticks.x = element_blank())
 
 
-library(ggVennDiagram)
-library(microbiome)
+
 taxons_list <- list(
   Root = core_members(subset_samples(ps, organ == "root"), detection = 0, prevalence = 0.001),
   Young_Leaf = core_members(subset_samples(ps, organ == "young_leaf"), detection = 0, prevalence = 0.001),
@@ -72,9 +80,7 @@ taxa_names(ps_rel) <- new_labels$FullLabel
 
 ps_core <- core(ps_rel, detection = 0.001, prevalence = 0.2)
 
-library(microbiome)
-library(RColorBrewer)
-library(dplyr)
+
 
 ps_family <- tax_glom(ps, taxrank = "gbr268_Family", NArm = TRUE)
 
@@ -103,10 +109,7 @@ plot_core(ps_core,
 
 
 
-library(cluster)
-library(ape)
-library(ggtree)
-library(phyloseq)
+
 
 top_otus <- names(sort(taxa_sums(ps), decreasing = TRUE)[1:100])
 ps_top <- prune_taxa(top_otus, ps)
@@ -144,3 +147,5 @@ ggtree(ps_top_final, aes(color = gbr268_Phylum), ladderize = TRUE) +
   labs(title = "Top 100 Espèces - Phylogénie Taxonomique",
        subtitle = "La taille des points indique l'abondance totale",
        color = "Phylum")
+
+dev.off()

@@ -1,8 +1,8 @@
-setwd("~/Documents/Etudes/Stage_projet_LOT/CRBE/données/ananlyses_LOT_1")
+setwd("~/Documents/Etudes/Stage_projet_LOT/CRBE/Analyses")
 
-ps <- readRDS("ps_final.rds")
+ps <- readRDS("donnees/ps_final.rds")
 
-MC_LOT_1=read.csv("Macroclimat_LOT1.csv", header = TRUE, sep = ";", dec = ",")
+MC_LOT_1=read.csv("donnees/Macroclimat_LOT1.csv", header = TRUE, sep = ";", dec = ",")
 head(MC_LOT_1)
 
 MC_TEMP=MC_LOT_1[,c("T_ZONE1","T_ZONE2","T_ZONE3","T_ZONE4","T_ZONE5","T_ZONE6")]
@@ -40,11 +40,9 @@ head(MC_HUMI)
 library(tidyr)
 library(ggpubr)
 
-# Convertir les données en format long pour les tests et les graphiques
 MC_TEMP_long <- pivot_longer(MC_TEMP, cols = everything(), names_to = "Zone", values_to = "Temperature")
 MC_HUMI_long <- pivot_longer(MC_HUMI, cols = everything(), names_to = "Zone", values_to = "Humidity")
 
-# Définir les comparaisons par paires
 my_comparisons <- list(
     c("Bottom", "Heart"), 
     c("Bottom", "top_trunk"), 
@@ -69,7 +67,7 @@ print(p_humi)
 
 
 
-ZONES_LOT_123=read.csv("LOT_zones.csv", header = TRUE, sep = ";", dec = ",")
+ZONES_LOT_123=read.csv("donnees/LOT_zones.csv", header = TRUE, sep = ";", dec = ",")
 head(ZONES_LOT_123)
 
 ZONES_LOT_123$TreeZone[ZONES_LOT_123$TreeZone == 3] <- 2
@@ -92,6 +90,7 @@ library(ggplot2)
 library(ggpubr)
 library(patchwork)
 
+ps <- readRDS("donnees/ps_final.rds")
 
 
 sample_data(ps)$LOT_sampleID <- gsub("/.*", "", sample_data(ps)$LOT_sampleID)
@@ -100,27 +99,21 @@ sample_data(ps)$LOT_sampleID <- gsub("/.*", "", sample_data(ps)$LOT_sampleID)
 
 library(dplyr)
 
-# 1. On nettoie ZONES_LOT_123 pour ne garder qu'une ligne par échantillon
-# On utilise distinct() pour supprimer les doublons parfaits
 zones_clean <- ZONES_LOT_123 %>%
   select(LOT.SampleCode, TreeZone) %>%
   distinct(LOT.SampleCode, .keep_all = TRUE)
 
-# 2. On refait la jointure sur le metadata original
 metadata <- data.frame(sample_data(ps))
 
 new_metadata <- metadata %>%
   left_join(zones_clean, by = c("LOT_sampleID" = "LOT.SampleCode"))
 
-# 3. On remet les noms de lignes (cette fois la longueur sera identique)
 rownames(new_metadata) <- rownames(metadata)
 
-# 4. On réinjecte dans phyloseq
 sample_data(ps) <- sample_data(new_metadata)
 
 
 
-# Affiche les codes qui apparaissent plus d'une fois
 ZONES_LOT_123 %>% 
   count(LOT.SampleCode) %>% 
   filter(n > 1)

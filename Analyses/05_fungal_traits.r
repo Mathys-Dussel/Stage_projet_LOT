@@ -1,6 +1,6 @@
-setwd("~/Documents/Etudes/Stage_projet_LOT/CRBE/données/analyses_di")
+setwd("~/Documents/Etudes/Stage_projet_LOT/CRBE/Analyses")
 
-ps <- readRDS("ps_final.rds")
+ps <- readRDS("~/Documents/Etudes/Stage_projet_LOT/CRBE/Analyses/donnees/donnees_nettoyees.rds")
 
 
 

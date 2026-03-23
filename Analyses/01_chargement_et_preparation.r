@@ -1,5 +1,4 @@
-setwd("~/Documents/Etudes/Stage_projet_LOT/CRBE/données/analyses_di")
-
+setwd("~/Documents/Etudes/Stage_projet_LOT/CRBE/Analyses")
 
 library(phyloseq)
 library(ggplot2)
@@ -7,7 +6,7 @@ library(ggpubr)
 library(patchwork)
 library(dplyr)
 
-ps <- readRDS("donnees_nettoyees.rds")
+ps <- readRDS("~/Documents/Etudes/Stage_projet_LOT/CRBE/Analyses/donnees/donnees_nettoyees.rds")
 sample_names(ps) <- gsub("\\.", "-", sub("^X", "", sample_names(ps)))
 
 familles_a_enlever <- c("Moraceae", "Fabaceae") 
@@ -21,5 +20,5 @@ df_alpha <- estimate_richness(ps, measures = c("Observed", "Shannon")) |>
     grp = interaction(organ, position, project)
   )
 
-saveRDS(ps, "ps_final.rds")
-saveRDS(df_alpha, "df_alpha.rds")
+saveRDS(ps, "~/Documents/Etudes/Stage_projet_LOT/CRBE/Analyses/donnees/ps_final.rds")
+saveRDS(df_alpha, "~/Documents/Etudes/Stage_projet_LOT/CRBE/Analyses/donnees/df_alpha.rds")
