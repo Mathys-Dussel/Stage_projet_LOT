@@ -691,10 +691,74 @@ plot_core(ps_core,
     axis.text.y = element_text(size = 9, face = "bold"),
     axis.text.x = element_text(size = 9)
   )
+
+
+
+
+
+
 ```
 
+```{r}
+
+library(phyloseq)
+library(ggplot2)
+
+top_otus <- names(sort(taxa_sums(ps), decreasing = TRUE)[1:100])
+ps_top <- prune_taxa(top_otus, ps)
+
+    library(ape)
+
+    tax_df <- as.data.frame(tax_table(ps_top))
+    tax_df[is.na(tax_df)] <- "Unknown"
+
+    tax_num <- apply(tax_df, 2, function(x) as.numeric(as.factor(x)))
+    rownames(tax_num) <- taxa_names(ps_top)
+
+    arbre_taxo <- as.phylo(hclust(dist(tax_num)))
+
+    arbre_taxo$tip.label <- taxa_names(ps_top)
+
+    phy_tree(ps_top) <- arbre_taxo
+
+phy_tree(ps_top) <- arbre_taxo 
+
+tax <- as.data.frame(tax_table(ps_top))
+phylums <- as.factor(tax$gbr268_Phylum)
+couleurs <- rainbow(length(levels(phylums)))[phylums]
+
+par(mar=c(1,1,1,15)) 
+plot(phy_tree(ps_top), 
+     direction = "rightwards",
+     show.tip.label = TRUE,
+     tip.color = couleurs,
+     edge.width = 1,         
+     label.offset = 0.01,     
+     cex = 0.7)              
 
 
+phy_tree(ps_top)$tip.label <- tax$gbr268_Family
+
+plot(phy_tree(ps_top), 
+     direction = "rightwards",
+     edge.width = 1, 
+     tip.color = couleurs,
+     cex = 0.6)
+
+legend("topleft", legend = levels(phylums), fill = rainbow(length(levels(phylums))), cex = 0.8)
+
+
+
+
+library(ggtree)
+
+ggtree(ps_top, aes(color = gbr268_Phylum), ladderize = TRUE) +
+  geom_tiplab(aes(label = gbr268_Family), size = 3, offset = 0.01) +
+  geom_tippoint(aes(size = abundance), alpha = 0.6) +
+  theme(legend.position = "right") +
+  scale_x_continuous(expand = expansion(mult = c(0, 0.5))) 
+
+```
 
 # De coté car inexploitable pour le moment, mais à garder en tête pour la suite du stage
 
