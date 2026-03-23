@@ -1,0 +1,202 @@
+setwd("~/Documents/Etudes/Stage_projet_LOT/CRBE/données/analyses_di")
+
+ps <- readRDS("ps_final.rds")
+df_alpha <- readRDS("df_alpha.rds")
+
+library(phyloseq)
+library(ggplot2)
+library(ggpubr)
+library(patchwork)
+library(ggVennDiagram)
+library(UpSetR)
+library(microbiome)
+
+
+valeurs_p_kruskal <- lapply(
+  df_alpha[c("Observed", "expShannon")], 
+  function(metrique) kruskal.test(metrique ~ df_alpha$grp)$p.value
+)
+
+plot_sig_heatmap <- function(donnees, metrique, titre) {
+  
+
+  resultats_wilcoxon <- pairwise.wilcox.test(
+    donnees[[metrique]], 
+    donnees$grp, 
+    p.adjust.method = "BH"
+  )$p.value
+  
+  donnees_graphique <- resultats_wilcoxon |>
+    as.table() |>
+    as.data.frame() |>
+    na.omit()
+  
+  ggplot(donnees_graphique, aes(x = Var1, y = Var2, fill = Freq)) +
+    geom_tile(color = "white") +
+    geom_text(aes(label = cut(Freq, 
+                              breaks = c(-Inf, 0.001, 0.01, 0.05, Inf), 
+                              labels = c("***", "**", "*", "ns")))) +
+    scale_fill_gradient2(low = "firebrick", mid = "red", high = "white", midpoint = 0.05) +
+    theme_minimal() + 
+    theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+    labs(title = titre, x = "Groupes", y = "Groupes comparés", fill = "Valeur p")
+}
+
+plot_sig_heatmap(df_alpha, "Observed", "Significativité - Richesse Observée")
+
+plot_sig_heatmap(df_alpha, "expShannon", "Significativité - ExpShannon")
+
+
+
+library(ggplot2)
+library(ggpubr)
+library(patchwork)
+
+plot_groupes <- function(df, x, y, facet_by) {
+    ggplot(df, aes(x = .data[[x]], y = .data[[y]], fill = .data[[x]])) +
+        geom_violin(alpha = 0.7, trim = FALSE) +
+        geom_pwc(method = "wilcox.test", label = "p.signif", hide.ns = TRUE) +
+        facet_wrap(vars(.data[[facet_by]])) + 
+        theme_bw() +
+        theme(axis.text.x = element_text(angle = 45, hjust = 1), legend.position = "bottom")
+}
+
+
+wrap_plots(
+    plot_groupes(df_alpha, "project", "Observed", "organ"),
+    plot_groupes(df_alpha, "position", "Observed", "organ"),
+    plot_groupes(df_alpha, "project", "Observed", "position"),
+    ncol = 3
+) + plot_annotation(title = "Richesse Spécifique par Catégorie")
+
+wrap_plots(
+    plot_groupes(df_alpha, "project", "expShannon", "organ"),
+    plot_groupes(df_alpha, "position", "expShannon", "organ"),
+    plot_groupes(df_alpha, "project", "expShannon", "position"),
+    ncol = 3
+) + plot_annotation(title = "ExpShannon par Catégorie")
+
+wrap_plots(
+    plot_groupes(df_alpha, "organ", "Observed", "project"),
+    plot_groupes(df_alpha, "organ", "Observed", "position"),
+    plot_groupes(df_alpha, "position", "Observed", "project"),
+    ncol = 3
+) + plot_annotation(title = "Richesse Spécifique par Catégorie")
+
+wrap_plots(
+    plot_groupes(df_alpha, "organ", "expShannon", "project"),
+    plot_groupes(df_alpha, "organ", "expShannon", "position"),
+    plot_groupes(df_alpha, "position", "expShannon", "project"),
+    ncol = 3
+) + plot_annotation(title = "ExpShannon par Catégorie")
+
+
+alpha_div <- c("Observed", "Chao1", "Shannon", "Simpson")
+p <- plot_richness(ps, x = "project", measures = alpha_div, color = "organ")
+p + theme_bw() + theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+
+
+
+library(ggVennDiagram)
+
+
+extraire_taxons <- function(physeq, variable) {
+  meta <- as.data.frame(sample_data(physeq))
+  groupes <- split(rownames(meta), meta[[variable]])
+  
+  lapply(groupes, function(echantillons) {
+    sous_ps <- prune_samples(echantillons, physeq)
+    abondances <- taxa_sums(sous_ps)
+    names(abondances[abondances > 0])
+  })
+}
+
+taxons_par_projet <- extraire_taxons(ps, "project")
+
+ggVennDiagram(taxons_par_projet) +
+  scale_fill_gradient(low = "white", high = "forestgreen") +
+  labs(title = "Taxons partagés entre les projets LOT",
+       fill = "Nombre de taxons") 
+
+taxons_par_organe <- extraire_taxons(ps, "organ")
+
+ggVennDiagram(taxons_par_organe) +
+  scale_fill_gradient(low = "white", high = "forestgreen") +
+  labs(title = "Taxons partagés entre les organes",
+       fill = "Nombre de taxons")
+
+
+library(UpSetR)
+
+meta <- data.frame(sample_data(ps))
+meta$category <- paste(meta$age, meta$organ, meta$position, sep = "_")
+
+taxa_list <- split(rownames(meta), meta$category) |>
+  lapply(function(samples) {
+    taxa_sums <- taxa_sums(prune_samples(samples, ps))
+    names(taxa_sums[taxa_sums > 0])
+  })
+
+upset(fromList(taxa_list), nsets = length(taxa_list), order.by = "freq", 
+      main.bar.color = "forestgreen", sets.bar.color = "steelblue")
+
+
+
+
+
+
+
+library(circlize)
+
+categories <- names(taxa_list)
+shared_mx <- matrix(0, nrow = length(categories), ncol = length(categories), 
+                    dimnames = list(categories, categories))
+
+for (i in seq_along(categories)) {
+  for (j in seq_along(categories)) {
+    if (i != j) {
+      shared_mx[i, j] <- length(intersect(taxa_list[[i]], taxa_list[[j]]))
+    }
+  }
+}
+
+chordDiagram(shared_mx, transparency = 0.3, annotationTrack = c("name", "grid"))
+
+
+
+library(dplyr)
+library(circlize)
+
+ps_rel <- transform_sample_counts(ps, function(x) x / sum(x))
+
+ps_phylum <- tax_glom(ps_rel, taxrank = "gbr268_Phylum", NArm = FALSE)
+
+df_phylum <- psmelt(ps_phylum)
+
+df_chord <- df_phylum %>%
+  mutate(organ_position = paste(organ, position, sep = "_")) %>%
+  group_by(organ_position, gbr268_Phylum) %>%
+  summarise(Abundance = sum(Abundance), .groups = "drop") %>%
+  filter(Abundance > 0.02) %>%
+  na.omit()
+
+circos.clear()
+chordDiagram(df_chord, transparency = 0.3, annotationTrack = c("name", "grid"))
+
+
+ps_rel <- transform_sample_counts(ps, function(x) x / sum(x))
+
+ps_class<- tax_glom(ps_rel, taxrank = "gbr268_Class", NArm = FALSE)
+
+df_class <- psmelt(ps_class)
+
+df_chord <- df_class %>%
+  mutate(organ_position = paste(organ, position, sep = "_")) %>%
+  group_by(organ_position, gbr268_Class) %>%
+  summarise(Abundance = sum(Abundance), .groups = "drop") %>%
+  filter(Abundance > 0.02) %>%
+  na.omit()
+
+circos.clear()
+chordDiagram(df_chord, transparency = 0.3, annotationTrack = c("name", "grid"))

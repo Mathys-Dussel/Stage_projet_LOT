@@ -1,0 +1,905 @@
+---
+title: "Analyses LOT"
+author: "Mathys"
+date: "`r format(Sys.Date(), '%Y-%m-%d')`"
+format:
+    html: 
+        code-fold: true
+
+execute:
+    echo: true
+    warning: false
+    error: false
+---
+
+
+
+# Introduction
+
+## Problématique de l'étude (état de l’art)
+
+Les forêts tropicales abritent une exceptionnelle biodiversité végétale et microbienne, qui joue un rôle crucial dans le fonctionnement des écosystèmes et les cycles biogéochimiques. Parmi cette diversité, les plantes épiphytes vasculaires constituent une composante essentielle de la canopée tropicale, contribuant à la rétention d’eau, au recyclage des nutriments et à la structuration des communautés associées.
+Cependant, la diversité et le rôle des communautés microbiennes, et en particulier fongiques, associées aux épiphytes restent encore largement méconnus. Comprendre la composition et l’assemblage de ces communautés représente donc un enjeu de premier plan pour mieux appréhender les interactions plante- microorganismes en canopée et leurs implications écologiques dans le fonctionnement des forêts tropicales.
+
+### Question centrale
+Dans quelle mesure le filtrage environnemental à l'échelle du micro-habitat (type d'organe et profondeur tissulaire) dicte-t-il l'assemblage des communautés fongiques chez les épiphytes vasculaires tropicaux, comparativement à l'identité de la plante hôte et au contexte biogéographique ?
+
+## Objectifs précis du stage 
+
+L’objectif est d’explorer la composition et l’assemblage des communautés fongiques chez les plantes épiphytes vasculaires. Plus spécifiquement, l’étude porte sur les racines et les feuilles, en distinguant la surface et l’intérieur des tissus. Nous anticipons que les communautés fongiques différeront selon les groupes taxonomiques d’épiphytes. Nous faisons également l’hypothèse que les racines et les feuilles hébergeront des communautés distinctes, reflétant les stratégies fonctionnelles déployées par ces plantes pour acquérir l’eau et les nutriments. Enfin, nous supposons que les communautés fongiques varieront entre les tissus internes et les surfaces, en raison des contrastes marqués entre ces deux environnements.
+
+## Outils et méthodes mis en œuvre
+
+Pour répondre à cet objectif, différentes espèces de plantes épiphytes vasculaires ont été échantillonnées au Pérou et en Colombie dans le cadre du programme ‘Life on Trees’. Sur chaque individu, une jeune feuille, une feuille âgée et des racines ont été récoltées. Les microorganismes présents en surface ont d’abord été collectés à l’aide de bandes de coton imbibées de CTAB, puis les microorganismes présents à l’intérieur des tissus ont été obtenus après stérilisation de surface des organes. Les communautés fongiques ont été caractérisées par une approche de métabarcoding haut débit ciblant la région ITS, marqueur de référence pour l’étude de la diversité fongique. Les produits PCR ont été séquencés en Illumina MiSeq. Après traitement bioinformatique une table de contingence des séquences par échantillon a été produite.
+L’analyse de ces données sera réalisée au cours du stage afin de répondre aux différentes hypothèses. Dans un premier temps, la diversité alpha sera caractérisée en utilisant différents indices de biodiversité (richesse spécifique, Shannon, Simpson, etc.), afin d’évaluer les patrons de diversité en fonction des groupes taxonomiques d’épiphytes et des micro-habitats (feuilles vs. racines, surface vs. intérieur). Dans un second temps, la diversité bêta sera explorée par le calcul de distances de dissimilarité (ex. Bray-Curtis, Jaccard) et par des méthodes d’ordination (NMDS, PCoA) permettant de visualiser la structuration des communautés fongiques selon (1) la taxonomie des épiphytes vasculaires, (2) le type d’organe, et (3) le compartiment (surface vs tissus internes). Ces analyses seront complétées par des tests statistiques multivariés (PERMANOVA) afin de tester la significativité des facteurs discriminants. Enfin, des approches complémentaires pourront être envisagées, telles que l’identification des taxons indicateurs ou l’inférence de réseaux de co-occurrence pour explorer les interactions potentielles entre groupes fongiques.
+
+# Analyses préliminaires
+
+Avant de se lancer dans les analyses de diversité alpha et bêta, il est important de faire un état des lieux des données disponibles. Nous allons d'abord charger les données et faire un nettoyage préliminaire pour s'assurer que nous avons les bonnes variables à notre disposition pour les analyses.
+
+Ensuite nous allons réaliser les analyses de diversité alpha, en utilisant différents indices de biodiversité (richesse spécifique, Shannon, Simpson, etc.), afin d’évaluer les patrons de diversité en fonction des groupes taxonomiques d’épiphytes et des micro-habitats (feuilles vs. racines, surface vs. intérieur).
+
+Puis nous analysons les diversités beta 
+
+```{r, echo=FALSE, results='hide'}
+setwd("~/Documents/Etudes/Stage_projet_LOT/CRBE/données")
+```
+
+
+## Analyses de diversité alpha
+
+Premierement, mettre en forme les données pour les analyses de diversité alpha. Les noms d'echantillons sont actuellement sous la forme "X1.2.3" et nous allons les transformer en "1-2-3" pour faciliter les manipulations ultérieures.
+
+```{r }
+#| label: prep-données
+library(phyloseq)
+library(ggplot2)
+library(ggpubr)
+library(patchwork)
+
+ps <- readRDS("donnees_nettoyees.rds")
+sample_names(ps) <- gsub("\\.", "-", sub("^X", "", sample_names(ps)))
+
+familles_a_enlever <- c("Moraceae", "Fabaceae") 
+
+ps <- subset_samples(ps, !plant_family %in% familles_a_enlever)
+ps <- prune_taxa(taxa_sums(ps) > 0, ps)
+```
+
+Ensuite, on peut calculer les indices de diversité alpha pour chaque échantillon et les ajouter à la table de métadonnées pour faciliter les analyses statistiques et les visualisations.
+On a choisi de calculer la richesse observée (Observed) et l'indice de Shannon, puis on a transformé l'indice de Shannon en expShannon pour faciliter l'interprétation. On a aussi créé une variable "grp" qui combine les informations d'organe, de position et de projet pour faciliter les comparaisons entre les différentes modalités.
+
+
+
+```{r }
+#| label: calcul-diversite-alpha
+
+df_alpha <- estimate_richness(ps, measures = c("Observed", "Shannon")) |>
+  cbind(sample_data(ps)) |>
+  transform(
+    expShannon = exp(Shannon),
+    grp = interaction(organ, position, project)
+  )
+```
+
+Il est ensuite possible de faire des tests statistiques pour évaluer si les différences observées entre les différentes modalités sont significatives. Par exemple, on peut utiliser le test de Kruskal-Wallis pour comparer les indices de diversité alpha entre les différents groupes.
+
+```{r }
+#| label: test-stat-diversite-alpha
+
+
+valeurs_p_kruskal <- lapply(
+  df_alpha[c("Observed", "expShannon")], 
+  function(metrique) kruskal.test(metrique ~ df_alpha$grp)$p.value
+)
+
+plot_sig_heatmap <- function(donnees, metrique, titre) {
+  
+
+  resultats_wilcoxon <- pairwise.wilcox.test(
+    donnees[[metrique]], 
+    donnees$grp, 
+    p.adjust.method = "BH"
+  )$p.value
+  
+  donnees_graphique <- resultats_wilcoxon |>
+    as.table() |>
+    as.data.frame() |>
+    na.omit()
+  
+  ggplot(donnees_graphique, aes(x = Var1, y = Var2, fill = Freq)) +
+    geom_tile(color = "white") +
+    geom_text(aes(label = cut(Freq, 
+                              breaks = c(-Inf, 0.001, 0.01, 0.05, Inf), 
+                              labels = c("***", "**", "*", "ns")))) +
+    scale_fill_gradient2(low = "firebrick", mid = "red", high = "white", midpoint = 0.05) +
+    theme_minimal() + 
+    theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+    labs(title = titre, x = "Groupes", y = "Groupes comparés", fill = "Valeur p")
+}
+
+plot_sig_heatmap(df_alpha, "Observed", "Significativité - Richesse Observée")
+
+plot_sig_heatmap(df_alpha, "expShannon", "Significativité - ExpShannon")
+
+```
+
+
+Nous pouvons également visualiser les différences de diversité alpha entre les différentes modalités à l'aide de graphiques de type violon, en utilisant la fonction `ggplot2` et en ajoutant des annotations pour indiquer les significativités des différences entre les groupes.
+
+
+```{r}
+#| label: graph-diversite-alpha
+
+library(ggplot2)
+library(ggpubr)
+library(patchwork)
+
+plot_groupes <- function(df, x, y, facet_by) {
+    ggplot(df, aes(x = .data[[x]], y = .data[[y]], fill = .data[[x]])) +
+        geom_violin(alpha = 0.7, trim = FALSE) +
+        geom_pwc(method = "wilcox.test", label = "p.signif", hide.ns = TRUE) +
+        facet_wrap(vars(.data[[facet_by]])) + 
+        theme_bw() +
+        theme(axis.text.x = element_text(angle = 45, hjust = 1), legend.position = "bottom")
+}
+```
+
+```{r}
+# label: RS-ORGANES
+wrap_plots(
+    plot_groupes(df_alpha, "project", "Observed", "organ"),
+    plot_groupes(df_alpha, "position", "Observed", "organ"),
+    plot_groupes(df_alpha, "project", "Observed", "position"),
+    ncol = 3
+) + plot_annotation(title = "Richesse Spécifique par Catégorie")
+```
+
+Ce graphique compare la richesse spécifique (nombre d'espèces) de microbiomes selon l'organe, le projet (LOT) et le mode de vie (endophyte vs épiphyte). On observe que les racines et les tissus de surface (épiphytes) abritent systématiquement une biodiversité plus élevée que les feuilles ou l'intérieur des tissus (endophytes), avec des écarts statistiquement très significatifs (∗∗∗∗).
+
+L'analyse par projet montre que le LOT1 et le LOT2 conservent généralement une plus grande richesse, tandis que le LOT3 présente souvent les niveaux de diversité les plus bas, quel que soit l'organe étudié. En résumé, le compartiment végétal et la niche écologique (surface vs interne) sont les facteurs déterminants de la structure de ces communautés microbiennes.
+
+```{r}
+# label: EXPSH-ORGANES
+wrap_plots(
+    plot_groupes(df_alpha, "project", "expShannon", "organ"),
+    plot_groupes(df_alpha, "position", "expShannon", "organ"),
+    plot_groupes(df_alpha, "project", "expShannon", "position"),
+    ncol = 3
+) + plot_annotation(title = "ExpShannon par Catégorie")
+```
+Ce graphique analyse l'indice d'ExpShannon (une mesure de la diversité combinant richesse et abondance) selon les mêmes catégories que précédemment. Globalement, les tendances sont quasi identiques : la diversité est significativement plus élevée chez les épiphytes que chez les endophytes, et ce pour tous les organes étudiés.
+
+Au niveau des projets, le LOT1 domine généralement en termes de diversité, tandis que le LOT3 affiche souvent les valeurs les plus faibles, particulièrement dans les racines et chez les épiphytes. On note également que les jeunes feuilles présentent une variabilité de diversité plus importante que les autres organes. En résumé, ces résultats confirment que le mode de vie (surface vs interne) et le lot expérimental sont les facteurs majeurs influençant la structure de ces communautés.
+```{r}
+# label: RS-LOT
+wrap_plots(
+    plot_groupes(df_alpha, "organ", "Observed", "project"),
+    plot_groupes(df_alpha, "organ", "Observed", "position"),
+    plot_groupes(df_alpha, "position", "Observed", "project"),
+    ncol = 3
+) + plot_annotation(title = "Richesse Spécifique par Catégorie")
+```
+
+Ce graphique détaille la richesse spécifique observée en croisant les différents facteurs de l'étude (organe, projet et position spatiale). On constate que la tendance globale se maintient à l'échelle des projets : les échantillons de surface (épiphytes) et les racines abritent systématiquement une plus grande diversité de taxons que les tissus internes (endophytes) et les feuilles, indépendamment du site d'échantillonnage (LOT1, LOT2 ou LOT3). 
+
+
+
+
+```{r}
+# label: EXPSH-LOT
+wrap_plots(
+    plot_groupes(df_alpha, "organ", "expShannon", "project"),
+    plot_groupes(df_alpha, "organ", "expShannon", "position"),
+    plot_groupes(df_alpha, "position", "expShannon", "project"),
+    ncol = 3
+) + plot_annotation(title = "ExpShannon par Catégorie")
+
+```
+
+
+
+
+Même analyse mais en utilisant les fonctions de phyloseq pour calculer la diversité alpha et faire les graphiques
+
+```{r}
+#| label: phyloseq-diversite-alpha
+
+
+alpha_div <- c("Observed", "Chao1", "Shannon", "Simpson")
+p <- plot_richness(ps, x = "project", measures = alpha_div, color = "organ")
+p + theme_bw() + theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
+L'analyse comparative des indices de diversité alpha (Richesse observée, Chao1, Shannon et Simpson) met en évidence une structuration des communautés fongiques fortement influencée par l'organe hôte et le projet (LOT). On constate en premier lieu un effet "LOT" marqué, le LOT1 abritant globalement les niveaux de richesse spécifique et de diversité les plus élevés par rapport aux LOT2 et LOT3. Plus important encore, les différents organes affichent des signatures écologiques contrastées. Les racines constituent un réservoir de biodiversité remarquablement constant et structurellement équilibré, comme en témoignent leurs indices de Simpson très denses et proches de 1 (traduisant une forte équitabilité sans dominance écrasante d'une espèce). À l'inverse, les communautés foliaires (feuilles jeunes et âgées) sont beaucoup plus hétérogènes : bien qu'elles puissent être riches, elles présentent des chutes brutales de l'indice de Simpson, indiquant que ces micro-habitats de surface ou de tissus aériens sont fréquemment hyper-dominés par quelques taxons fongiques ultra-majoritaires.
+
+
+On realise un diagramme de Venn pour visualiser les OTUs partagés entre les différents organes et Projets. 
+
+```{r}
+#| label: venn-diagram-projet-organ
+
+
+library(ggVennDiagram)
+
+
+extraire_taxons <- function(physeq, variable) {
+  meta <- as.data.frame(sample_data(physeq))
+  groupes <- split(rownames(meta), meta[[variable]])
+  
+  lapply(groupes, function(echantillons) {
+    sous_ps <- prune_samples(echantillons, physeq)
+    abondances <- taxa_sums(sous_ps)
+    names(abondances[abondances > 0])
+  })
+}
+
+taxons_par_projet <- extraire_taxons(ps, "project")
+
+ggVennDiagram(taxons_par_projet) +
+  scale_fill_gradient(low = "white", high = "forestgreen") +
+  labs(title = "Taxons partagés entre les projets LOT",
+       fill = "Nombre de taxons") 
+
+taxons_par_organe <- extraire_taxons(ps, "organ")
+
+ggVennDiagram(taxons_par_organe) +
+  scale_fill_gradient(low = "white", high = "forestgreen") +
+  labs(title = "Taxons partagés entre les organes",
+       fill = "Nombre de taxons")
+```
+
+
+Le premier diagramme de Venn illustre la répartition des taxons fongiques mis en évidence lors des différentes phases du projet (LOT1, LOT2 et LOT3). Il apparaît qu'une proportion restreinte du microbiote, soit 9 % des taxons (2 117 OTUs), constitue le "cœur" partagé conjointement par les trois projets. La majorité de la diversité fongique est en réalité spécifique à chaque campagne : près de 68 % des taxons sont uniques à une seule session d'échantillonnage (25 % exclusivement dans le LOT1, 24 % dans le LOT2, et 19 % dans le LOT3). Ces résultats soulignent une forte variabilité compositionnelle d'un projet à l'autre, suggérant que le contexte spatio-temporel spécifique à chaque prélèvement ou l'identité précise des plantes échantillonnées à chaque fois dictent l'écrasante majorité des espèces fongiques rencontrées, plutôt qu'un "microbiome de base" fongique de la canopée qui serait constant et systématiquement distribué.
+
+Le second diagramme compare quant à lui les communautés fongiques à l'échelle des micro-habitats, en distinguant les racines, les jeunes feuilles et les vieilles feuilles de ces plantes épiphytes. Contrairement à la forte spécificité observée entre les projets, on note ici une convergence écologique marquée à l’échelle de l’individu : le cœur du microbiome partagé représente 39 % de la richesse totale (soit près de 9 500 taxons présents à la fois sur l’ensemble des organes). On observe par ailleurs que les racines abritent la plus grande proportion de taxons spécialisés, avec 17 % des OTUs (4 154 taxons) qui leur sont strictement inféodés, ce qui rejoint les constats de diversité plus élevée faits avec les indices alpha. En revanche, les feuilles (jeunes et vieilles) hébergent bien moins de taxons qui leur sont propres (seulement 7 % de taxons exclusifs pour chaque âge de feuille), suggérant qu'une grande partie des champignons présents sur le feuillage est issue d'un réservoir microbien partagé et circulant au sein de la plante elle-même ou de son environnement proche.
+
+
+Etant donné qu'avec une nombre de modalités superieur à 3, les diagrammes de Venn deviennent difficiles à interpréter, on peut aussi faire des diagrammes d'UpSet pour visualiser les intersections entre les différentes catégories d'échantillons (par exemple, en fonction de l'organe, de la position et du projet).
+
+```{r}
+#| label: upset-diagram
+
+
+# Catégories: old_leaf endophyte, old_root endophyte, young_leaf endophyte, young_root endophyte, old_leaf epiphyte, old_root epiphyte, young_leaf epiphyte, young_root epiphyte
+
+library(UpSetR)
+
+meta <- data.frame(sample_data(ps))
+meta$category <- paste(meta$age, meta$organ, meta$position, sep = "_")
+
+taxa_list <- split(rownames(meta), meta$category) |>
+  lapply(function(samples) {
+    taxa_sums <- taxa_sums(prune_samples(samples, ps))
+    names(taxa_sums[taxa_sums > 0])
+  })
+
+upset(fromList(taxa_list), nsets = length(taxa_list), order.by = "freq", 
+      main.bar.color = "forestgreen", sets.bar.color = "steelblue")
+
+
+```
+
+Ce diagramme d'UpSet détaille précisément le partage des taxons fongiques en croisant simultanément le type d'organe (racine, jeune ou vieille feuille) et le compartiment tissulaire (épiphyte pour la surface vs endophyte pour l'intérieur). L'observation majeure qui s'en dégage est la très forte dominance d'un microbiome "cœur" généraliste : l'intersection de loin la plus importante (plus de 3 000 taxons, première barre verte) correspond aux espèces présentes simultanément dans l'intégralité des six micro-habitats étudiés. Toutefois, l'analyse des intersections secondaires et de la taille totale des groupes (barres bleues à gauche) confirme le rôle prépondérant du système racinaire en tant que réservoir de diversité. Les racines, qu'elles soient considérées en surface ou en intériorité, accumulent le plus grand nombre total de taxons et sont impliquées dans les principales sous-intersections spécialisées (comme les taxons exclusifs aux tissus et surfaces racinaires). À l'inverse, les cortèges fongiques stricts de la surface des feuilles (jeunes ou âgées) sont les moins riches, indiquant une spécialisation microbienne beaucoup plus forte au niveau des racines qu'au niveau des surfaces aériennes.
+
+
+Il est aussi possible de faire des diagrammes en corde pour visualiser les associations entre les OTUs et les différentes catégories d'échantillons (par exemple, en fonction de l'organe, de la position et du projet).
+
+```{r}
+#| label: chord-diagram
+
+
+library(circlize)
+
+categories <- names(taxa_list)
+shared_mx <- matrix(0, nrow = length(categories), ncol = length(categories), 
+                    dimnames = list(categories, categories))
+
+for (i in seq_along(categories)) {
+  for (j in seq_along(categories)) {
+    if (i != j) {
+      shared_mx[i, j] <- length(intersect(taxa_list[[i]], taxa_list[[j]]))
+    }
+  }
+}
+
+chordDiagram(shared_mx, transparency = 0.3, annotationTrack = c("name", "grid"))
+
+
+
+library(dplyr)
+library(circlize)
+
+ps_rel <- transform_sample_counts(ps, function(x) x / sum(x))
+
+ps_phylum <- tax_glom(ps_rel, taxrank = "gbr268_Phylum", NArm = FALSE)
+
+df_phylum <- psmelt(ps_phylum)
+
+df_chord <- df_phylum %>%
+  mutate(organ_position = paste(organ, position, sep = "_")) %>%
+  group_by(organ_position, gbr268_Phylum) %>%
+  summarise(Abundance = sum(Abundance), .groups = "drop") %>%
+  filter(Abundance > 0.02) %>%
+  na.omit()
+
+circos.clear()
+chordDiagram(df_chord, transparency = 0.3, annotationTrack = c("name", "grid"))
+
+
+ps_rel <- transform_sample_counts(ps, function(x) x / sum(x))
+
+ps_class<- tax_glom(ps_rel, taxrank = "gbr268_Class", NArm = FALSE)
+
+df_class <- psmelt(ps_class)
+
+df_chord <- df_class %>%
+  mutate(organ_position = paste(organ, position, sep = "_")) %>%
+  group_by(organ_position, gbr268_Class) %>%
+  summarise(Abundance = sum(Abundance), .groups = "drop") %>%
+  filter(Abundance > 0.02) %>%
+  na.omit()
+
+circos.clear()
+chordDiagram(df_chord, transparency = 0.3, annotationTrack = c("name", "grid"))
+
+```
+
+
+
+
+## Analyses de diversité bêta
+
+### Calcul de distances de dissimilarité 
+
+
+On commence par calculer les distances de dissimilarité entre les échantillons en utilisant différentes métriques, telles que la distance de Bray-Curtis et la distance de Jaccard. Ces distances nous permettront d'évaluer les différences de composition des communautés fongiques entre les différents groupes d'échantillons (par exemple, en fonction de l'organe, de la position et du projet).
+```{r}
+#| label: bray-curtis-Jaccard-distance
+
+library(vegan)
+
+ps_hellinger <- transform_sample_counts(ps, function(x) sqrt(x / sum(x)))
+
+ps_hellinger <- prune_samples(sample_sums(ps_hellinger) > 0, ps_hellinger)
+
+otu_hellinger <- as(otu_table(ps_hellinger), "matrix")
+
+bray_dist <- vegdist(otu_hellinger, method = "bray", na.rm = TRUE)
+
+# jaccard_dist <- vegdist(otu_table > 0, method = "jaccard")
+```
+
+
+
+### Méthodes d’ordination
+
+Desormais, on peut utiliser les distances de dissimilarité calculées pour réaliser des ordinations, telles que le NMDS (Non-metric Multidimensional Scaling) ou le PCoA (Principal Coordinates Analysis), afin de visualiser la structuration des communautés fongiques selon les différents facteurs (1) la taxonomie des épiphytes vasculaires, (2) le type d’organe, et (3) le compartiment (surface vs tissus internes). Ces ordinations nous permettront d'identifier les regroupements d'échantillons en fonction de ces facteurs et d'évaluer l'influence relative de chacun d'eux sur la composition des communautés fongiques.
+
+```{r}
+#| label: mise-en-place-nmds-globales
+
+
+#nmds_bray_K2 <- ordinate(ps_hellinger, method = "NMDS", distance = "bray")
+
+nmds_bray_K3 <- ordinate(ps_hellinger, method = "NMDS", distance = "bray", k = 3)
+
+
+library(goeveg)
+
+dimcheckMDS(as(otu_table(ps_hellinger), "matrix"), distance = "bray", k = 5, trymax = 10)
+```
+
+```{r}
+#| label: nmds-globales
+
+
+
+bray_dist <- vegdist(as(otu_table(ps_hellinger), "matrix"), method = "bray", na.rm = TRUE)
+
+perm1=adonis2(bray_dist ~ project + organ + position, by = "margin" ,data = as(sample_data(ps_hellinger), "data.frame"), permutations = 99)
+perm1
+
+
+plot_ordination(ps_hellinger, nmds_bray_K3, color = "project", shape = "organ") +
+  stat_ellipse(aes(group = project, fill = project), alpha = 0.1, geom = "polygon") +
+  annotate("text", x = Inf, y = Inf, 
+           label = paste0("PERMANOVA: R²=", round(perm1$R2[1], 2), ", p=", perm1$`Pr(>F)`[1]), 
+           hjust = 1.1, vjust = 1.5, size = 4, fontface = "italic") +
+  theme_bw() +
+  labs(title = "NMDS - Bray-Curtis (K=3)")
+
+
+
+library(plotly)
+
+nmds_3d_data <- as.data.frame(scores(nmds_bray_K3, display = "sites"))
+nmds_3d_data$organ <- sample_data(ps_hellinger)$organ
+nmds_3d_data$position <- sample_data(ps_hellinger)$position
+nmds_3d_data$project <- sample_data(ps_hellinger)$project
+
+plot_ly(nmds_3d_data, x = ~NMDS1, y = ~NMDS2, z = ~NMDS3, 
+  color = ~organ, symbol = ~position, text = ~project,
+  type = "scatter3d", mode = "markers", 
+  marker = list(size = 5, opacity = 0.8)) %>%
+  layout(title = "NMDS 3D - Bray-Curtis (K=3)")
+```
+
+```{r}
+#| label: nmds-projets
+
+ps_epiphytes <- subset_samples(ps_hellinger, position == "epiphyte")
+nmds_epi <- ordinate(ps_epiphytes, method = "NMDS", distance = "bray")
+
+bray_epi <- vegdist(as(otu_table(ps_epiphytes), "matrix"), method = "bray")
+perm_epi <- adonis2(bray_epi ~ organ, data = as(sample_data(ps_epiphytes), "data.frame"), permutations = 999)
+
+p_epi=plot_ordination(ps_epiphytes, nmds_epi, color = "organ", shape = "project") +
+  stat_ellipse(aes(group = organ, fill = organ), alpha = 0.1, geom = "polygon") +
+  annotate("text", x = Inf, y = Inf, 
+           label = paste0("PERMANOVA: R²=", round(perm_epi$R2[1], 2), ", p=", perm_epi$`Pr(>F)`[1]), 
+           hjust = 1.1, vjust = 1.5, size = 4, fontface = "italic") +
+  theme_bw() 
+
+perm_epi
+
+
+ps_endophytes <- subset_samples(ps_hellinger, position == "endophyte")
+nmds_endo <- ordinate(ps_endophytes, method = "NMDS", distance = "bray")
+
+bray_endo <- vegdist(as(otu_table(ps_endophytes), "matrix"), method = "bray")
+perm_endo <- adonis2(bray_endo ~ organ, data = as(sample_data(ps_endophytes), "data.frame"), permutations = 99)
+
+p_endo=plot_ordination(ps_endophytes, nmds_endo, color = "organ", shape = "project") +
+  stat_ellipse(aes(group = organ, fill = organ), alpha = 0.1, geom = "polygon") +
+  annotate("text", x = Inf, y = Inf, 
+           label = paste0("PERMANOVA: R²=", round(perm_endo$R2[1], 2), ", p=", perm_endo$`Pr(>F)`[1]), 
+           hjust = 1.1, vjust = 1.5, size = 4, fontface = "italic") +
+  theme_bw() 
+
+library(pathwork)
+(p_epi + p_endo) + 
+  plot_layout(guides = "collect") + 
+  plot_annotation(title = "Comparaison des ordinations NMDS (Épiphytes vs Endophytes)")
+```
+
+
+```{r}
+  #| label: nmds-feuilles-age
+
+  nmds_family <- ordinate(ps_hellinger, method = "NMDS", distance = "bray")
+
+  bray_family <- vegdist(as(otu_table(ps_hellinger), "matrix"), method = "bray", na.rm = TRUE)
+  df_meta_family <- as(sample_data(ps_hellinger), "data.frame")
+  perm_family <- adonis2(bray_family ~ plant_family, data = df_meta_family, permutations = 999)
+
+  plot_ordination(ps_hellinger, nmds_family, color = "plant_family") +
+    stat_ellipse(aes(group = plant_family, fill = plant_family), alpha = 0.1, geom = "polygon") +
+    annotate("text", x = Inf, y = Inf, 
+             label = paste0("PERMANOVA: R²=", round(perm_family$R2[1], 2), ", p=", perm_family$`Pr(>F)`[1]), 
+             hjust = 1.1, vjust = 1.5, size = 4, fontface = "italic") +
+    theme_bw() +
+    labs(title = "NMDS - Taxonomie des plantes (Famille)",
+         color = "Famille de plante")
+
+```
+
+
+```{r}
+  #| label: nmds-feuilles-age
+
+  ps_leaves <- subset_samples(ps_hellinger, tolower(organ) %in% c("leaf", "leaves", "young_leaf", "old_leaf"))
+
+  ps_leaves <- prune_taxa(taxa_sums(ps_leaves) > 0, ps_leaves)
+
+  nmds_leaves <- ordinate(ps_leaves, method = "NMDS", distance = "bray")
+
+  bray_leaves <- vegdist(as(otu_table(ps_leaves), "matrix"), method = "bray", na.rm = TRUE)
+  df_meta_leaves <- as(sample_data(ps_leaves), "data.frame")
+  perm_leaves <- adonis2(bray_leaves ~ organ + position, data = df_meta_leaves, permutations = 999)
+
+  plot_ordination(ps_leaves, nmds_leaves, color = "organ", shape = "position") +
+    stat_ellipse(aes(group = organ, fill = organ), alpha = 0.1, geom = "polygon") +
+    annotate("text", x = Inf, y = Inf, 
+             label = paste0("Age PERMANOVA: R²=", round(perm_leaves$R2[1], 2), ", p=", perm_leaves$`Pr(>F)`[1]), 
+             hjust = 1.1, vjust = 1.5, size = 4, fontface = "italic") +
+    theme_bw() +
+    labs(title = "NMDS - Succession foliaire (Jeune vs Vieille feuille)",
+         color = "Âge",
+         shape = "Compartiment (Position)")
+
+
+
+```
+
+```{r}
+metadata_global <- as(sample_data(ps_hellinger), "data.frame")
+otu_hellinger <- as(otu_table(ps_hellinger), "matrix")
+if (taxa_are_rows(ps_hellinger)) {
+  otu_hellinger <- t(otu_hellinger)
+}
+
+vpa_result <- varpart(otu_hellinger, 
+                      ~ organ,
+                      ~ position,
+                      ~ plant_family, 
+                      ~ project, 
+                      data = metadata_global)
+
+plot(vpa_result, 
+     Xnames = c("Organe", "Position", "Hôte", "Projet"), 
+     bg = c("seagreen2", "skyblue2", "orange2"))
+```
+
+Il faut desormais tester statistiquement les association, on commence par construire un lm mais on se doute qu'il ne sera pas valide car les données ne présument pas de résidus normaux et les variances homogènes.
+
+```{r}
+#| label: test-lm
+
+
+metadata_global <- as(sample_data(ps), "data.frame")
+modele_lm <- lm(nmds_bray_K3$points[, 1] ~ organ + plant_family+project, data = metadata_global)
+summary(modele_lm)
+shapiro.test(residuals(modele_lm))
+
+par(mfrow = c(2, 2))
+plot(modele_lm)
+par(mfrow = c(1, 1))
+
+library(MASS)
+
+adjusted_nmds <- round(nmds_bray_K3$points[, 1] - min(nmds_bray_K3$points[, 1]))
+glm_test=glm.nb(adjusted_nmds ~ organ + plant_family+project, data = metadata_global)
+summary(glm_test)
+```
+
+En effet le test de Shapiro-Wilk indique que les résidus ne suivent pas une distribution normale (p < 0.05), ce qui remet en question la validité du modèle linéaire pour ces données. De plus, les graphiques de diagnostic montrent des écarts par rapport aux hypothèses de normalité et d'homoscédasticité, avec des résidus qui ne sont pas distribués de manière aléatoire autour de zéro et une tendance à l'augmentation de la variance des résidus pour les valeurs prédites plus élevées. Ces observations suggèrent que les données ne répondent pas aux conditions nécessaires pour appliquer un modèle linéaire classique, et qu'il serait plus approprié d'utiliser des méthodes non paramétriques ou des modèles alternatifs qui ne reposent pas sur ces hypothèses.
+
+On test donc l'homogénéité des dispersions multivariées (betadisper) pour vérifier si les variances sont homogènes entre les groupes, ce qui est une condition préalable pour les tests de PERMANOVA.
+
+
+```{r}
+# | label: test-homogeneite-dispersion
+
+metadata_global <- as(sample_data(ps), "data.frame")
+
+dispersion_organ <- betadisper(bray_dist, metadata_global$organ)
+permutest(dispersion_organ, permutations = 999)
+plot(dispersion_organ, main = "Homogénéité des dispersions multivariées (Organe)")
+
+dispersion_family <- betadisper(bray_dist, metadata_global$plant_family)
+permutest(dispersion_family, permutations = 999)
+plot(dispersion_family, main = "Homogénéité des dispersions multivariées (Famille de plante)")
+```
+
+Les dispersions sont homogènes, on peut donc procéder à des tests de PERMANOVA pour évaluer l'effet de chaque facteur (organe, famille de plante, projet) sur la composition des communautés fongiques, ainsi que les interactions potentielles entre ces facteurs.
+
+
+
+
+
+Il est interessant de visualiser les abondances relatives des principales classes fongiques (> 2%) par zone (organe x position) pour voir s'il y a des patrons de distribution particuliers en fonction de ces micro-habitats. On peut faire cela en utilisant la fonction `ggplot2` pour créer des graphiques à barres empilées, en utilisant les données agrégées au niveau de la classe fongique et en les facettant par organ_position.
+
+```{r}
+#| label: abondance-relative-classes-par-lot-organes
+
+
+library(dplyr)
+library(phyloseq)
+library(ggplot2)
+
+ps_rel <- transform_sample_counts(ps, function(x) x / sum(x))
+
+ps_class <- tax_glom(ps_rel, taxrank = "gbr268_Class", NArm = FALSE)
+
+ps_class_filtered <- filter_taxa(ps_class, function(x) mean(x) > 0.02, TRUE)
+
+df_class <- psmelt(ps_class_filtered)
+
+df_class$organ_position <- interaction(df_class$organ, df_class$position, sep = " - ")
+
+
+ggplot(df_class, aes(x = Sample, y = Abundance, fill = gbr268_Class)) +
+    geom_bar(stat = "identity", position = "fill", color = NA) +
+    facet_wrap(~ organ_position, scales = "free_x", ncol = 3) +
+    theme_bw() +
+    labs(title = "Abondances relatives des principales classes fongiques (> 2%) par zone",
+         x = "Échantillons ",
+         y = "Abondance relative",
+         fill = "Classe fongique") +
+    theme(legend.position = "bottom",
+          axis.text.x = element_blank(), 
+          axis.ticks.x = element_blank())
+
+ggplot(df_class, aes(x = project, y = Abundance, fill = gbr268_Class)) +
+    geom_bar(stat = "identity", position = "fill", color = NA) +
+    facet_wrap(~ organ_position, scales = "free_x", ncol = 3) +
+    theme_bw() +
+    labs(title = "Abondances relatives des principales classes fongiques (> 2%) par zone",
+         x = "Échantillons ",
+         y = "Abondance relative",
+         fill = "Classe fongique") +
+    theme(legend.position = "bottom",
+          axis.text.x = element_blank(), 
+          axis.ticks.x = element_blank())
+
+
+```
+
+
+Les espèces indicatrices sont des taxons qui sont fortement associés à une condition ou un groupe particulier. Identifier les espèces indicatrices peut nous aider à comprendre quelles espèces sont les plus caractéristiques de chaque groupe d'échantillons (par exemple, en fonction de l'organe, de la position et du projet) et à identifier des taxons potentiellement importants pour les interactions plante-microorganisme dans ces micro-habitats.
+
+```{r , results='hide'}
+#| label: core-microbiota-analysis
+
+library(ggVennDiagram)
+library(microbiome)
+taxons_list <- list(
+  Root = core_members(subset_samples(ps, organ == "root"), detection = 0, prevalence = 0.001),
+  Young_Leaf = core_members(subset_samples(ps, organ == "young_leaf"), detection = 0, prevalence = 0.001),
+  Old_Leaf = core_members(subset_samples(ps, organ == "old_leaf"), detection = 0, prevalence = 0.001)
+)
+
+ggVennDiagram(taxons_list, label_alpha = 0) +
+  scale_fill_gradient(low = "#F4FAFE", high = "#4981BF") +
+  labs(title = "Partage des OTUs entre les organes") +
+  theme(legend.position = "none")
+
+
+
+ps_rel <- transform_sample_counts(ps, function(x) x / sum(x))
+
+tax_df <- as.data.frame(tax_table(ps_rel))
+
+new_labels <- tax_df %>%
+  mutate(
+    Phylum = ifelse(is.na(gbr268_Phylum), "Unclassified", gbr268_Phylum),
+    Family = ifelse(is.na(gbr268_Family), "Unclassified", gbr268_Family),
+    FullLabel = paste0(Phylum, ": ", Family, " (", rownames(tax_df), ")")
+  )
+
+taxa_names(ps_rel) <- new_labels$FullLabel
+
+ps_core <- core(ps_rel, detection = 0.001, prevalence = 0.2)
+
+library(microbiome)
+library(RColorBrewer)
+library(dplyr)
+
+ps_family <- tax_glom(ps, taxrank = "gbr268_Family", NArm = TRUE)
+
+ps_comp <- microbiome::transform(ps_family, "compositional")
+
+tax_df <- as.data.frame(tax_table(ps_comp))
+new_labels <- paste0(tax_df$gbr268_Phylum, ": ", tax_df$gbr268_Family)
+taxa_names(ps_comp) <- new_labels
+
+ps_core <- core(ps_comp, detection = 0.001, prevalence = 0.3)
+
+plot_core(ps_core, 
+          plot.type = "heatmap", 
+          prevalences = seq(0.1, 1, 0.1), 
+          detections = c(0.001, 0.005, 0.01, 0.05, 0.1),
+          colours = rev(brewer.pal(5, "RdYlBu"))) +
+  labs(x = "Seuil de Détection (Abondance Relative %)", 
+       y = "Taxonomie (Phylum: Famille)",
+       title = "Core Microbiota au niveau Famille") +
+  scale_x_discrete(labels = c("0.1%", "0.5%", "1%", "5%", "10%")) +
+  theme_bw() +
+  theme(
+    axis.text.y = element_text(size = 9, face = "bold"),
+    axis.text.x = element_text(size = 9)
+  )
+
+
+
+
+
+
+```
+
+```{r}
+
+library(cluster)
+library(ape)
+library(ggtree)
+library(phyloseq)
+
+top_otus <- names(sort(taxa_sums(ps), decreasing = TRUE)[1:100])
+ps_top <- prune_taxa(top_otus, ps)
+
+tax_df <- as.data.frame(tax_table(ps_top))
+
+smart_names <- apply(tax_df, 1, function(x) {
+  name <- paste(x["gbr268_Genus"], x["gbr268_Species"])
+  if (grepl("Unknown", name)) {
+    name <- paste0(x["gbr268_Family"], " (unkn. sp.)")
+  }
+  return(name)
+})
+
+taxa_names(ps_top) <- make.unique(smart_names)
+
+tax_df_fact <- as.data.frame(unclass(tax_df), stringsAsFactors = TRUE)
+dist_taxo <- daisy(tax_df_fact, metric = "gower")
+arbre_taxo <- as.phylo(hclust(dist_taxo, method = "average"))
+arbre_taxo$tip.label <- taxa_names(ps_top)
+phy_tree(ps_top) <- arbre_taxo
+
+sample_data(ps_top)$dummy <- 1 
+df_abundance <- data.frame(Abundance = taxa_sums(ps_top))
+
+ps_top_final <- ps_top 
+
+ggtree(ps_top_final, aes(color = gbr268_Phylum), ladderize = TRUE) +
+  geom_tippoint(aes(size = Abundance), alpha = 0.6) + 
+  geom_tiplab(size = 2.8, offset = 0.02, fontface = "italic") + 
+  scale_size_continuous(range = c(1, 6), name = "Somme des abondances") +
+  scale_x_continuous(expand = expansion(mult = c(0, 0.8))) + 
+  theme_tree2() +
+  theme(legend.position = "right") +
+  labs(title = "Top 100 Espèces - Phylogénie Taxonomique",
+       subtitle = "La taille des points indique l'abondance totale",
+       color = "Phylum")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```
+
+# De coté car inexploitable pour le moment, mais à garder en tête pour la suite du stage
+
+Utilisation du paquet `igraph` pour construire un réseau de co-occurrence entre les taxons fongiques, en utilisant les données de la table d'abondance. On peut ensuite visualiser ce réseau pour identifier les associations potentielles entre les différents taxons et voir s'il y a des regroupements particuliers en fonction des catégories d'échantillons (par exemple, en fonction de l'organe, de la position et du projet).
+
+```{r}
+#| label: cooccurrence-network
+
+
+
+```
+
+
+```{r} 
+#| label: rarefaction-inext
+
+
+
+```
+
+```{r}
+# | label: trait-analysis
+library(fungaltraits)
+library(phyloseq)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(ggpubr)
+library(patchwork)
+
+sam_df <- data.frame(sample_data(ps), check.names = FALSE)
+sam_df$Sample <- rownames(sam_df)
+
+otu_df <- data.frame(otu_table(ps), check.names = FALSE)
+if (!taxa_are_rows(ps)) otu_df <- data.frame(t(otu_table(ps)), check.names = FALSE)
+otu_df$OTU <- rownames(otu_df)
+
+tax_df <- data.frame(tax_table(ps), check.names = FALSE)
+tax_df$OTU <- rownames(tax_df)
+
+species_col <- grep("(?i)species", colnames(tax_df), value = TRUE)[1]
+if (is.na(species_col)) species_col <- colnames(tax_df)[ncol(tax_df)]
+
+tax_df$espece_clean <- tolower(gsub("_", " ", tax_df[[species_col]]))
+especes_uniques <- unique(na.omit(tax_df$espece_clean))
+
+ft_db <- fungal_traits()
+col_species_ft <- grep("(?i)species", colnames(ft_db), value = TRUE)[1]
+ft_db$espece_clean <- tolower(gsub("_", " ", ft_db[[col_species_ft]]))
+
+df_especes <- data.frame(espece_clean = especes_uniques)
+especes_traits <- df_especes %>%
+  left_join(ft_db, by = "espece_clean") %>%
+  filter(!is.na(.data[[col_species_ft]]))
+
+taux_remplissage <- colSums(!is.na(especes_traits)) / nrow(especes_traits)
+especes_identifiees_clean <- especes_traits[, taux_remplissage >= 0.5]
+
+print(paste("Nombre d'espèces avec informations dans FungalTraits :", nrow(especes_identifiees_clean)))
+
+otu_long <- otu_df %>%
+  pivot_longer(col = -OTU, names_to = "Sample", values_to = "Abundance") %>%
+  filter(Abundance > 0)
+
+donnees_completes <- otu_long %>%
+  left_join(sam_df, by = "Sample") %>%
+  left_join(tax_df[, c("OTU", "espece_clean")], by = "OTU") %>%
+  inner_join(especes_identifiees_clean, by = "espece_clean")
+
+col_lifestyle <- grep("(?i)lifestyle|guild", colnames(donnees_completes), value = TRUE)[1]
+col_organe    <- grep("(?i)organ|tissue|compartment", colnames(sam_df), value = TRUE)[1]
+col_projet    <- grep("(?i)^(project|projet)$", colnames(sam_df), value = TRUE)[1]
+col_famille   <- grep("(?i)family|famille", colnames(sam_df), value = TRUE)[1]
+
+plot_lifestyle <- function(df, x_var, fill_var, title_suffix) {
+  if (is.na(x_var) || is.na(fill_var)) return(NULL)
+  
+  df %>%
+    filter(!is.na(.data[[x_var]]), !is.na(.data[[fill_var]])) %>%
+    ggplot(aes(x = .data[[x_var]], fill = .data[[fill_var]])) +
+    geom_bar(position = "fill") +
+    theme_minimal() +
+    labs(y = "Proportion", title = paste("Mode de vie par", title_suffix), fill = "Mode de vie") +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+}
+
+run_chi2_test <- function(df, var1, var2, label) {
+  if (is.na(var1) || is.na(var2)) return(NULL)
+  
+  df_clean <- df %>% filter(!is.na(.data[[var1]]), !is.na(.data[[var2]]))
+  tbl <- table(df_clean[[var1]], df_clean[[var2]])
+  
+  cat("\n---", label, "---\n")
+  print(suppressWarnings(chisq.test(tbl, simulate.p.value = TRUE)))
+}
+
+if (!is.na(col_lifestyle)) {
+  
+  print(plot_lifestyle(donnees_completes, col_organe, col_lifestyle, "Organe"))
+  run_chi2_test(donnees_completes, col_organe, col_lifestyle, "Test : Organe vs Mode de vie")
+  
+  print(plot_lifestyle(donnees_completes, col_projet, col_lifestyle, "Projet"))
+  
+  print(plot_lifestyle(donnees_completes, col_famille, col_lifestyle, "Famille de plante"))
+  run_chi2_test(donnees_completes, col_famille, col_lifestyle, "Test : Famille vs Mode de vie")
+  
+  if (!is.na(col_famille)) {
+    df_fam <- donnees_completes %>% filter(!is.na(.data[[col_famille]]), !is.na(.data[[col_lifestyle]]))
+    familles <- unique(df_fam[[col_famille]])
+    
+    calc_pval <- function(f1, f2) {
+      if (f1 == f2) return(1)
+      sub_df <- df_fam[df_fam[[col_famille]] %in% c(f1, f2), ]
+      tbl <- table(sub_df[[col_famille]], sub_df[[col_lifestyle]])
+      if (nrow(tbl) > 1 && ncol(tbl) > 1) {
+        suppressWarnings(chisq.test(tbl, simulate.p.value = TRUE)$p.value)
+      } else {
+        NA
+      }
+    }
+    
+    pval_df <- expand.grid(Famille1 = familles, Famille2 = familles)
+    pval_df$p_value <- mapply(calc_pval, pval_df$Famille1, pval_df$Famille2)
+    pval_df$signif <- ifelse(!is.na(pval_df$p_value) & pval_df$p_value < 0.05, "*", "")
+    
+    p_heatmap <- ggplot(pval_df, aes(x = Famille1, y = Famille2, fill = p_value)) +
+      geom_tile(color = "white") +
+      geom_text(aes(label = signif), size = 6) +
+      scale_fill_gradient2(low = "green", mid = "white", high = "red", midpoint = 0.1, 
+                           limits = c(0, 1), name = "P-value", na.value = "grey80") +
+      theme_minimal() +
+      labs(title = "Significativité des différences de mode de vie entre familles",
+           x = "Famille", y = "Famille") +
+      theme(axis.text.x = element_text(angle = 45, hjust = 1))
+    
+    print(p_heatmap)
+  }
+}
+
+
+
+
+
+```
