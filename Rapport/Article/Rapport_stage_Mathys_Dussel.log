@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2026.1.27)  23 MAR 2026 15:44
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2026.1.27)  24 MAR 2026 10:42
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -374,41 +374,57 @@ Package hyperref Info: Link coloring OFF on input line 51.
 \openout3 = `Rapport_stage_Mathys_Dussel.out'.
 
 LaTeX Font Info:    Font shape `T1/lato-TLF/m/n' will be
-(Font)              scaled to size 12.0pt on input line 57.
+(Font)              scaled to size 12.0pt on input line 62.
+
+
+LaTeX Font Warning: Font shape `T1/lato-TLF/m/sc' undefined
+(Font)              using `T1/lato-TLF/m/n' instead on input line 62.
+
 LaTeX Font Info:    Font shape `T1/lato-TLF/m/n' will be
-(Font)              scaled to size 24.88pt on input line 59.
+(Font)              scaled to size 24.88pt on input line 68.
 LaTeX Font Info:    Font shape `T1/lato-TLF/b/n' will be
-(Font)              scaled to size 24.88pt on input line 59.
+(Font)              scaled to size 24.88pt on input line 68.
 LaTeX Font Info:    Font shape `T1/lato-TLF/m/n' will be
-(Font)              scaled to size 14.4pt on input line 64.
+(Font)              scaled to size 14.4pt on input line 74.
+LaTeX Font Info:    Font shape `T1/lato-TLF/m/it' will be
+(Font)              scaled to size 14.4pt on input line 74.
+LaTeX Font Info:    Font shape `T1/lato-TLF/m/it' will be
+(Font)              scaled to size 12.0pt on input line 80.
 LaTeX Font Info:    Font shape `T1/lato-TLF/b/n' will be
-(Font)              scaled to size 14.4pt on input line 64.
-LaTeX Font Info:    Font shape `T1/lato-TLF/b/n' will be
-(Font)              scaled to size 12.0pt on input line 66.
+(Font)              scaled to size 12.0pt on input line 81.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <10.95> on input line 83.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 83.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 83.
 
 
 [1
 
 {/usr/local/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/lato/a_cl4kdn.enc}]
-LaTeX Font Info:    Font shape `T1/lato-TLF/m/it' will be
-(Font)              scaled to size 10.95pt on input line 80.
 LaTeX Font Info:    Font shape `T1/lato-TLF/b/n' will be
-(Font)              scaled to size 10.95pt on input line 83.
+(Font)              scaled to size 14.4pt on input line 111.
 
 
 
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.85 \newpage
-              [1] (./Rapport_stage_Mathys_Dussel.toc
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <10.95> on input line 4.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 4.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 4.
-)
+l.118 \end{titlepage}
+                      [1]
+LaTeX Font Info:    Font shape `T1/lato-TLF/m/it' will be
+(Font)              scaled to size 10.95pt on input line 127.
+LaTeX Font Info:    Font shape `T1/lato-TLF/b/n' will be
+(Font)              scaled to size 10.95pt on input line 130.
+
+
+
+pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.132 \newpage
+               [1] (./Rapport_stage_Mathys_Dussel.toc)
 \tf@toc=\write4
 \openout4 = `Rapport_stage_Mathys_Dussel.toc'.
 
@@ -421,22 +437,26 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
+
+
+LaTeX Font Warning: Some font shapes were not available, defaults substituted.
+
 Package rerunfilecheck Info: File `Rapport_stage_Mathys_Dussel.out' has not changed.
 (rerunfilecheck)             Checksum: 0276BC15B29E4904AC1EE3C56545AF6D;585.
  ) 
 Here is how much of TeX's memory you used:
- 12774 strings out of 473190
- 207129 string characters out of 5715800
- 628516 words of memory out of 5000000
- 35861 multiletter control sequences out of 15000+600000
- 762409 words of font info for 62 fonts, out of 8000000 for 9000
+ 12791 strings out of 473190
+ 207498 string characters out of 5715800
+ 628585 words of memory out of 5000000
+ 35876 multiletter control sequences out of 15000+600000
+ 808165 words of font info for 66 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,11n,79p,563b,520s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,11n,79p,563b,521s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2025/texmf-dist/fonts/type1/typoland/lato/Lato-Bold.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/typoland/lato/Lato-Italic.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/typoland/lato/Lato-Regular.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb>
-Output written on Rapport_stage_Mathys_Dussel.pdf (4 pages, 97124 bytes).
+Output written on Rapport_stage_Mathys_Dussel.pdf (5 pages, 98879 bytes).
 PDF statistics:
- 78 PDF objects out of 1000 (max. 8388607)
- 61 compressed objects within 1 object stream
+ 81 PDF objects out of 1000 (max. 8388607)
+ 63 compressed objects within 1 object stream
  9 named destinations out of 1000 (max. 500000)
  41 words of extra memory for PDF output out of 10000 (max. 10000000)
 
