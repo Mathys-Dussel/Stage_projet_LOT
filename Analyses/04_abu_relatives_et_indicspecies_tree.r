@@ -6,7 +6,9 @@ library(microbiome)
 library(RColorBrewer)
 library(cluster)
 library(ape)
+library(ggpubr)
 library(ggtree)
+library(spaa)
 library(vegan)
 library(ANCOMBC)
 library(tidyr)
@@ -135,3 +137,75 @@ ggplot(top_all, aes(x = reorder(Genre_clean, LFC_val), y = LFC_val, fill = gbr26
   facet_wrap(~Group, scales = "free_y", ncol = 1) +
   labs(x = "Genre", y = "Log Fold Change", fill = "Famille") +
   theme_bw()
+
+
+
+# Niche fongique par organe : Calcul de l'indice de Levins et moyenne pondérée par échantillon
+
+ps_merged <- merge_samples(ps, "organ")
+otu_merged <- as.matrix(otu_table(ps_merged))
+if (taxa_are_rows(ps_merged)) { otu_merged <- t(otu_merged) }
+
+levins_raw <- niche.width(otu_merged, method = "levins")
+niche_scores <- (as.numeric(levins_raw) - 1) / (3 - 1)
+names(niche_scores) <- colnames(levins_raw)
+
+ps_rel <- transform_sample_counts(ps, function(x) x / sum(x))
+otu_all <- as.matrix(otu_table(ps_rel))
+if (taxa_are_rows(ps_rel)) { otu_all <- t(otu_all) }
+
+calc_mean_niche <- function(sample_row, scores) {
+  present <- sample_row > 0
+  if (sum(present) == 0) return(NA) # Si échantillon vide
+  
+  sub_scores <- scores[names(sample_row)[present]]
+  sub_abund <- sample_row[present]
+  
+  return(sum(sub_abund * sub_scores, na.rm = TRUE) / sum(sub_abund, na.rm = TRUE))
+}
+
+sample_indices <- apply(otu_all, 1, calc_mean_niche, scores = niche_scores)
+
+metadata <- data.frame(sample_data(ps))
+final_df <- data.frame(
+  Sample = names(sample_indices),
+  Levins_Mean = as.numeric(sample_indices)
+) %>%
+  mutate(organ = metadata$organ[match(Sample, rownames(metadata))])
+
+niche_summary <- final_df %>%
+  filter(!is.nan(Levins_Mean) & !is.na(Levins_Mean)) %>%
+  group_by(organ) %>%
+  summarise(
+    Moyenne = mean(Levins_Mean),
+    SD = sd(Levins_Mean),
+    n = n()
+  )
+
+print(niche_summary)
+
+
+final_df$organ <- factor(final_df$organ, levels = c("root", "young_leaf", "old_leaf"))
+
+p <- ggplot(final_df, aes(x = organ, y = Levins_Mean, fill = organ)) +
+  geom_boxplot(alpha = 0.6, outlier.shape = NA, width = 0.5) +
+  geom_jitter(width = 0.15, alpha = 0.2, size = 1, color = "black") +
+  scale_fill_manual(values = c("root" = "#8c510a", 
+                                "young_leaf" = "#7fbc41", 
+                                "old_leaf" = "#276419")) +
+  labs(title = "Niche fongique par organe",
+       subtitle = "Indice de Levins normalisé (0 = Spécialiste, 1 = Généraliste)",
+       x = "Organe",
+       y = "Indice de Levins Moyen") +
+  theme_minimal() +
+  theme(legend.position = "none",
+        panel.grid.minor = element_blank(),
+        axis.text = element_text(size = 11, face = "bold"),
+        title = element_text(size = 13, face = "bold"))
+
+p_final <- p + stat_compare_means(method = "kruskal.test", label.y = max(final_df$Levins_Mean) + 0.05) +
+               stat_compare_means(label = "p.signif", method = "wilcox.test", 
+                                  ref.group = ".all.", hide.ns = FALSE)
+
+print(p_final)
+
