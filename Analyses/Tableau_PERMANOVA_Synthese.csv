@@ -1,0 +1,5 @@
+"Facteur","Df","R2","p_value"
+"project",2,0.1075,0.01
+"organ",2,0.0384,0.01
+"position",1,0.0134,0.01
+"plant_family",NA,NA,NA
