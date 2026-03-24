@@ -1,6 +1,6 @@
 setwd("~/Documents/Etudes/Stage_projet_LOT/CRBE/Analyses")
 
-ps <- readRDS("~/Documents/Etudes/Stage_projet_LOT/CRBE/Analyses/donnees/donnees_nettoyees.rds")
+ps <- readRDS("~/Documents/Etudes/Stage_projet_LOT/CRBE/Analyses/donnees/ps_final.rds")
 
 
 
@@ -121,3 +121,46 @@ if (!is.na(col_lifestyle)) {
     print(p_heatmap)
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+df_fonctions <- donnees_completes %>%
+  group_by(Sample, !!sym(col_lifestyle)) %>%
+  summarise(Abundance = sum(Abundance), .groups = 'drop') %>%
+  pivot_wider(names_from = !!sym(col_lifestyle), values_from = Abundance, values_fill = 0)
+
+df_fonctions_mat <- as.data.frame(df_fonctions)
+rownames(df_fonctions_mat) <- df_fonctions_mat$Sample
+df_fonctions_mat$Sample <- NULL
+
+metadata_sub <- sam_df[rownames(df_fonctions_mat), ]
+
+
+library(vegan)
+
+cca_mod <- cca(df_fonctions_mat ~ organ + project + plant_family, data = metadata_sub)
+
+
+anova(cca_mod) 
+
+plot(cca_mod, display = c("sp", "bp"), main = "CCA : Influence des facteurs sur les fonctions fongiques")
+
+
+summary(cca_mod)$cont
+
+anova(cca_mod, by = "term")
+
+
+scores_cca <- scores(cca_mod, display = "bp")
+print(scores_cca)
