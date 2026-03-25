@@ -96,25 +96,50 @@ ps <- readRDS("donnees/ps_final.rds")
 sample_data(ps)$LOT_sampleID <- gsub("/.*", "", sample_data(ps)$LOT_sampleID)
 
 
+print(paste("Nombre d'échantillons dans ps :", nsamples(ps)))
 
-library(dplyr)
 
-zones_clean <- ZONES_LOT_123 %>%
-  select(LOT.SampleCode, TreeZone) %>%
+
+
+env_data <- read.csv("donnees/LOT_zones.csv", header = TRUE, sep = ";", dec = ",")
+
+env_data$LOT.SampleCode <- gsub("/.*", "", env_data$LOT.SampleCode)
+
+env_data_clean <- env_data %>%
   distinct(LOT.SampleCode, .keep_all = TRUE)
 
-metadata <- data.frame(sample_data(ps))
+sample_data(ps)$LOT_sampleID <- gsub("/.*", "", sample_data(ps)$LOT_sampleID)
 
-new_metadata <- metadata %>%
-  left_join(zones_clean, by = c("LOT_sampleID" = "LOT.SampleCode"))
+meta <- as(sample_data(ps), "data.frame") %>%
+  rownames_to_column("Original_RowNames")
 
-rownames(new_metadata) <- rownames(metadata)
+meta_merged <- meta %>%
+  left_join(env_data_clean, by = c("LOT_sampleID" = "LOT.SampleCode")) %>%
+  column_to_rownames("Original_RowNames")
 
-sample_data(ps) <- sample_data(new_metadata)
+sample_data(ps) <- sample_data(meta_merged)
 
 
 
-ZONES_LOT_123 %>% 
-  count(LOT.SampleCode) %>% 
-  filter(n > 1)
+n_total <- nsamples(ps)
+
+meta_final <- as(sample_data(ps), "data.frame")
+
+sum(!is.na(meta_final$Family))
+sum(is.na(meta_final$Family))
+
+
+
+
+sample_data_df <- as(sample_data(ps), "data.frame")
+write.csv(sample_data_df, "donnees/ps_sam_table.csv", row.names = TRUE)
+
+
+
+
+
+
+
+
+
 
