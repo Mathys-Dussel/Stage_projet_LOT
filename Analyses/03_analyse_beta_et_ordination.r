@@ -66,14 +66,15 @@ plot(disper_organ)
 
 
 
+perm_global_fam <- adonis2(bray_dist ~ project + organ + position + plant_family, data = metadata, by = "margin", permutations = 99)
 
 
 
 results_list <- list(
-  "Global (Project)" = perm_global,
-  "Global (Organ)"   = perm_global,
-  "Global (Position)" = perm_global,
-  "Famille Plante"   = perm_fam
+  "Global (Project)" = perm_global_fam,
+  "Global (Organ)"   = perm_global_fam,
+  "Global (Position)" = perm_global_fam,
+  "Famille Plante"   = perm_global_fam
 )
 
 extract_permanova <- function(perm_obj, row_name) {
@@ -86,10 +87,10 @@ extract_permanova <- function(perm_obj, row_name) {
 }
 
 tab_permanova <- rbind(
-  extract_permanova(perm_global, "project"),
-  extract_permanova(perm_global, "organ"),
-  extract_permanova(perm_global, "position"),
-  extract_permanova(perm_fam, "plant_family")
+  extract_permanova(perm_global_fam, "project"),
+  extract_permanova(perm_global_fam, "organ"),
+  extract_permanova(perm_global_fam, "position"),
+  extract_permanova(perm_global_fam, "plant_family")
 )
 
 print(tab_permanova)

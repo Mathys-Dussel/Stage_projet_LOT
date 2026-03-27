@@ -32,6 +32,15 @@ ggplot(df_class, aes(x = Sample, y = Abundance, fill = gbr268_Class)) +
          x = "Échantillons ", y = "Abondance relative", fill = "Classe fongique") +
     theme(legend.position = "bottom", axis.text.x = element_blank(), axis.ticks.x = element_blank())
 
+ggplot(df_class, aes(x = plant_family, y = Abundance, fill = gbr268_Class)) +
+    geom_bar(stat = "identity", position = "fill", color = NA) +
+    facet_wrap(~ organ_position, scales = "free_x", ncol = 3) +
+    theme_bw() +
+    labs(title = "Abondances relatives des principales classes fongiques (> 2%) par famille de plante",
+       x = "Famille de plante", y = "Abondance relative", fill = "Classe fongique") +
+    theme(legend.position = "bottom", axis.text.x = element_text(angle = 45, hjust = 1))
+
+
 ggplot(df_class, aes(x = project, y = Abundance, fill = gbr268_Class)) +
     geom_bar(stat = "identity", position = "fill", color = NA) +
     facet_wrap(~ organ_position, scales = "free_x", ncol = 3) +
@@ -39,6 +48,9 @@ ggplot(df_class, aes(x = project, y = Abundance, fill = gbr268_Class)) +
     labs(title = "Abondances relatives des principales classes fongiques (> 2%) par zone",
          x = "Projet", y = "Abondance relative", fill = "Classe fongique") +
     theme(legend.position = "bottom", axis.text.x = element_blank(), axis.ticks.x = element_blank())
+
+
+
 
 
 # Venn Diagramme
@@ -100,7 +112,7 @@ p_tree +
   scale_size_continuous(range = c(1, 6), name = "Abondance totale") +
   scale_x_continuous(expand = expansion(mult = c(0, 0.8))) + 
   theme_tree2() +
-  labs(title = "Top 100 Espèces - Phylogénie Taxonomique", 
+  labs(title = "Top 100 OTU", 
        color = "Phylum")
 
 # ANCOMB2 pour identifier les taxons différentiellement abondants entre les organes
@@ -125,9 +137,9 @@ res_df <- out_3groups$res %>%
 
 res_final <- inner_join(res_df, tax_df_ancom, by = "taxon")
 
-top_root <- res_final %>% filter(p_root < 0.05 & lfc_root > 0) %>% arrange(desc(lfc_root)) %>% head(10) %>% mutate(Group = "Root (vs Old Leaf)", LFC_val = lfc_root)
-top_young <- res_final %>% filter(p_young < 0.05 & lfc_young > 0) %>% arrange(desc(lfc_young)) %>% head(10) %>% mutate(Group = "Young Leaf (vs Old Leaf)", LFC_val = lfc_young)
-top_old <- res_final %>% filter(p_root < 0.05 & lfc_root < 0 & p_young < 0.05 & lfc_young < 0) %>% arrange(lfc_root) %>% head(10) %>% mutate(Group = "Old Leaf (Enrichi)", LFC_val = abs(lfc_root))
+top_root <- res_final %>% filter(p_root < 0.05 & lfc_root > 0) %>% arrange(desc(lfc_root)) %>% head(10) %>% mutate(Group = "Racines (vs Vieilles feuilles)", LFC_val = lfc_root)
+top_young <- res_final %>% filter(p_young < 0.05 & lfc_young > 0) %>% arrange(desc(lfc_young)) %>% head(10) %>% mutate(Group = "Jeunes feuilles (vs Vieilles feuilles)", LFC_val = lfc_young)
+top_old <- res_final %>% filter(p_root < 0.05 & lfc_root < 0 & p_young < 0.05 & lfc_young < 0) %>% arrange(lfc_root) %>% head(10) %>% mutate(Group = "Vieilles feuilles", LFC_val = abs(lfc_root))
 
 top_all <- rbind(top_root, top_young, top_old)
 
@@ -135,7 +147,7 @@ ggplot(top_all, aes(x = reorder(Genre_clean, LFC_val), y = LFC_val, fill = gbr26
   geom_bar(stat = "identity") +
   coord_flip() +
   facet_wrap(~Group, scales = "free_y", ncol = 1) +
-  labs(x = "Genre", y = "Log Fold Change", fill = "Famille") +
+  labs(x = "Genre", y = "Echelle log des abondances", fill = "Famille") +
   theme_bw()
 
 
@@ -156,7 +168,7 @@ if (taxa_are_rows(ps_rel)) { otu_all <- t(otu_all) }
 
 calc_mean_niche <- function(sample_row, scores) {
   present <- sample_row > 0
-  if (sum(present) == 0) return(NA) # Si échantillon vide
+  if (sum(present) == 0) return(NA)
   
   sub_scores <- scores[names(sample_row)[present]]
   sub_abund <- sample_row[present]

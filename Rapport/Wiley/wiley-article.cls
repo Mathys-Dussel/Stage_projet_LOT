@@ -136,7 +136,7 @@
     \setmainfont[Ligatures=TeX]{TeX Gyre Termes}
     \setmathfont[Extension=.otf,BoldFont=*bold]{xits-math}
   \else
-\RequirePackage[partial=upright]{unicode-math}
+%     \RequirePackage[partial=upright]{unicode-math}
     \setmainfont[Ligatures=TeX]{Lato}
     \setmathfont{TeX Gyre DejaVu Math}
     \setmathfont[range={\int}]{Latin Modern Math}
@@ -465,7 +465,7 @@
 \newcommand{\wiley@affilmetadata}{%
   \AB@affillist\par%
   \vskip10pt%
-  \textbf{Correspondence}\\
+  \textbf{Maîtresse de stage}\\
   \@corraddress\\
   Email: \@corremail\par
   \ifx\empty\@presentaddress
@@ -475,10 +475,10 @@
     \@presentaddress\par
   \fi%
   \vskip10pt%
-  \textbf{Funding information}\\
-  \@fundinginfo\par
-  \ifdefempty{\@papereditor}{}
-  {\vskip10pt Editor: \@papereditor\par}
+  %\textbf{Funding information}\\
+  %\@fundinginfo\par
+  %\ifdefempty{\@papereditor}{}
+  %{\vskip10pt Editor: \@papereditor\par}
 }
 
 %% Abbreviations in the footnote
