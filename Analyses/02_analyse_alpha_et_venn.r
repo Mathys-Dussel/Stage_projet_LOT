@@ -93,6 +93,22 @@ wrap_plots(
 
 
 
+
+library(vegan)
+
+matrice_otu <- as(otu_table(ps), "matrix")
+if (taxa_are_rows(ps)) {
+  matrice_otu <- t(matrice_otu)
+}
+
+courbe_accum <- specaccum(matrice_otu, method = "exact")
+plot(courbe_accum, col = "steelblue", lwd = 2,
+     main = "Courbe d'accumulation spécifique",
+     xlab = "Nombre d'échantillons",
+     ylab = "Nombre d'OTUs/ASVs")
+
+
+
 # avec la fonction native de phyloseq
 alpha_div <- c("Observed", "Chao1", "Shannon", "Simpson")
 p <- plot_richness(ps, x = "project", measures = alpha_div, color = "organ")
