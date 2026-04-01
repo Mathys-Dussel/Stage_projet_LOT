@@ -108,8 +108,13 @@ write.csv(tab_permanova, "donnees/Tableau_PERMANOVA_Synthese.csv", row.names = F
 ps_lot01 <- subset_samples(ps_hel, project == "LOT1")
 ps_lot01 <- prune_taxa(taxa_sums(ps_lot01) > 0, ps_lot01)
 
+# Remove samples with missing values for PERMANOVA variables
+meta_lot01 <- as(sample_data(ps_lot01), "data.frame")
+valid_samples <- complete.cases(meta_lot01[, c("organ", "position", "Zone", "plant_family", "Morphologie", "Capacité_Nid")])
+ps_lot01 <- prune_samples(valid_samples, ps_lot01)
+
 bray_lot01 <- vegdist(otu_table(ps_lot01), method = "bray")
-perm_lot01 <- adonis2(bray_lot01 ~ organ + position + Zone + plant_family, data = as(sample_data(ps_lot01), "data.frame"), by = "margin", permutations = 999)
+perm_lot01 <- adonis2(bray_lot01 ~ organ + position + Zone + plant_family + Morphologie + Capacité_Nid, data = as(sample_data(ps_lot01), "data.frame"), by = "margin", permutations = 999)
 
 nmds_lot01 <- ordinate(ps_lot01, method = "NMDS", distance = "bray", k = 3)
 
@@ -135,7 +140,15 @@ p_lot1_family <- plot_ordination(ps_lot01, nmds_lot01, color = "plant_family") +
 
 (p_lot1_organ | p_lot1_position) / (p_lot1_zone | p_lot1_family) + plot_annotation(title = "Ordination NMDS - LOT1")
 
+p_lot1_morpho <- plot_ordination(ps_lot01, nmds_lot01, color = "Morphologie") +
+  stat_ellipse() +
+  labs(title = "LOT1 - Morphologie") +
+  theme_bw()
 
+p_lot1_capacite_nid <- plot_ordination(ps_lot01, nmds_lot01, color = "Capacité_Nid") +
+  stat_ellipse() +
+  labs(title = "LOT1 - Capacité de nid") +
+  theme_bw()
 
 
 
@@ -145,8 +158,18 @@ p_lot1_family <- plot_ordination(ps_lot01, nmds_lot01, color = "plant_family") +
 ps_lot02 <- subset_samples(ps_hel, project == "LOT2")
 ps_lot02 <- prune_taxa(taxa_sums(ps_lot02) > 0, ps_lot02)
 
+meta_lot02 <- as(sample_data(ps_lot02), "data.frame")
+valid_samples <- complete.cases(meta_lot02[, c("organ", "position", "Zone", "plant_family", "Morphologie", "Capacité_Nid")])
+ps_lot02 <- prune_samples(valid_samples, ps_lot02)
+
+
 bray_lot02 <- vegdist(otu_table(ps_lot02), method = "bray")
-perm_lot02 <- adonis2(bray_lot02 ~ organ + position + Zone + plant_family, data = as(sample_data(ps_lot02), "data.frame"), by = "margin", permutations = 99)
+# Only keep variables with 2 or more levels
+vars_lot02 <- c("organ", "position", "Zone", "plant_family", "Morphologie", "Capacité_Nid")
+valid_vars_lot02 <- vars_lot02[sapply(meta_lot02[valid_samples, vars_lot02], function(x) length(unique(x)) > 1)]
+formula_lot02 <- as.formula(paste("bray_lot02 ~", paste(valid_vars_lot02, collapse = " + ")))
+
+perm_lot02 <- adonis2(formula_lot02, data = as(sample_data(ps_lot02), "data.frame"), by = "margin", permutations = 99)
 
 nmds_lot02 <- ordinate(ps_lot02, method = "NMDS", distance = "bray", k = 3)
 
@@ -171,6 +194,17 @@ p_lot2_family <- plot_ordination(ps_lot02, nmds_lot02, color = "plant_family") +
   theme_bw()
 
 (p_lot2_organ | p_lot2_position) / (p_lot2_zone | p_lot2_family) + plot_annotation(title = "Ordination NMDS - LOT2")
+
+
+p_lot2_morpho <- plot_ordination(ps_lot02, nmds_lot02, color = "Morphologie") +
+  stat_ellipse() +
+  labs(title = "LOT2 - Morphologie") +
+  theme_bw()
+
+p_lot2_capacite_nid <- plot_ordination(ps_lot02, nmds_lot02, color = "Capacité_Nid") +
+  stat_ellipse() +
+  labs(title = "LOT1 - Capacité de nid") +
+  theme_bw()
 
 
 ############### LOT03 #################
@@ -206,36 +240,61 @@ p_lot3_family <- plot_ordination(ps_lot03, nmds_lot03, color = "plant_family") +
 (p_lot3_organ | p_lot3_position) / (p_lot3_zone | p_lot3_family) + plot_annotation(title = "Ordination NMDS - LOT3")
 
 
+################# organ = root ##########
+ps_roots <- subset_samples(ps_hel, organ == "root")
+ps_roots <- prune_taxa(taxa_sums(ps_roots) > 0, ps_roots) 
 
-############### Racine #################
+meta_roots <- as(sample_data(ps_roots), "data.frame")
+valid_samples <- complete.cases(meta_roots[, c("position", "Zone", "plant_family", "Morphologie", "Capacité_Nid")])
+ps_roots <- prune_samples(valid_samples, ps_roots)
 
-unique(sample_data(ps_hel)$organ)
+bray_roots <- vegdist(otu_table(ps_roots), method = "bray")
+perm_roots <- adonis2(bray_roots ~ position + Zone + plant_family + Morphologie + Capacité_Nid, data = as(sample_data(ps_roots), "data.frame"), by = "margin", permutations = 99)
 
-ps_racine <- subset_samples(ps_hel, organ == "root")
-ps_racine <- prune_taxa(taxa_sums(ps_racine) > 0, ps_racine)
+nmds_roots <- ordinate(ps_roots, method = "NMDS", distance = "bray", k = 3) 
 
-bray_racine <- vegdist(otu_table(ps_racine), method = "bray")
-perm_racine <- adonis2(bray_racine ~ project + position + Zone + plant_family, data = as(sample_data(ps_racine), "data.frame"), by = "margin", permutations = 99)
-nmds_racine <- ordinate(ps_racine, method = "NMDS", distance = "bray", k = 3)
+plot_ordination(ps_roots, nmds_roots, color = "Morphologie") + 
+  labs(title = "Filtrage (Racines: Epi vs Endo)") +
+  theme_minimal()
 
-p_racine_organ <- plot_ordination(ps_racine, nmds_racine, color = "organ") +
+plot_ordination(ps_roots, nmds_roots, color = "Capacité_Nid", shape = "position") + 
+  labs(title = "Filtrage (Racines: Epi vs Endo)") +
+  theme_minimal()
+
+plot_ordination(ps_roots, nmds_roots, color = "Capacité_Nid", shape = "project") + 
+  labs(title = "Filtrage (Racines: Epi vs Endo)") +
   stat_ellipse() +
-  labs(title = "Racine - Organe") +
-  theme_bw()
+  theme_minimal()
 
-p_racine_position <- plot_ordination(ps_racine, nmds_racine, color = "position") +
-  stat_ellipse() +
-  labs(title = "Racine - Position") +
-  theme_bw()
+  ps_roots <- subset_samples(ps_hel, organ == "root" & project == "LOT1")
+  ps_roots <- prune_taxa(taxa_sums(ps_roots) > 0, ps_roots) 
 
-p_racine_zone <- plot_ordination(ps_racine, nmds_racine, color = "Zone") +
-  stat_ellipse() +
-  labs(title = "Racine - Zone géographique") +
-  theme_bw()
+  meta_roots <- as(sample_data(ps_roots), "data.frame")
+  valid_samples <- complete.cases(meta_roots[, c("position", "Zone", "plant_family", "Morphologie", "Capacité_Nid")])
+  ps_roots <- prune_samples(valid_samples, ps_roots)
 
-p_racine_family <- plot_ordination(ps_racine, nmds_racine, color = "plant_family") +
-  stat_ellipse() +
-  labs(title = "Racine - Famille végétale") +
-  theme_bw()
+  bray_roots <- vegdist(otu_table(ps_roots), method = "bray")
+  perm_roots <- adonis2(bray_roots ~ position + Zone + plant_family + Morphologie + Capacité_Nid, data = as(sample_data(ps_roots), "data.frame"), by = "margin", permutations = 99)
 
-(p_racine_organ | p_racine_position) / (p_racine_zone | p_racine_family) + plot_annotation(title = "Ordination NMDS - Racine")
+  nmds_roots <- ordinate(ps_roots, method = "NMDS", distance = "bray", k = 3) 
+
+  plot_ordination(ps_roots, nmds_roots, color = "Morphologie") + 
+    labs(title = "Filtrage (Racines: Epi vs Endo) - LOT1") +
+        stat_ellipse() +
+    theme_minimal()
+
+  plot_ordination(ps_roots, nmds_roots, color = "Capacité_Nid", shape = "position") + 
+    labs(title = "Filtrage (Racines: Epi vs Endo) - LOT1") +
+    stat_ellipse() +
+    theme_minimal()
+
+  plot_ordination(ps_roots, nmds_roots, color = "Capacité_Nid", shape = "project") + 
+    labs(title = "Filtrage (Racines: Epi vs Endo) - LOT1") +
+    stat_ellipse() +
+    theme_minimal()
+
+
+    valid_samples <- complete.cases(metadata[, c("Morphologie", "Capacité_Nid")])
+    ps_valid <- prune_samples(valid_samples, ps_hel)
+    bray_valid <- vegdist(otu_table(ps_valid), method = "bray")
+    adonis2(bray_valid ~ Morphologie + Capacité_Nid, data = as(sample_data(ps_valid), "data.frame"), by = "margin", permutations = 99)

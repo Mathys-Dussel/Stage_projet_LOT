@@ -82,6 +82,71 @@ plot_core(ps_core, plot.type = "heatmap",
   theme_bw() +
   theme(axis.text.y = element_text(size = 9, face = "bold"))
 
+
+
+library(indicspecies)
+library(tibble)
+library(tidyr)
+
+otu_mat <- as(otu_table(ps), "matrix")
+if (taxa_are_rows(ps)) { otu_mat <- t(otu_mat) }
+
+metadata_df <- as.data.frame(sample_data(ps))
+
+indval <- multipatt(otu_mat, metadata_df$plant_family, func = "IndVal.g", duleg = TRUE, control = how(nperm = 99))
+
+signif_otus <- indval$sign %>%
+  rownames_to_column("OTU") %>%
+  filter(p.value <= 0.05) %>%
+  pivot_longer(cols = starts_with("s."), names_to = "plant_family", values_to = "is_indicator") %>%
+  filter(is_indicator == 1) %>%
+  mutate(plant_family = gsub("^s\\.", "", plant_family))
+
+stat_df <- as.data.frame(indval$str) %>%
+  rownames_to_column("OTU") %>%
+  pivot_longer(
+    cols = -OTU, 
+    names_to = "plant_family", 
+    values_to = "Stat"
+  ) %>%
+  mutate(plant_family = gsub("^s\\.", "", plant_family))
+
+plot_df <- stat_df %>%
+  inner_join(signif_otus, by = c("OTU", "plant_family")) %>%
+  select(OTU, plant_family, Stat) %>%
+  distinct()
+head(stat_df)
+ggplot(plot_df, aes(x = plant_family, y = OTU, size = Stat, color = Stat)) +
+  geom_point() +
+  scale_color_distiller(palette = "YlOrRd", direction = 1) +
+  theme_bw() +
+  labs(title = "Espèces indicatrices (Indicspecies) par Famille de Plante",
+       x = "Famille de Plante", 
+       y = "OTUs Indicatifs",
+       size = "IndVal Stat", 
+       color = "IndVal Stat") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, face = "bold"),
+        axis.text.y = element_text(size = 6))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Arbre taxonomique des 100 OTUs les plus abondants
 
 top_otus <- names(sort(taxa_sums(ps), decreasing = TRUE)[1:100])

@@ -29,5 +29,35 @@ sample_data(ps)$Zone[substr(sample_data(ps)$LOT_sampleID, 9, 9) %in% c("5", "6")
 
 
 
+metadata <- data.frame(sample_data(ps))
+
+df_genres <- data.frame(Genre = unique(metadata$plant_genus))
+
+df_genres <- df_genres[order(df_genres$plant_genus) , drop = FALSE]
+
+head(df_genres)
+
+write.csv(df_genres, "donnees/Genres_plantes.csv", row.names = FALSE)
+
+library(dplyr)
+df_especes_genres <- metadata %>%
+  select(plant_species, plant_genus) %>%
+  distinct()
+
+write.csv(df_especes_genres, "donnees/Especes_Genres_plantes.csv", row.names = FALSE)
+
+traits_plantes=read.csv("donnees/Genres_plantes_traits.csv", sep = ";", stringsAsFactors = FALSE) 
+meta_df <- data.frame(sample_data(ps), check.names = FALSE)
+meta_df$SampleID <- rownames(meta_df)
+
+meta_merged <- left_join(meta_df, traits_plantes, by = "plant_genus")
+rownames(meta_merged) <- meta_merged$SampleID
+meta_merged$SampleID <- NULL
+
+sample_data(ps) <- sample_data(meta_merged)
+
+head(sample_data(ps))
+
+
 saveRDS(ps, "~/Documents/Etudes/Stage_projet_LOT/CRBE/Analyses/donnees/ps_final.rds")
 saveRDS(df_alpha, "~/Documents/Etudes/Stage_projet_LOT/CRBE/Analyses/donnees/df_alpha.rds")
