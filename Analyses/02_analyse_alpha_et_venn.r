@@ -93,19 +93,139 @@ wrap_plots(
 
 
 
+# Courbes de raréfaction en fct du nombre de sequences lues
+
+
 
 library(vegan)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
 
-matrice_otu <- as(otu_table(ps), "matrix")
-if (taxa_are_rows(ps)) {
-  matrice_otu <- t(matrice_otu)
+otu_mat <- as(otu_table(ps), "matrix")
+if (taxa_are_rows(ps)) { otu_mat <- t(otu_mat) }
+
+out <- rarecurve(otu_mat, step = 500, label = FALSE, tidy = TRUE)
+
+colnames(out) <- c("Site", "Profondeur", "OTUs")
+
+metadata_sub <- data.frame(
+  Site = sample_names(ps), 
+  Organe = as.character(sample_data(ps)$organ)
+)
+
+rare_df <- out %>%
+  left_join(metadata_sub, by = "Site")
+
+ggplot(rare_df, aes(x = Profondeur, y = OTUs, group = Site, color = Organe)) +
+  geom_line(alpha = 0.15) + 
+  scale_color_manual(values = c("root" = "#4DAF4A", "old_leaf" = "#E41A1C", "young_leaf" = "#377EB8")) +
+  labs(title = "Courbes de raréfaction (1107 échantillons)",
+       x = "Nombre de séquences lues",
+       y = "Nombre d'OTUs (Richesse)") +
+  theme_minimal() +
+  guides(color = guide_legend(override.aes = list(alpha = 1, linewidth = 2)))
+
+
+
+
+
+
+library(vegan)
+library(ggplot2)
+
+otu_mat <- as(otu_table(ps), "matrix")
+if (taxa_are_rows(ps)) { otu_mat <- t(otu_mat) }
+
+get_specacc <- function(mat, groups, target) {
+  sub_mat <- mat[groups == target, ]
+  acc <- specaccum(sub_mat, method = "random", permutations = 100)
+  
+  return(data.frame(
+    Samples = acc$sites,
+    Richness = acc$richness,
+    SD = acc$sd,
+    Organe = target
+  ))
 }
 
-courbe_accum <- specaccum(matrice_otu, method = "exact")
-plot(courbe_accum, col = "steelblue", lwd = 2,
-     main = "Courbe d'accumulation spécifique",
-     xlab = "Nombre d'échantillons",
-     ylab = "Nombre d'OTUs/ASVs")
+organs <- unique(as.character(sample_data(ps)$organ))
+df_acc <- do.call(rbind, lapply(organs, function(x) get_specacc(otu_mat, sample_data(ps)$organ, x)))
+
+ggplot(df_acc, aes(x = Samples, y = Richness, color = Organe, fill = Organe)) +
+  geom_ribbon(aes(ymin = Richness - SD, ymax = Richness + SD), alpha = 0.2, color = NA) +
+  geom_line(linewidth = 1) +
+  scale_color_brewer(palette = "Set1") +
+  scale_fill_brewer(palette = "Set1") +
+  labs(title = "Courbe d'accumulation des espèces (SAC)",
+       x = "Nombre d'échantillons (Individus)",
+       y = "Nombre d'OTUs cumulés") +
+  theme_bw()
+
+
+
+
+
+
+
+library(vegan)
+library(ggplot2)
+library(dplyr)
+
+get_shannon_acc <- function(ps_obj, target_organ_name) {
+  indices <- which(sample_data(ps_obj)$organ == target_organ_name)
+  
+  otu_full <- as(otu_table(ps_obj), "matrix")
+  if (taxa_are_rows(ps_obj)) { otu_full <- t(otu_full) }
+  
+  otu_sub <- otu_full[indices, , drop = FALSE]
+  n_samples <- nrow(otu_sub)
+  
+  res <- replicate(20, {
+    sapply(seq(1, n_samples, length.out = 30), function(n) { 
+      n <- round(n)
+      if (n == 1) {
+        idx <- sample(1:n_samples, 1)
+        shan <- diversity(otu_sub[idx, , drop=FALSE], index = "shannon")
+      } else {
+        idx <- sample(1:n_samples, n)
+        combined_otu <- colSums(otu_sub[idx, , drop=FALSE])
+        shan <- diversity(combined_otu, index = "shannon")
+      }
+      return(exp(shan)) 
+    })
+  })
+  
+  return(data.frame(
+    Samples = seq(1, n_samples, length.out = 30),
+    ExpShannon = rowMeans(res),
+    SD = apply(res, 1, sd),
+    Organe = target_organ_name
+  ))
+}
+
+organs <- unique(as.character(sample_data(ps)$organ))
+df_shannon_acc <- do.call(rbind, lapply(organs, function(x) get_shannon_acc(ps, x)))
+
+ggplot(df_shannon_acc, aes(x = Samples, y = ExpShannon, color = Organe, fill = Organe)) +
+  geom_ribbon(aes(ymin = ExpShannon - SD, ymax = ExpShannon + SD), alpha = 0.2, color = NA) +
+  geom_line(linewidth = 1.2) +
+  scale_color_brewer(palette = "Set1") +
+  scale_fill_brewer(palette = "Set1") +
+  labs(title = "Diversité Cumulative (Nombre d'espèces effectives)",
+       subtitle = "Accumulation de l'Exp(Shannon) : Stabilité de la structure des communautés",
+       x = "Nombre d'échantillons (Plantes)",
+       y = "Exp(Shannon) global") +
+  theme_bw()
+
+
+
+
+
+
+
+
+
 
 
 

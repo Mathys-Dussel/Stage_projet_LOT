@@ -20,5 +20,14 @@ df_alpha <- estimate_richness(ps, measures = c("Observed", "Shannon")) |>
     grp = interaction(organ, position, project)
   )
 
+
+sample_data(ps)$Zone <- "Unknown"
+sample_data(ps)$Zone[substr(sample_data(ps)$LOT_sampleID, 9, 9) == "1"] <- "Bottom"
+sample_data(ps)$Zone[substr(sample_data(ps)$LOT_sampleID, 9, 9) %in% c("2", "3")] <- "top_trunk"
+sample_data(ps)$Zone[substr(sample_data(ps)$LOT_sampleID, 9, 9) == "4"] <- "Heart"
+sample_data(ps)$Zone[substr(sample_data(ps)$LOT_sampleID, 9, 9) %in% c("5", "6")] <- "periph_canopy"
+
+
+
 saveRDS(ps, "~/Documents/Etudes/Stage_projet_LOT/CRBE/Analyses/donnees/ps_final.rds")
 saveRDS(df_alpha, "~/Documents/Etudes/Stage_projet_LOT/CRBE/Analyses/donnees/df_alpha.rds")

@@ -235,8 +235,6 @@ interact_plot(glm_humi_temp_exp, pred = Mean_Humi, modx = Mean_Temp)
 
 
 
-
-
 library(phyloseq)
 library(ggplot2)
 library(ggpubr)
@@ -244,54 +242,21 @@ library(patchwork)
 
 ps <- readRDS("donnees/ps_final.rds")
 
-
 sample_data(ps)$LOT_sampleID <- gsub("/.*", "", sample_data(ps)$LOT_sampleID)
-
-
-print(paste("Nombre d'échantillons dans ps :", nsamples(ps)))
-
-
-
 
 env_data <- read.csv("donnees/LOT_zones.csv", header = TRUE, sep = ";", dec = ",")
-
 env_data$LOT.SampleCode <- gsub("/.*", "", env_data$LOT.SampleCode)
 
-env_data_clean <- env_data %>%
-  distinct(LOT.SampleCode, .keep_all = TRUE)
+sam_data <- as(sample_data(ps), "data.frame")
 
-sample_data(ps)$LOT_sampleID <- gsub("/.*", "", sample_data(ps)$LOT_sampleID)
+sam_data$TreeZone <- env_data$TreeZone[match(sam_data$LOT_sampleID, env_data$LOT.SampleCode)]
 
-meta <- as(sample_data(ps), "data.frame") %>%
-  rownames_to_column("Original_RowNames")
+sample_data(ps) <- sample_data(sam_data)
 
-meta_merged <- meta %>%
-  left_join(env_data_clean, by = c("LOT_sampleID" = "LOT.SampleCode")) %>%
-  column_to_rownames("Original_RowNames")
+sum(sam_data$LOT_sampleID %in% env_data$LOT.SampleCode)
 
-sample_data(ps) <- sample_data(meta_merged)
+head(sample_data(ps)$TreeZone)
 
 
-
-n_total <- nsamples(ps)
-
-meta_final <- as(sample_data(ps), "data.frame")
-
-sum(!is.na(meta_final$Family))
-sum(is.na(meta_final$Family))
-
-
-
-
-sample_data_df <- as(sample_data(ps), "data.frame")
-write.csv(sample_data_df, "donnees/ps_sam_table.csv", row.names = TRUE)
-
-
-
-
-
-
-
-
-
+data_matche <- merge(sam_data, env_data, by.x = "LOT_sampleID", by.y = "LOT.SampleCode")
 
