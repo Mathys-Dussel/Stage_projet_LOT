@@ -207,9 +207,155 @@ plot_core(ps_core, plot.type = "heatmap",
                                colnames_angle = 45, colnames_offset_y = -3,
                              font.size = 3) +
             scale_fill_gradient(low = "white", high = "blue", name = "IndVal Moyenne") +
-            theme(legend.position = "right", plot.margin = margin(10, 120, 10, 10))
+            theme(legend.position = "right", plot.margin = margin(10, 120, 50, 10))
 
           print(p_final)
+
+
+
+
+            ps_filt <- filter_taxa(ps, function(x) sum(x > 0) > (0.001 * nsamples(ps)), TRUE)
+
+            ps_filt <- prune_taxa(names(sort(taxa_sums(ps_filt), TRUE)[1:min(2000, ntaxa(ps_filt))]), ps_filt)
+
+            if(taxa_are_rows(ps_filt)) {
+            otu_tab <- as.matrix(t(otu_table(ps_filt)))
+            } else {
+            otu_tab <- as.matrix(otu_table(ps_filt))
+            }
+
+            groups_vec <- paste(sample_data(ps_filt)$project, 
+                      sample_data(ps_filt)$organ, 
+                      sample_data(ps_filt)$position, sep = "_")
+
+            inv <- multipatt(otu_tab, groups_vec, 
+                     func = "IndVal.g", 
+                     control = how(nperm = 99), duleg = TRUE) 
+
+            inv_res <- inv$sign %>%
+            rownames_to_column("OTU") %>%
+            filter(p.value < 0.05) %>%
+            mutate(Group_Name = colnames(inv$comb)[index])
+
+            tax_df <- as.data.frame(tax_table(ps_filt)) %>%
+            rownames_to_column("OTU") %>%
+            filter(OTU %in% inv_res$OTU) %>%
+            filter(!is.na(gbr268_Phylum) & !is.na(gbr268_Class) & !is.na(gbr268_Order)) %>%
+            filter(gbr268_Phylum != "Unknown" & gbr268_Class != "Unknown" & gbr268_Order != "Unknown") %>%
+            mutate(across(c(gbr268_Phylum, gbr268_Class, gbr268_Order), as.factor))
+
+            heatmap_data <- inv_res %>%
+            left_join(tax_df, by = "OTU") %>%
+            filter(!is.na(gbr268_Order)) %>%
+            group_by(gbr268_Order, Group_Name) %>%
+            summarise(stat = mean(stat, na.rm = TRUE), .groups = 'drop') %>%
+            pivot_wider(names_from = Group_Name, values_from = stat, values_fill = 0) %>%
+            column_to_rownames("gbr268_Order")
+
+            tree_structure <- tax_df %>% 
+            select(gbr268_Phylum, gbr268_Class, gbr268_Order) %>% 
+            distinct()
+            tree <- as.phylo(~gbr268_Phylum/gbr268_Class/gbr268_Order, data = tree_structure)
+
+            p <- ggtree(tree, layout = "rectangular") + 
+            geom_tiplab(size = 3, align = TRUE, offset = 1) 
+
+            heatmap_data <- heatmap_data[, sort(colnames(heatmap_data))]
+
+            p_final <- gheatmap(p, heatmap_data, 
+                 offset = 5.0, width = 1.5, color = "black",
+                   colnames_angle = 90, colnames_offset_y = -5,
+                 font.size = 3) +
+            scale_fill_gradient(low = "white", high = "blue", name = "IndVal Moyenne") +
+            scale_y_continuous(expand = expansion(mult = c(0.2, 0.2))) +
+            coord_cartesian(clip = "off") +
+            theme(legend.position = "right", plot.margin = margin(10, 120, 10, 10))
+
+            print(p_final)
+
+
+
+            p <- ggtree(tree, layout = "dendrogramme") + 
+            geom_tiplab(size = 3, align = TRUE, offset = 1) 
+
+print(p)
+
+summary(inv)
+summary(inv_res)
+
+
+
+
+
+
+            ps_filt <- filter_taxa(ps, function(x) sum(x > 0) > (0.001 * nsamples(ps)), TRUE)
+
+            ps_filt <- prune_taxa(names(sort(taxa_sums(ps_filt), TRUE)[1:min(2000, ntaxa(ps_filt))]), ps_filt)
+
+            if(taxa_are_rows(ps_filt)) {
+            otu_tab <- as.matrix(t(otu_table(ps_filt)))
+            } else {
+            otu_tab <- as.matrix(otu_table(ps_filt))
+            }
+
+            groups_vec <- paste(sample_data(ps_filt)$project, 
+                      sample_data(ps_filt)$organ, 
+                      sample_data(ps_filt)$position, sep = "_")
+
+            inv <- multipatt(otu_tab, groups_vec, 
+                     func = "IndVal.g", 
+                     control = how(nperm = 99), duleg = TRUE) 
+
+            inv_res <- inv$sign %>%
+            rownames_to_column("OTU") %>%
+            filter(p.value < 0.05) %>%
+            mutate(Group_Name = colnames(inv$comb)[index])
+
+            tax_df <- as.data.frame(tax_table(ps_filt)) %>%
+            rownames_to_column("OTU") %>%
+            filter(OTU %in% inv_res$OTU) %>%
+            filter(!is.na(gbr268_Phylum) & !is.na(gbr268_Class) & !is.na(gbr268_Order) & !is.na(gbr268_Family)) %>%
+            filter(gbr268_Phylum != "Unknown" & gbr268_Class != "Unknown" & gbr268_Order != "Unknown"& gbr268_Family != "Unknown") %>%
+            mutate(across(c(gbr268_Phylum, gbr268_Class, gbr268_Order, gbr268_Family), as.factor))
+
+            heatmap_data <- inv_res %>%
+            left_join(tax_df, by = "OTU") %>%
+            filter(!is.na(gbr268_Family)) %>%
+            group_by(gbr268_Family, Group_Name) %>%
+            summarise(stat = mean(stat, na.rm = TRUE), .groups = 'drop') %>%
+            pivot_wider(names_from = Group_Name, values_from = stat, values_fill = 0) %>%
+            column_to_rownames("gbr268_Family")
+
+            tree_structure <- tax_df %>% 
+            select(gbr268_Phylum, gbr268_Class, gbr268_Order, gbr268_Family) %>% 
+            distinct()
+            tree <- as.phylo(~gbr268_Phylum/gbr268_Class/gbr268_Order/gbr268_Family, data = tree_structure)
+
+            p <- ggtree(tree, layout = "rectangular") + 
+            geom_tiplab(size = 3, align = TRUE, offset = 1) 
+
+            heatmap_data <- heatmap_data[, sort(colnames(heatmap_data))]
+
+            p_final <- gheatmap(p, heatmap_data, 
+                 offset = 5.0, width = 1.5, color = "black",
+                   colnames_angle = 90, colnames_offset_y = -5,
+                 font.size = 3) +
+            scale_fill_gradient(low = "white", high = "blue", name = "IndVal Moyenne") +
+            scale_y_continuous(expand = expansion(mult = c(0.2, 0.2))) +
+            coord_cartesian(clip = "off") +
+            theme(legend.position = "right", plot.margin = margin(10, 120, 10, 10))
+
+            print(p_final)
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -332,27 +478,111 @@ niche_summary <- final_df %>%
 print(niche_summary)
 
 
-final_df$organ <- factor(final_df$organ, levels = c("root", "young_leaf", "old_leaf"))
 
-p <- ggplot(final_df, aes(x = organ, y = Levins_Mean, fill = organ)) +
+final_df$project <- metadata$project[match(final_df$Sample, rownames(metadata))]
+final_df$project <- as.factor(final_df$project)
+
+p_project <- ggplot(final_df, aes(x = project, y = Levins_Mean, fill = project)) +
   geom_boxplot(alpha = 0.6, outlier.shape = NA, width = 0.5) +
   geom_jitter(width = 0.15, alpha = 0.2, size = 1, color = "black") +
-  scale_fill_manual(values = c("root" = "#8c510a", 
-                                "young_leaf" = "#7fbc41", 
-                                "old_leaf" = "#276419")) +
-  labs(title = "Niche fongique par organe",
-       subtitle = "Indice de Levins normalisé (0 = Spécialiste, 1 = Généraliste)",
-       x = "Organe",
+  labs(title = "Niche fongique par projet",
+       x = "Projet",
        y = "Indice de Levins Moyen") +
   theme_minimal() +
   theme(legend.position = "none",
         panel.grid.minor = element_blank(),
-        axis.text = element_text(size = 11, face = "bold"),
+        axis.text.x = element_text(size = 11, face = "bold", angle = 45, hjust = 1),
+        axis.text.y = element_text(size = 11, face = "bold"),
         title = element_text(size = 13, face = "bold"))
 
-p_final <- p + stat_compare_means(method = "kruskal.test", label.y = max(final_df$Levins_Mean) + 0.05) +
+p_project_final <- p_project + stat_compare_means(method = "kruskal.test", label.y = max(final_df$Levins_Mean, na.rm = TRUE) + 0.05) +
                stat_compare_means(label = "p.signif", method = "wilcox.test", 
                                   ref.group = ".all.", hide.ns = FALSE)
 
-print(p_final)
+print(p_project_final)
+
+
+final_df$position <- metadata$position[match(final_df$Sample, rownames(metadata))]
+final_df$position <- as.factor(final_df$position)
+
+p_organ_pos <- ggplot(final_df, aes(x = organ, y = Levins_Mean, fill = position)) +
+  geom_boxplot(alpha = 0.6, outlier.shape = NA, width = 0.6, position = position_dodge(0.8)) +
+  geom_point(aes(color = position), position = position_jitterdodge(jitter.width = 0.15, dodge.width = 0.8), alpha = 0.4, size = 1) +
+  labs(title = "Niche fongique par organe et position",
+       x = "Organe",
+       y = "Indice de Levins Moyen",
+       fill = "Position",
+       color = "Position") +
+  theme_minimal() +
+  theme(panel.grid.minor = element_blank(),
+        axis.text.x = element_text(size = 11, face = "bold"),
+        axis.text.y = element_text(size = 11, face = "bold"),
+        title = element_text(size = 13, face = "bold"))
+
+p_organ_pos_final <- p_organ_pos + 
+  stat_compare_means(aes(group = position), method = "wilcox.test", label = "p.signif")
+
+print(p_organ_pos_final)
+
+
+
+
+
+
+
+p_project_organ <- ggplot(final_df, aes(x = project, y = Levins_Mean, fill = organ)) +
+  geom_boxplot(alpha = 0.6, outlier.shape = NA, width = 0.6, position = position_dodge(0.8)) +
+  geom_point(aes(color = organ), position = position_jitterdodge(jitter.width = 0.15, dodge.width = 0.8), alpha = 0.4, size = 1) +
+  labs(title = "Niche fongique par projet et organe",
+       x = "Projet",
+       y = "Indice de Levins Moyen",
+       fill = "Organe",
+       color = "Organe") +
+  theme_minimal() +
+  theme(panel.grid.minor = element_blank(),
+        axis.text.x = element_text(size = 11, face = "bold", angle = 45, hjust = 1),
+        axis.text.y = element_text(size = 11, face = "bold"),
+        title = element_text(size = 13, face = "bold"))
+
+p_project_organ_final <- p_project_organ + 
+  stat_compare_means(aes(group = organ), method = "kruskal.test", label = "p.signif")
+
+print(p_project_organ_final)
+
+
+
+
+final_df$plant_family <- metadata$plant_family[match(final_df$Sample, rownames(metadata))]
+final_df$plant_family <- as.factor(final_df$plant_family)
+
+p_plant_family <- ggplot(final_df, aes(x = plant_family, y = Levins_Mean, fill = plant_family)) +
+  geom_boxplot(alpha = 0.6, outlier.shape = NA, width = 0.5) +
+  geom_jitter(width = 0.15, alpha = 0.2, size = 1, color = "black") +
+  labs(title = "Niche fongique par famille de plante",
+       x = "Famille de plante",
+       y = "Indice de Levins Moyen") +
+  theme_minimal() +
+  theme(legend.position = "none",
+        panel.grid.minor = element_blank(),
+        axis.text.x = element_text(size = 11, face = "bold", angle = 45, hjust = 1),
+        axis.text.y = element_text(size = 11, face = "bold"),
+        title = element_text(size = 13, face = "bold"))
+
+p_plant_family_final <- p_plant_family + 
+  stat_compare_means(method = "kruskal.test", label.y = max(final_df$Levins_Mean, na.rm = TRUE) + 0.05) +
+  stat_compare_means(label = "p.signif", method = "wilcox.test", 
+                     ref.group = ".all.", hide.ns = FALSE)
+
+print(p_plant_family_final)
+
+
+
+library(patchwork)
+
+combined_plot <- (p_project_final | p_organ_pos_final) / 
+         (p_project_organ_final + p_plant_family_final ) +
+  plot_annotation(tag_levels = 'A')
+
+print(combined_plot)
+
 

@@ -1,6 +1,6 @@
 setwd("~/Documents/Etudes/Stage_projet_LOT/CRBE/Analyses")
 
-ps <- readRDS("~/Documents/Etudes/Stage_projet_LOT/CRBE/Analyses/donnees/donnees_nettoyees.rds")
+ps <- readRDS("~/Documents/Etudes/Stage_projet_LOT/CRBE/Analyses/donnees/ps_final.rds")
 df_alpha <- readRDS("~/Documents/Etudes/Stage_projet_LOT/CRBE/Analyses/donnees/df_alpha.rds")
 
 library(phyloseq)
@@ -280,6 +280,47 @@ taxa_list <- split(rownames(meta), meta$category) |>
 
 upset(fromList(taxa_list), nsets = length(taxa_list), order.by = "freq", 
       main.bar.color = "forestgreen", sets.bar.color = "steelblue")
+
+
+
+
+meta_proj_org <- data.frame(sample_data(ps))
+meta_proj_org$category <- paste(meta_proj_org$project, meta_proj_org$organ, sep = "_")
+
+taxa_list_proj_org <- split(rownames(meta_proj_org), meta_proj_org$category) |>
+  lapply(function(samples) {
+  taxa_sums_po <- taxa_sums(prune_samples(samples, ps))
+  names(taxa_sums_po[taxa_sums_po > 0])
+  })
+
+upset(fromList(taxa_list_proj_org), nsets = length(taxa_list_proj_org), order.by = "freq", 
+  main.bar.color = "forestgreen", sets.bar.color = "steelblue")
+
+  meta_proj_org_pos <- data.frame(sample_data(ps))
+  meta_proj_org_pos$category <- paste(meta_proj_org_pos$project, meta_proj_org_pos$organ, meta_proj_org_pos$position, sep = "_")
+
+  taxa_list_proj_org_pos <- split(rownames(meta_proj_org_pos), meta_proj_org_pos$category) |>
+    lapply(function(samples) {
+      taxa_sums_pop <- taxa_sums(prune_samples(samples, ps))
+      names(taxa_sums_pop[taxa_sums_pop > 0])
+    })
+
+  upset(fromList(taxa_list_proj_org_pos), nsets = length(taxa_list_proj_org_pos), order.by = "freq", 
+        main.bar.color = "forestgreen", sets.bar.color = "steelblue")
+
+
+
+        meta_family <- data.frame(sample_data(ps))
+        meta_family$category <- meta_family$plant_family
+
+        taxa_list_family <- split(rownames(meta_family), meta_family$category) |>
+          lapply(function(samples) {
+            taxa_sums_fam <- taxa_sums(prune_samples(samples, ps))
+            names(taxa_sums_fam[taxa_sums_fam > 0])
+          })
+
+        upset(fromList(taxa_list_family), nsets = length(taxa_list_family), order.by = "freq", 
+              main.bar.color = "forestgreen", sets.bar.color = "steelblue")
 
 
 
