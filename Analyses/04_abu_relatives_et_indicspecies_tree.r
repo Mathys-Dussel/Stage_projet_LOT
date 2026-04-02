@@ -14,7 +14,7 @@ library(ANCOMBC)
 library(tidyr)
 
 setwd("~/Documents/Etudes/Stage_projet_LOT/CRBE/Analyses")
-ps <- readRDS("donnees/donnees_nettoyees.rds")
+ps <- readRDS("donnees/ps_final.rds")
 
 # Abondances relatives par classe
 
@@ -84,49 +84,6 @@ plot_core(ps_core, plot.type = "heatmap",
 
 
 
-library(indicspecies)
-library(tibble)
-library(tidyr)
-
-otu_mat <- as(otu_table(ps), "matrix")
-if (taxa_are_rows(ps)) { otu_mat <- t(otu_mat) }
-
-metadata_df <- as.data.frame(sample_data(ps))
-
-indval <- multipatt(otu_mat, metadata_df$plant_family, func = "IndVal.g", duleg = TRUE, control = how(nperm = 99))
-
-signif_otus <- indval$sign %>%
-  rownames_to_column("OTU") %>%
-  filter(p.value <= 0.05) %>%
-  pivot_longer(cols = starts_with("s."), names_to = "plant_family", values_to = "is_indicator") %>%
-  filter(is_indicator == 1) %>%
-  mutate(plant_family = gsub("^s\\.", "", plant_family))
-
-stat_df <- as.data.frame(indval$str) %>%
-  rownames_to_column("OTU") %>%
-  pivot_longer(
-    cols = -OTU, 
-    names_to = "plant_family", 
-    values_to = "Stat"
-  ) %>%
-  mutate(plant_family = gsub("^s\\.", "", plant_family))
-
-plot_df <- stat_df %>%
-  inner_join(signif_otus, by = c("OTU", "plant_family")) %>%
-  select(OTU, plant_family, Stat) %>%
-  distinct()
-head(stat_df)
-ggplot(plot_df, aes(x = plant_family, y = OTU, size = Stat, color = Stat)) +
-  geom_point() +
-  scale_color_distiller(palette = "YlOrRd", direction = 1) +
-  theme_bw() +
-  labs(title = "Espèces indicatrices (Indicspecies) par Famille de Plante",
-       x = "Famille de Plante", 
-       y = "OTUs Indicatifs",
-       size = "IndVal Stat", 
-       color = "IndVal Stat") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1, face = "bold"),
-        axis.text.y = element_text(size = 6))
 
 
 
@@ -137,9 +94,122 @@ ggplot(plot_df, aes(x = plant_family, y = OTU, size = Stat, color = Stat)) +
 
 
 
+  library(indicspecies)
+  library(tibble)
+  library(tidyr)
+
+  otu_mat <- as(otu_table(ps), "matrix")
+  if (taxa_are_rows(ps)) { otu_mat <- t(otu_mat) }
+
+  metadata_df <- as.data.frame(sample_data(ps))
+
+  indval <- multipatt(otu_mat, metadata_df$plant_family, func = "IndVal.g", duleg = TRUE, control = how(nperm = 99))
+
+  signif_otus <- indval$sign %>%
+    rownames_to_column("OTU") %>%
+    filter(p.value <= 0.05) %>%
+    pivot_longer(cols = starts_with("s."), names_to = "plant_family", values_to = "is_indicator") %>%
+    filter(is_indicator == 1) %>%
+    mutate(plant_family = gsub("^s\\.", "", plant_family))
+
+  stat_df <- as.data.frame(indval$str) %>%
+    rownames_to_column("OTU") %>%
+    pivot_longer(
+      cols = -OTU, 
+      names_to = "plant_family", 
+      values_to = "Stat"
+    ) %>%
+    mutate(plant_family = gsub("^s\\.", "", plant_family))
+
+  tax_info <- as.data.frame(tax_table(ps)) %>% 
+    rownames_to_column("OTU") %>% 
+    select(OTU, gbr268_Class)
+
+  plot_df <- stat_df %>%
+    inner_join(signif_otus, by = c("OTU", "plant_family")) %>%
+    left_join(tax_info, by = "OTU") %>%
+    mutate(OTU_label = paste0(gbr268_Class, " - ", OTU)) %>%
+    select(OTU, OTU_label, plant_family, Stat, gbr268_Class) %>%
+    distinct()
+
+  head(stat_df)
+  plot_df_agg <- plot_df %>%
+    group_by(plant_family, gbr268_Class) %>%
+    summarise(Num_OTUs = n(), Mean_Stat = mean(Stat), .groups = "drop")
+
+  ggplot(plot_df_agg, aes(x = plant_family, y = gbr268_Class, size = Num_OTUs, color = Mean_Stat)) +
+    geom_point() +
+    scale_color_distiller(palette = "YlOrRd", direction = 1) +
+    theme_bw() +
+    labs(title = "Classes indicatrices (Indicspecies) par Famille de Plante",
+         x = "Famille de Plante", 
+         y = "Classe Fongique",
+         size = "Nombre d'OTUs", 
+         color = "IndVal Stat Moyen") +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1, face = "bold"),
+          axis.text.y = element_text(size = 10))
 
 
 
+
+          library(phyloseq)
+          library(indicspecies)
+          library(ggtree)
+          library(tidyverse)
+          library(ape)
+
+          ps_filt <- filter_taxa(ps, function(x) sum(x > 0) > (0.05 * nsamples(ps)), TRUE)
+
+          ps_filt <- prune_taxa(names(sort(taxa_sums(ps_filt), TRUE)[1:min(2000, ntaxa(ps_filt))]), ps_filt)
+
+          if(taxa_are_rows(ps_filt)) {
+            otu_tab <- as.matrix(t(otu_table(ps_filt)))
+          } else {
+            otu_tab <- as.matrix(otu_table(ps_filt))
+          }
+
+          groups_vec <- as.character(sample_data(ps_filt)$plant_family)
+
+          inv <- multipatt(otu_tab, groups_vec, 
+                           func = "IndVal.g", 
+                           control = how(nperm = 99), duleg = TRUE) 
+
+          inv_res <- inv$sign %>%
+            rownames_to_column("OTU") %>%
+            filter(p.value < 0.05) %>%
+            mutate(Group_Name = colnames(inv$comb)[index])
+
+          tax_df <- as.data.frame(tax_table(ps_filt)) %>%
+            rownames_to_column("OTU") %>%
+            filter(OTU %in% inv_res$OTU) %>%
+            filter(!is.na(gbr268_Phylum) & !is.na(gbr268_Class) & !is.na(gbr268_Order)) %>%
+            filter(gbr268_Phylum != "Unknown" & gbr268_Class != "Unknown" & gbr268_Order != "Unknown") %>%
+            mutate(across(c(gbr268_Phylum, gbr268_Class, gbr268_Order), as.factor))
+
+          heatmap_data <- inv_res %>%
+            left_join(tax_df, by = "OTU") %>%
+            filter(!is.na(gbr268_Order)) %>%
+            group_by(gbr268_Order, Group_Name) %>%
+            summarise(stat = mean(stat, na.rm = TRUE), .groups = 'drop') %>%
+            pivot_wider(names_from = Group_Name, values_from = stat, values_fill = 0) %>%
+            column_to_rownames("gbr268_Order")
+
+          tree_structure <- tax_df %>% 
+            select(gbr268_Phylum, gbr268_Class, gbr268_Order) %>% 
+            distinct()
+          tree <- as.phylo(~gbr268_Phylum/gbr268_Class/gbr268_Order, data = tree_structure)
+
+          p <- ggtree(tree, layout = "rectangular") + 
+            geom_tiplab(size = 3, align = TRUE, offset = 0.2) 
+
+          p_final <- gheatmap(p, heatmap_data, 
+                             offset = 5.0, width = 1.5, color = "black",
+                               colnames_angle = 45, colnames_offset_y = -3,
+                             font.size = 3) +
+            scale_fill_gradient(low = "white", high = "blue", name = "IndVal Moyenne") +
+            theme(legend.position = "right", plot.margin = margin(10, 120, 10, 10))
+
+          print(p_final)
 
 
 
@@ -161,7 +231,7 @@ smart_names <- apply(tax_df_top, 1, function(x) {
 
 taxa_names(ps_top) <- make.unique(smart_names)
 tax_df_fact <- as.data.frame(unclass(tax_df_top), stringsAsFactors = TRUE)
-dist_taxo <- daisy(tax_df_fact, metric = "gower")
+dist_taxo <- cluster::daisy(tax_df_fact, metric = "gower")
 arbre_taxo <- as.phylo(hclust(dist_taxo, method = "average"))
 arbre_taxo$tip.label <- taxa_names(ps_top)
 phy_tree(ps_top) <- arbre_taxo
