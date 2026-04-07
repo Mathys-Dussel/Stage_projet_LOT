@@ -1,6 +1,0 @@
-\babel@toc {french}{}\relax 
-\contentsline {section}{\numberline {1}Introduction}{3}{section.1}%
-\contentsline {section}{\numberline {2}Matériels et Méthodes}{3}{section.2}%
-\contentsline {subsection}{\numberline {2.1}Analyses du sol}{3}{subsection.2.1}%
-\contentsline {section}{\numberline {3}Résultats}{3}{section.3}%
-\contentsline {section}{\numberline {4}Conclusion}{3}{section.4}%

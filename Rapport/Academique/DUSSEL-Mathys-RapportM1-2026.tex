@@ -1,0 +1,146 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{geometry}
+\geometry{a4paper, margin=2cm}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{eso-pic}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\title{Rapport Académique}
+\author{Mathys Dussel}
+\date{\today}
+
+\usepackage{setspace}
+
+\begin{document}
+\singlespacing
+\begin{titlepage}
+    \centering
+    \vspace*{1cm}
+
+
+
+% Ajout du logo en haut à droite de la première page
+\AddToShipoutPictureBG*{
+       \AtPageUpperLeft{%
+              \put(\LenToUnit{\paperwidth-5cm},\LenToUnit{-2.6cm}){% Ajustez les coordonnées selon vos besoins
+                     \includegraphics[width=4cm]{Figures/logo-UT.png} % Remplacez 'example-image' par le chemin de votre logo
+              }%
+       }%
+}
+\AddToShipoutPictureBG*{
+       \AtPageUpperLeft{%
+              \put(\LenToUnit{\paperwidth-9cm},\LenToUnit{-2.8cm}){% Ajustez les coordonnées selon vos besoins
+                     \includegraphics[width=4cm]{Figures/Logo-CRBE.png} % Remplacez 'example-image' par le chemin de votre logo
+              }%
+       }%
+}
+\AddToShipoutPictureBG*{
+       \AtPageUpperLeft{%
+              \put(\LenToUnit{\paperwidth-10.6cm},\LenToUnit{-2.8cm}){% Ajustez les coordonnées selon vos besoins
+                     \includegraphics[width=1.6cm]{Figures/LOT.png} % Remplacez 'example-image' par le chemin de votre logo
+              }%
+       }%
+}
+    \vspace{1cm}
+    {\scshape\Large Université Toulouse III - Paul Sabatier\par}
+    \vspace{1cm}
+    
+    {\Large\bfseries Stage réalisé dans le cadre du module Initiation à la Recherche \\[0.3cm] Master 1 Biodiversité,
+Ecologie et Evolution\par}
+    \vspace{0.5cm}
+    
+    \rule{\linewidth}{0.5mm} \\[0.4cm]
+    {\huge \bfseries Composition et assemblage des communautés fongiques chez les plantes épiphytes vasculaires tropicales\par}
+    \vspace{0.4cm}
+    \rule{\linewidth}{0.5mm} \\[1.5cm]
+    
+
+    
+    \begin{minipage}{0.4\textwidth}
+        \begin{flushleft} \large
+            \emph{Étudiant :}\\
+            Mathys \textsc{DUSSEL D'HERVÉ}
+        \end{flushleft}
+    \end{minipage}
+    ~
+    \begin{minipage}{0.4\textwidth}
+        \begin{flushright} \large
+            \emph{Tutrice de stage :} \\
+            Céline \textsc{Leroy}
+        \end{flushright}
+    \end{minipage}\\[1cm]
+    
+    \vfill
+    \includegraphics[width=0.65\textwidth]{Figures/branche_chargée.jpeg} % Remplacez par le nom de votre image
+    \vfill
+    
+    {\large Lieu du stage : Centre de Recherche sur la Biodiversité et l'Environnement (CRBE)\par}
+     \vfill
+    
+    {\large Année universitaire 2025-2026\par}
+    \vspace{0.5cm}
+    {\large \today\par}
+\end{titlepage}
+
+\renewcommand{\maketitle}{}
+\maketitle
+
+\thispagestyle{empty}
+\section*{Avant-propos}
+\newpage
+
+\thispagestyle{empty}
+\section*{Remerciements}
+\newpage
+
+
+\thispagestyle{empty}
+\renewcommand{\contentsname}{\centerline{Sommaire}}
+\tableofcontents
+\newpage
+
+\setcounter{page}{1}
+\section{Résumé}
+
+\textbf{Mots-clés :} Fongique, Epiphyte, Tropical, Diversité, Assemblage, Communauté
+
+
+\section{Abstract}
+
+
+\newpage
+\onehalfspacing
+\section{Introduction}
+
+Les arbres tropicaux âgés sont cruciaux pour approfondir les connaissances sur la biodiversité tropicale. Ils sont connus pour supporter une stratification verticale de microécosystèmes, offrant un nombre important de niches écologiques sur un même arbre. On y observe une grande diversité de milieux, tels que les cavités ligneuses (dendrotelmes), les zones d'accumulation de matière organique (humus suspendu), ainsi que des microhabitats façonnés par la flore épiphyte. Ces derniers incluent notamment les plantes à réservoir d'eau (phytotelmes), les fougères en « nid d'oiseau », et une vaste diversité d'autres taxons épiphytes. Par conséquent, une grande diversité d'organismes y trouve refuge et interagit au sein de ces microécosystèmes. 
+Bien que ce phénomène de structuration verticale soit bien documenté, peu d'etudes documentent les compositions en communautés biotiques eucaryotes, notamment les communautés fongiques, au sein de ces microécosystèmes. De plus, les processus écologiques qui façonnent la diversité et l'assemblage de ces communautés restent largement méconnus. Parmis les Fungi, les Lichens restent les plus documentés à l'echelle de l'arbre, 
+
+
+
+
+
+\cite{araujo_diversity_2020}
+
+
+\section{Matériels et méthodes}
+
+
+\section{Résultats}
+
+\section{Discussion}
+
+\singlespacing
+\newpage
+\listoffigures
+\listoftables
+\newpage
+\bibliography{BIBLIO_Stage_LOT_CRBE.bib}
+\bibliographystyle{apalike}
+
+\end{document}

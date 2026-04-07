@@ -141,6 +141,15 @@ p_lot1_family <- plot_ordination(ps_lot01, nmds_lot01, color = "plant_family") +
 
 
 
+
+plot_ordination(ps_lot01, nmds_lot01, color = "organ", shape = "position") +
+  geom_point(size = 3) +
+  scale_shape_manual(values = c("epiphyte" = 1, "endophyte" = 16)) +
+  stat_ellipse(aes(group = organ)) +
+  labs(title = "LOT1 - Organe", subtitle = paste0("R2 = ", round(perm_lot01["organ", "R2"], 3), ", p = ", perm_lot01["organ", "Pr(>F)"])) +
+  theme_bw()
+
+
 ############### LOT02 #################
 
 ps_lot02 <- subset_samples(ps_hel, project == "LOT2")
@@ -430,3 +439,6 @@ print(p_expsha_cap)
 p_expsha_morph | p_expsha_cap
 
 (p_richesse_morph | p_richesse_cap) / (p_expsha_morph | p_expsha_cap) + plot_annotation(title = "Richesse et diversité en fonction de la Morphologie et de la Capacité à stocker de l'eau")
+
+p_expsha_morph | p_expsha_cap + plot_annotation(title = "Diversité en fonction de la Morphologie et de la Capacité à stocker de l'eau")
+

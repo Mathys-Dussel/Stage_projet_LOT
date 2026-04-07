@@ -296,6 +296,19 @@ taxa_list_proj_org <- split(rownames(meta_proj_org), meta_proj_org$category) |>
 upset(fromList(taxa_list_proj_org), nsets = length(taxa_list_proj_org), order.by = "freq", 
   main.bar.color = "forestgreen", sets.bar.color = "steelblue")
 
+    # Pour colorer les points (intersections) ou les barres selon le LOT, 
+    # on peut utiliser l'argument `queries` d'UpSetR ou définir un vecteur de couleurs pour les sets.
+    # Voici un exemple pour colorer les sets (barres horizontales) selon le LOT :
+    couleurs_sets <- sapply(names(taxa_list_proj_org), function(x) {
+      if (grepl("LOT1", x)) return("#E41A1C") # Rouge pour LOT1
+      if (grepl("LOT2", x)) return("#377EB8") # Bleu pour LOT2
+      if (grepl("LOT3", x)) return("#4DAF4A") # Vert pour LOT3
+      return("gray")
+    })
+
+    upset(fromList(taxa_list_proj_org), nsets = length(taxa_list_proj_org), order.by = "freq", 
+          main.bar.color = "forestgreen", sets.bar.color = couleurs_sets)
+
   meta_proj_org_pos <- data.frame(sample_data(ps))
   meta_proj_org_pos$category <- paste(meta_proj_org_pos$project, meta_proj_org_pos$organ, meta_proj_org_pos$position, sep = "_")
 
@@ -324,6 +337,45 @@ upset(fromList(taxa_list_proj_org), nsets = length(taxa_list_proj_org), order.by
 
 
 
+
+              meta_lot1 <- data.frame(sample_data(ps)) %>% filter(project == "LOT1")
+              meta_lot1$category <- paste(meta_lot1$organ, meta_lot1$position, sep = "_")
+
+              taxa_list_lot1 <- split(rownames(meta_lot1), meta_lot1$category) |>
+                lapply(function(samples) {
+                  taxa_sums_lot1 <- taxa_sums(prune_samples(samples, ps))
+                  names(taxa_sums_lot1[taxa_sums_lot1 > 0])
+                })
+
+              upset(fromList(taxa_list_lot1), nsets = length(taxa_list_lot1), order.by = "freq", 
+                    main.bar.color = "forestgreen", sets.bar.color = "steelblue")
+
+
+              meta_lot1 <- data.frame(sample_data(ps)) %>% filter(project == "LOT2")
+              meta_lot1$category <- paste(meta_lot1$organ, meta_lot1$position, sep = "_")
+
+              taxa_list_lot1 <- split(rownames(meta_lot1), meta_lot1$category) |>
+                lapply(function(samples) {
+                  taxa_sums_lot1 <- taxa_sums(prune_samples(samples, ps))
+                  names(taxa_sums_lot1[taxa_sums_lot1 > 0])
+                })
+
+              upset(fromList(taxa_list_lot1), nsets = length(taxa_list_lot1), order.by = "freq", 
+                    main.bar.color = "forestgreen", sets.bar.color = "steelblue")
+
+
+
+              meta_lot1 <- data.frame(sample_data(ps)) %>% filter(project == "LOT3")
+              meta_lot1$category <- paste(meta_lot1$organ, meta_lot1$position, sep = "_")
+
+              taxa_list_lot1 <- split(rownames(meta_lot1), meta_lot1$category) |>
+                lapply(function(samples) {
+                  taxa_sums_lot1 <- taxa_sums(prune_samples(samples, ps))
+                  names(taxa_sums_lot1[taxa_sums_lot1 > 0])
+                })
+
+              upset(fromList(taxa_list_lot1), nsets = length(taxa_list_lot1), order.by = "freq", 
+                    main.bar.color = "forestgreen", sets.bar.color = "steelblue")
 
 
 # Diagramme de Chord
@@ -380,3 +432,284 @@ circos.clear()
 chordDiagram(df_chord, transparency = 0.3, annotationTrack = c("name", "grid"))
 
 
+install.packages("pheatmap")
+library(pheatmap)
+library(tidyr)
+
+ps_rel <- transform_sample_counts(ps, function(x) x / sum(x))
+
+
+ps_phylum <- tax_glom(ps_rel, taxrank = "gbr268_Phylum", NArm = FALSE)
+
+df_phylum <- psmelt(ps_phylum)
+
+
+
+install.packages("ComplexHeatmap")
+if (!require("BiocManager", quietly = TRUE))
+  install.packages("BiocManager")
+BiocManager::install("ComplexHeatmap")
+library(ComplexHeatmap)
+library(circlize)
+library(dplyr)
+library(tidyr)
+
+
+ps_filtered <- filter_taxa(ps, function(x) sum(x > 0) >= (0.05 * length(x)), TRUE)
+
+ps_rel <- transform_sample_counts(ps_filtered, function(x) x / sum(x))
+
+
+ps_class <- tax_glom(ps_rel, taxrank = "gbr268_Class", NArm = FALSE)
+
+df_class <- psmelt(ps_class)
+
+df_agg <- df_class %>%
+  group_by(gbr268_Class, project, organ, position) %>%
+  summarise(Abundance = mean(Abundance), .groups = "drop") %>%
+  mutate(group = paste(project, organ, position, sep = "_"))
+
+df_heatmap <- df_agg %>%
+  dplyr::select(gbr268_Class, group, Abundance) %>%
+  pivot_wider(names_from = group, values_from = Abundance, values_fill = 0) %>%
+  filter(!is.na(gbr268_Class)) %>%
+  as.data.frame()
+
+rownames(df_heatmap) <- df_heatmap$gbr268_Class
+df_heatmap$gbr268_Class <- NULL
+mat <- as.matrix(df_heatmap)
+
+col_meta <- df_agg %>%
+  dplyr::select(group, project, organ, position) %>%
+  distinct() %>%
+  arrange(match(group, colnames(mat)))
+
+col_ha <- HeatmapAnnotation(
+  Project = col_meta$project,
+  Organ = col_meta$organ,
+  Position = col_meta$position,
+  annotation_name_side = "right"
+)
+row_meta <- df_class %>%
+  dplyr::select(gbr268_Class, gbr268_Phylum) %>%
+  distinct() %>%
+  filter(!is.na(gbr268_Class)) %>%
+  arrange(match(gbr268_Class, rownames(mat)))
+
+row_ha <- rowAnnotation(
+  Phylum = row_meta$gbr268_Phylum,
+  annotation_name_side = "top"
+)
+color_mapping <- colorRamp2(c(0, max(mat)/2, max(mat)), c("lightblue", "yellow", "red"))
+ann_colors = list(
+  Project = c("LOT1" = "lightblue", "LOT2" = "#D34949", "LOT3" = "grey"), # Ajustez si besoin
+  Organ = c("root" = "brown", "old_leaf" = "darkgreen", "young_leaf" = "lightgreen"),
+  Position = c("endophyte" = "orange", "epiphyte" = "pink") # Remplacez par vos vraies positions
+)
+
+col_ha <- HeatmapAnnotation(
+  Project = col_meta$project,
+  Organ = col_meta$organ,
+  Position = col_meta$position,
+  col = ann_colors,
+  annotation_name_side = "right"
+)
+ht <- Heatmap(mat,
+  name = "Relative\nabundance",
+  col = color_mapping,
+  top_annotation = col_ha,
+  cluster_rows = FALSE,
+  cluster_columns = FALSE,
+  left_annotation = row_ha,
+  row_title = NULL,
+  column_title = NULL,
+  column_split = col_meta$project,
+  heatmap_legend_param = list(direction = "vertical"),
+  row_split = row_meta$gbr268_Phylum,
+  rect_gp = gpar(col = "cadetblue", lwd = 1),
+  row_names_side = "right",
+  column_names_side = "bottom",
+  column_names_rot = -90,
+  row_title_rot = 0
+)
+
+draw(ht, merge_legend = TRUE)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+library(phyloseq)
+library(ggtree)
+library(ggtreeExtra)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(tibble)
+library(ape)
+
+ps_fam <- tax_glom(ps, taxrank = "gbr268_Order")
+
+tax_df <- as.data.frame(tax_table(ps_fam))
+tax_df[is.na(tax_df)] <- "Unknown"
+tax_cols <- c("gbr268_Phylum", "gbr268_Class", "gbr268_Order")
+tax_df[tax_cols] <- lapply(tax_df[tax_cols], factor)
+
+tree_fam <- as.phylo(~gbr268_Phylum/gbr268_Class/gbr268_Order, data = tax_df)
+tree_fam$tip.label <- taxa_names(ps_fam)
+tree_fam$edge.length <- rep(1, nrow(tree_fam$edge))
+
+ps_final <- merge_phyloseq(ps_fam, tree_fam)
+
+ps_avg <- merge_samples(ps_final, "organ")
+otu_tab <- as.data.frame(t(otu_table(ps_avg)))
+df_heatmap_clean <- df_heatmap %>%
+  rename(Organ_Type = organ, LogAbundance = Abundance)
+
+df_total_clean <- df_total %>% 
+  rename(TotalAbundance = Total)
+
+
+
+
+tax_data <- as.data.frame(tax_table(ps_final)) %>%
+  rownames_to_column("label") %>%
+  select(label, gbr268_Phylum, gbr268_Class, gbr268_Order)
+
+library(tidytree)
+library(treeio)
+
+obj_tree <- phy_tree(ps_final)
+obj_tax  <- as.data.frame(tax_table(ps_final)) %>% 
+            rownames_to_column("label") # Indispensable pour la jointure
+
+tree_data_final <- full_join(as_tibble(obj_tree), obj_tax, by = "label") %>% 
+                   as.treedata()
+
+p <- ggtree(tree_data_final, layout = "circular", branch.length = "none")
+
+p <- p + aes(color = gbr268_Phylum)
+
+p <- p + 
+  geom_fruit(
+    data = df_heatmap_clean,
+    geom = geom_tile,
+    mapping = aes(y = OTU, x = Organ_Type, fill = LogAbundance),
+    pwidth = 0.15, 
+    offset = 0.05
+  ) +
+  scale_fill_gradientn(colors = c("white", "#66c2a5", "#fc8d62", "#8da0cb"), name = "Log10 Abund") +
+  
+  geom_fruit(
+    data = df_total_clean,
+    geom = geom_bar,
+    mapping = aes(y = OTU, x = TotalAbundance),
+    stat = "identity",
+    orientation = "y",
+    fill = "grey70",
+    pwidth = 0.1,
+    offset = 0.1
+  ) +
+  theme(legend.position = "right")
+
+print(p)
+
+
+
+
+
+library(phyloseq)
+library(ggtree)
+library(ggtreeExtra)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(tibble)
+library(ape)
+library(tidytree)
+library(treeio)
+library(ggnewscale)
+
+ps_fam <- tax_glom(ps, taxrank = "gbr268_Order")
+tax_df <- as.data.frame(tax_table(ps_fam))
+tax_df[is.na(tax_df)] <- "Unknown"
+tax_cols <- c("gbr268_Phylum", "gbr268_Class", "gbr268_Order")
+tax_df[tax_cols] <- lapply(tax_df[tax_cols], factor)
+
+tree_fam <- as.phylo(~gbr268_Phylum/gbr268_Class/gbr268_Order, data = tax_df)
+tree_fam$tip.label <- taxa_names(ps_fam)
+tree_fam$edge.length <- rep(1, nrow(tree_fam$edge))
+
+ps_final <- merge_phyloseq(ps_fam, tree_fam)
+ps_avg <- merge_samples(ps_final, "organ")
+otu_tab <- as.data.frame(t(otu_table(ps_avg)))
+
+df_heatmap_clean <- df_heatmap %>%
+  rename(Organ_Type = organ, LogAbundance = Abundance)
+
+df_total_clean <- df_total %>% 
+  rename(TotalAbundance = Total)
+
+obj_tree <- phy_tree(ps_final)
+obj_tax  <- as.data.frame(tax_table(ps_final)) %>% rownames_to_column("label")
+tree_data_final <- full_join(as_tibble(obj_tree), obj_tax, by = "label") %>% as.treedata()
+
+p <- ggtree(tree_data_final, layout = "circular", branch.length = "none", size = 0.2) +
+  aes(color = gbr268_Phylum) +
+  geom_nodepoint(aes(fill = gbr268_Phylum), shape = 21, size = 1.2, color = "black", stroke = 0.1) +
+  geom_tippoint(aes(fill = gbr268_Phylum), shape = 21, size = 1.8, color = "black", stroke = 0.1) +
+  scale_color_brewer(palette = "Set3") +
+  scale_fill_brewer(palette = "Set3") +
+  new_scale_fill()
+  p <- p + 
+    geom_tree(size = 0.4, colour = "grey30")
+p <- p + 
+  geom_fruit(
+    data = df_heatmap_clean,
+    geom = geom_tile,
+    mapping = aes(y = OTU, x = Organ_Type, fill = LogAbundance),
+    pwidth = 0.15, 
+    offset = 0.08,
+    color = "white",
+    size = 0.05
+  ) +
+  scale_fill_gradientn(colors = c("lightblue", "yellow", "red"), name = "Abundance") +
+  new_scale_fill()
+
+p <- p + 
+  geom_fruit(
+    data = df_total_clean,
+    geom = geom_bar,
+    mapping = aes(y = OTU, x = TotalAbundance, fill = gbr268_Phylum),
+    stat = "identity",
+    orientation = "y",
+    pwidth = 0.25,
+    offset = 0.1,
+    axis.params = list(axis = "x", text.size = 1.5, nbreak = 3)
+  ) +
+  scale_fill_brewer(palette = "Pastel1") +
+  theme(
+    legend.position = "right",
+    legend.text = element_text(size = 6),
+    legend.title = element_text(size = 7)
+  ) +
+  layout_circular() + 
+  xlim(-5, NA)
+
+print(p)
