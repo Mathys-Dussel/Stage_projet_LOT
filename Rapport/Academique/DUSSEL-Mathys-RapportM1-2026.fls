@@ -195,6 +195,7 @@ INPUT ./DUSSEL-Mathys-RapportM1-2026.toc
 INPUT DUSSEL-Mathys-RapportM1-2026.toc
 INPUT /usr/local/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/ecbx1200.tfm
 OUTPUT DUSSEL-Mathys-RapportM1-2026.toc
+INPUT /usr/local/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/ecti1200.tfm
 INPUT ./DUSSEL-Mathys-RapportM1-2026.lof
 INPUT ./DUSSEL-Mathys-RapportM1-2026.lof
 INPUT DUSSEL-Mathys-RapportM1-2026.lof
@@ -206,7 +207,6 @@ OUTPUT DUSSEL-Mathys-RapportM1-2026.lot
 INPUT ./DUSSEL-Mathys-RapportM1-2026.bbl
 INPUT ./DUSSEL-Mathys-RapportM1-2026.bbl
 INPUT DUSSEL-Mathys-RapportM1-2026.bbl
-INPUT /usr/local/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/ecti1200.tfm
 INPUT DUSSEL-Mathys-RapportM1-2026.aux
 INPUT ./DUSSEL-Mathys-RapportM1-2026.out
 INPUT ./DUSSEL-Mathys-RapportM1-2026.out
