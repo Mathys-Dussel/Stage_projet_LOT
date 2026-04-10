@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2026.1.27)  9 APR 2026 10:15
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2026.1.27)  10 APR 2026 11:17
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -382,27 +382,27 @@ Package hyperref Info: Link coloring OFF on input line 20.
 \@outlinefile=\write3
 \openout3 = `DUSSEL-Mathys-RapportM1-2026.out'.
 
-<Figures/branche_chargée.jpeg, id=28, 2717.15125pt x 1418.29875pt>
+<Figures/branche_chargée.jpeg, id=40, 2717.15125pt x 1418.29875pt>
 File: Figures/branche_chargée.jpeg Graphic file (type jpg)
 <use Figures/branche_chargée.jpeg>
-Package pdftex.def Info: Figures/branche_chargée.jpeg  used on input line 80.
+Package pdftex.def Info: Figures/branche_chargée.jpeg  used on input line 79.
 (pdftex.def)             Requested size: 314.40001pt x 164.10725pt.
 
 
-<Figures/logo-UT.png, id=29, 1563.8425pt x 501.875pt>
+<Figures/logo-UT.png, id=41, 1563.8425pt x 501.875pt>
 File: Figures/logo-UT.png Graphic file (type png)
 <use Figures/logo-UT.png>
-Package pdftex.def Info: Figures/logo-UT.png  used on input line 89.
+Package pdftex.def Info: Figures/logo-UT.png  used on input line 88.
 (pdftex.def)             Requested size: 113.81102pt x 36.52092pt.
-<Figures/Logo-CRBE.png, id=30, 597.6729pt x 282.3348pt>
+<Figures/Logo-CRBE.png, id=42, 597.6729pt x 282.3348pt>
 File: Figures/Logo-CRBE.png Graphic file (type png)
 <use Figures/Logo-CRBE.png>
-Package pdftex.def Info: Figures/Logo-CRBE.png  used on input line 89.
+Package pdftex.def Info: Figures/Logo-CRBE.png  used on input line 88.
 (pdftex.def)             Requested size: 113.81102pt x 53.76048pt.
-<Figures/LOT.png, id=32, 120.45pt x 120.45pt>
+<Figures/LOT.png, id=44, 120.45pt x 120.45pt>
 File: Figures/LOT.png Graphic file (type png)
 <use Figures/LOT.png>
-Package pdftex.def Info: Figures/LOT.png  used on input line 89.
+Package pdftex.def Info: Figures/LOT.png  used on input line 88.
 (pdftex.def)             Requested size: 45.52458pt x 45.52335pt.
 [1
 
@@ -412,7 +412,7 @@ Package pdftex.def Info: Figures/LOT.png  used on input line 89.
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.96 \newpage
+l.95 \newpage
               [1]
 
 [2] (./DUSSEL-Mathys-RapportM1-2026.toc)
@@ -427,14 +427,14 @@ l.96 \newpage
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.117 \newpage
+l.116 \newpage
                [1]
 
 
 pdfTeX warning (ext4): destination with the same identifier (name{page.2}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.144 \newpage
+l.163 \newpage
                [2] (./DUSSEL-Mathys-RapportM1-2026.lof)
 \tf@lof=\write5
 \openout5 = `DUSSEL-Mathys-RapportM1-2026.lof'.
@@ -449,7 +449,7 @@ l.144 \newpage
 pdfTeX warning (ext4): destination with the same identifier (name{page.3}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.147 \newpage
+l.166 \newpage
                [3] (./DUSSEL-Mathys-RapportM1-2026.bbl)
 
 [4] (./DUSSEL-Mathys-RapportM1-2026.aux)
@@ -458,21 +458,21 @@ LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
 Package rerunfilecheck Info: File `DUSSEL-Mathys-RapportM1-2026.out' has not changed.
-(rerunfilecheck)             Checksum: FA951A47D82FF69EF814524FFE776B23;609.
+(rerunfilecheck)             Checksum: F583B78AAD98CE0BEB000D3BC8EA1ACF;1124.
  ) 
 Here is how much of TeX's memory you used:
- 12478 strings out of 473190
- 198709 string characters out of 5715800
- 619662 words of memory out of 5000000
- 35556 multiletter control sequences out of 15000+600000
- 571042 words of font info for 60 fonts, out of 8000000 for 9000
+ 12486 strings out of 473190
+ 198823 string characters out of 5715800
+ 619666 words of memory out of 5000000
+ 35560 multiletter control sequences out of 15000+600000
+ 571817 words of font info for 61 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  75i,11n,79p,895b,503s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfbx1728.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfbx2488.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfcc1440.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfcc1728.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfrm1440.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfti1200.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfti1440.pfb>
-Output written on DUSSEL-Mathys-RapportM1-2026.pdf (8 pages, 1380113 bytes).
+</usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfbx1440.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfbx1728.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfbx2488.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfcc1440.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfcc1728.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfrm1440.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfti1200.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfti1440.pfb>
+Output written on DUSSEL-Mathys-RapportM1-2026.pdf (8 pages, 1396605 bytes).
 PDF statistics:
- 133 PDF objects out of 1000 (max. 8388607)
- 99 compressed objects within 1 object stream
- 18 named destinations out of 1000 (max. 500000)
- 69 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 155 PDF objects out of 1000 (max. 8388607)
+ 118 compressed objects within 2 object streams
+ 21 named destinations out of 1000 (max. 500000)
+ 93 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -20,6 +20,42 @@ library(circlize)
 
 
 
+library(iNEXT)
+
+otu_mat <- as(otu_table(ps), "matrix")
+if (!taxa_are_rows(ps)) {
+    otu_mat <- t(otu_mat)
+}
+
+meta_alpha <- as(sample_data(ps), "data.frame")
+meta_alpha$group_op <- interaction(meta_alpha$organ, meta_alpha$position, drop = TRUE)
+
+abund_list <- lapply(split(rownames(meta_alpha), meta_alpha$group_op), function(smp) {
+    colSums(otu_mat[, smp, drop = FALSE])
+})
+
+inext_res <- iNEXT(abund_list, q = 0, datatype = "abundance")
+
+df_alpha <- ggiNEXT(inext_res, type = 1, se = TRUE)$data
+
+df_alpha <- df_alpha |>
+    tidyr::separate(Assemblage, into = c("organ", "position"),
+                                    sep = "[_.]", remove = FALSE, fill = "right")
+
+p_raref_q0 <- ggplot(df_alpha, aes(x = x, y = y, colour = Method)) +
+    geom_line(linewidth = 0.8) +
+    geom_ribbon(aes(ymin = qD.LCL, ymax = qD.UCL, fill = Method),
+                            alpha = 0.2, colour = NA) +
+    facet_grid(organ ~ position, scales = "free_x") +
+    labs(x = "Nombre d'individus",
+             y = "Richesse spécifique (q = 0)",
+             colour = "Méthode",
+             fill = "Méthode") +
+    theme_bw()
+
+print(p_raref_q0)
+
+
 
 
 
@@ -194,58 +230,10 @@ draw(ht, merge_legend = TRUE)
 
 
 
-############# TreeMap ##############
-
-
-# install.packages("treemapify")  # Run this once manually if 'treemapify' is not installed
-library(treemapify)
-
-df_treemap <- df_class%>%
-    filter(organ == "root", position == "epiphyte") %>%
-    group_by(project, gbr268_Class) %>%
-    summarise(Abundance = sum(Abundance), .groups = "drop") %>%
-    mutate(gbr268_Phylum = ifelse(is.na(gbr268_Class), "Unclassified", gbr268_Class))
-
-ggplot(df_treemap, aes(area = Abundance, fill = gbr268_Class, label = gbr268_Class)) +
-    treemapify::geom_treemap(color = "white") +
-    treemapify::geom_treemap_text(colour = "black", place = "centre", grow = TRUE, reflow = TRUE) +
-    theme_bw() +
-    theme(legend.position = "right")
 
 
 
 
-df_treemap <- df_class%>%
-    filter(organ == "young_leaf", position == "epiphyte") %>%
-    group_by(project, gbr268_Class) %>%
-    summarise(Abundance = sum(Abundance), .groups = "drop") %>%
-    mutate(gbr268_Phylum = ifelse(is.na(gbr268_Class), "Unclassified", gbr268_Class))
-
-ggplot(df_treemap, aes(area = Abundance, fill = gbr268_Class, label = gbr268_Class)) +
-    treemapify::geom_treemap(color = "white") +
-    treemapify::geom_treemap_text(colour = "black", place = "centre", grow = TRUE, reflow = TRUE) +
-    theme_bw() +
-    theme(legend.position = "right")
-
-
-
-
-    df_treemap <- df_class%>%
-    filter(organ == "old_leaf", position == "epiphyte") %>%
-    group_by(project, gbr268_Class) %>%
-    summarise(Abundance = sum(Abundance), .groups = "drop") %>%
-    mutate(gbr268_Phylum = ifelse(is.na(gbr268_Class), "Unclassified", gbr268_Class))
-
-ggplot(df_treemap, aes(area = Abundance, fill = gbr268_Class, label = gbr268_Class)) +
-    treemapify::geom_treemap(color = "white") +
-    treemapify::geom_treemap_text(colour = "black", place = "centre", grow = TRUE, reflow = TRUE) +
-    theme_bw() +
-    theme(legend.position = "right")
-
-
-
-
-    
 
 ############## Ordinations ##############
 
@@ -375,23 +363,111 @@ print(tab_pop)
 ########### Niches de Levins ###########
 
 
+library(dplyr)
+library(phyloseq)
+library(ggplot2)
+library(ggVennDiagram)
+library(microbiome)
+library(RColorBrewer)
+library(cluster)
+library(ape)
+library(ggpubr)
+library(ggtree)
+library(spaa)
+library(vegan)
+library(ANCOMBC)
+library(tidyr)
 
-levins_col <- grep("levins", names(df_alpha), ignore.case = TRUE, value = TRUE)[1]
 
-meta_lev <- as(sample_data(ps), "data.frame")
-meta_lev <- cbind(meta_lev, df_alpha)
+ps_merged <- merge_samples(ps, "organ")
+otu_merged <- as.matrix(otu_table(ps_merged))
+if (taxa_are_rows(ps_merged)) { otu_merged <- t(otu_merged) }
 
-p_levins_project <- ggplot(meta_lev,
-                           aes_string(x = "project", y = levins_col, fill = "organ")) +
-  geom_boxplot() +
-  theme_bw() +
-  labs(x = "Projet", y = "Indice de niche de Levins")
+levins_raw <- niche.width(otu_merged, method = "levins")
+niche_scores <- (as.numeric(levins_raw) - 1) / (3 - 1)
+names(niche_scores) <- colnames(levins_raw)
 
-p_levins_organ <- ggplot(meta_lev,
-                         aes_string(x = "organ", y = levins_col, fill = "project")) +
-  geom_boxplot() +
-  theme_bw() +
-  labs(x = "Organe", y = "Indice de niche de Levins")
+ps_rel <- transform_sample_counts(ps, function(x) x / sum(x))
+otu_all <- as.matrix(otu_table(ps_rel))
+if (taxa_are_rows(ps_rel)) { otu_all <- t(otu_all) }
 
-p_levins_project + p_levins_organ
+calc_mean_niche <- function(sample_row, scores) {
+  present <- sample_row > 0
+  if (sum(present) == 0) return(NA)
+  
+  sub_scores <- scores[names(sample_row)[present]]
+  sub_abund <- sample_row[present]
+  
+  return(sum(sub_abund * sub_scores, na.rm = TRUE) / sum(sub_abund, na.rm = TRUE))
+}
+
+sample_indices <- apply(otu_all, 1, calc_mean_niche, scores = niche_scores)
+
+metadata <- data.frame(sample_data(ps))
+final_df <- data.frame(
+  Sample = names(sample_indices),
+  Levins_Mean = as.numeric(sample_indices)
+) %>%
+  mutate(organ = metadata$organ[match(Sample, rownames(metadata))])
+
+niche_summary <- final_df %>%
+  filter(!is.nan(Levins_Mean) & !is.na(Levins_Mean)) %>%
+  group_by(organ) %>%
+  summarise(
+    Moyenne = mean(Levins_Mean),
+    SD = sd(Levins_Mean),
+    n = n()
+  )
+
+print(niche_summary)
+
+
+
+final_df$project <- metadata$project[match(final_df$Sample, rownames(metadata))]
+final_df$project <- as.factor(final_df$project)
+
+
+final_df$organ <- factor(
+    final_df$organ,
+    levels = c("root", "young_leaf", "old_leaf")
+)
+
+
+
+p_project_organ <- ggplot(final_df, aes(x = project, y = Levins_Mean, fill = organ)) +
+  geom_boxplot(alpha = 0.6, outlier.shape = NA, width = 0.6, position = position_dodge(0.8)) +
+  geom_point(aes(color = organ), position = position_jitterdodge(jitter.width = 0.15, dodge.width = 0.8), alpha = 0.4, size = 1) +
+  labs(title = "Niche fongique par projet et organe",
+       x = "Projet",
+       y = "Indice de Levins Moyen",
+       fill = "organ",
+       color = "organ") +
+  theme_minimal() +
+  theme(panel.grid.minor = element_blank(),
+        axis.text.x = element_text(size = 11, face = "bold", angle = 45, hjust = 1),
+        axis.text.y = element_text(size = 11, face = "bold"),
+        title = element_text(size = 13, face = "bold"))
+
+p_project_organ_final <- p_project_organ + 
+  stat_compare_means(aes(group = organ), method = "kruskal.test", label = "p.signif")
+
+p_project_organ_final <- p_project_organ_final +
+    scale_fill_manual(
+        values = c(
+            "root"       = "#914e27",
+            "young_leaf" = "#83d483",
+            "old_leaf"   = "#1d5d1d"
+        )
+    ) +
+    scale_color_manual(
+        values = c(
+            "root"       = "#914e27",
+            "young_leaf" = "#83d483",
+            "old_leaf"   = "#1d5d1d"
+        )
+    )
+
+print(p_project_organ_final)
+
+
 

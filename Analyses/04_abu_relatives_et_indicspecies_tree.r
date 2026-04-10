@@ -586,3 +586,315 @@ combined_plot <- (p_project_final | p_organ_pos_final) /
 print(combined_plot)
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+############# TreeMap ##############
+
+
+
+library(treemapify)
+
+ps_filtered_tm <- filter_taxa(ps, function(x) sum(x > 0) >= (0.05 * length(x)), TRUE)
+ps_rel_tm      <- transform_sample_counts(ps_filtered_tm, function(x) x / sum(x))
+ps_class_tm    <- tax_glom(ps_rel_tm, taxrank = "gbr268_Order", NArm = FALSE)
+df_class       <- psmelt(ps_class_tm)
+
+
+df_treemap <- df_class %>%
+    filter(organ == "root", position == "epiphyte") %>%
+    group_by(gbr268_Class) %>%
+    summarise(Abundance = sum(Abundance), .groups = "drop") %>%
+    mutate(gbr268_Class = ifelse(is.na(gbr268_Class), "Unclassified", gbr268_Class))
+
+ggplot(df_treemap, aes(area = Abundance, fill = gbr268_Class, label = gbr268_Class)) +
+    treemapify::geom_treemap(color = "white", show.legend = FALSE) +
+    treemapify::geom_treemap_text(colour = "black", place = "centre", grow = TRUE, reflow = TRUE) +
+    theme_bw() +
+    theme(legend.position = "right")
+
+
+df_treemap <- df_class%>%
+    filter(organ == "young_leaf", position == "epiphyte") %>%
+    group_by(gbr268_Class) %>%
+    summarise(Abundance = sum(Abundance), .groups = "drop") %>%
+    mutate(gbr268_Class = ifelse(is.na(gbr268_Class), "Unclassified", gbr268_Class))
+
+ggplot(df_treemap, aes(area = Abundance, fill = gbr268_Class, label = gbr268_Class)) +
+    treemapify::geom_treemap(color = "white", show.legend = FALSE) +
+    treemapify::geom_treemap_text(colour = "black", place = "centre", grow = TRUE, reflow = TRUE) +
+    theme_bw()
+
+
+df_treemap <- df_class%>%
+    filter(organ == "old_leaf", position == "epiphyte") %>%
+    group_by(gbr268_Class) %>%
+    summarise(Abundance = sum(Abundance), .groups = "drop") %>%
+    mutate(gbr268_Class = ifelse(is.na(gbr268_Class), "Unclassified", gbr268_Class))
+
+ggplot(df_treemap, aes(area = Abundance, fill = gbr268_Class, label = gbr268_Class)) +
+    treemapify::geom_treemap(color = "white", show.legend = FALSE) +
+    treemapify::geom_treemap_text(colour = "black", place = "centre", grow = TRUE, reflow = TRUE) +
+    theme_bw() 
+
+
+
+
+
+
+
+
+
+df_treemap <- df_class %>%
+    filter(organ == "root", position == "endophyte") %>%
+    group_by(gbr268_Class) %>%
+    summarise(Abundance = sum(Abundance), .groups = "drop") %>%
+    mutate(gbr268_Class = ifelse(is.na(gbr268_Class), "Unclassified", gbr268_Class))
+
+ggplot(df_treemap, aes(area = Abundance, fill = gbr268_Class, label = gbr268_Class)) +
+    treemapify::geom_treemap(color = "white", show.legend = FALSE) +
+    treemapify::geom_treemap_text(colour = "black", place = "centre", grow = TRUE, reflow = TRUE) +
+    theme_bw() +
+    theme(legend.position = "right")
+
+
+df_treemap <- df_class%>%
+    filter(organ == "young_leaf", position == "endophyte") %>%
+    group_by(gbr268_Class) %>%
+    summarise(Abundance = sum(Abundance), .groups = "drop") %>%
+    mutate(gbr268_Class = ifelse(is.na(gbr268_Class), "Unclassified", gbr268_Class))
+
+ggplot(df_treemap, aes(area = Abundance, fill = gbr268_Class, label = gbr268_Class)) +
+    treemapify::geom_treemap(color = "white", show.legend = FALSE) +
+    treemapify::geom_treemap_text(colour = "black", place = "centre", grow = TRUE, reflow = TRUE) +
+    theme_bw()
+
+
+df_treemap <- df_class%>%
+    filter(organ == "old_leaf", position == "endophyte") %>%
+    group_by(gbr268_Class) %>%
+    summarise(Abundance = sum(Abundance), .groups = "drop") %>%
+    mutate(gbr268_Class = ifelse(is.na(gbr268_Class), "Unclassified", gbr268_Class))
+
+ggplot(df_treemap, aes(area = Abundance, fill = gbr268_Class, label = gbr268_Class)) +
+    treemapify::geom_treemap(color = "white", show.legend = FALSE) +
+    treemapify::geom_treemap_text(colour = "black", place = "centre", grow = TRUE, reflow = TRUE) +
+    theme_bw() 
+
+
+
+
+
+
+
+
+
+
+
+
+
+    library(treemapify)
+
+    ps_filtered_tm <- filter_taxa(ps, function(x) sum(x > 0) >= (0.05 * length(x)), TRUE)
+    ps_rel_tm      <- transform_sample_counts(ps_filtered_tm, function(x) x / sum(x))
+    ps_order_tm    <- tax_glom(ps_rel_tm, taxrank = "gbr268_Order", NArm = FALSE)
+    df_order       <- psmelt(ps_order_tm)
+
+
+    df_treemap <- df_order %>%
+        filter(organ == "root", position == "epiphyte") %>%
+        group_by(gbr268_Order) %>%
+        summarise(Abundance = sum(Abundance), .groups = "drop") %>%
+        filter(!is.na(gbr268_Order))
+
+    ggplot(df_treemap, aes(area = Abundance, fill = gbr268_Order, label = gbr268_Order)) +
+        treemapify::geom_treemap(color = "white", show.legend = FALSE) +
+        treemapify::geom_treemap_text(colour = "black", place = "centre", grow = TRUE, reflow = TRUE) +
+        theme_bw() +
+        theme(legend.position = "right")
+
+
+    df_treemap <- df_order %>%
+        filter(organ == "young_leaf", position == "epiphyte") %>%
+        group_by(gbr268_Order) %>%
+        summarise(Abundance = sum(Abundance), .groups = "drop") %>%
+        filter(!is.na(gbr268_Order))
+
+    ggplot(df_treemap, aes(area = Abundance, fill = gbr268_Order, label = gbr268_Order)) +
+        treemapify::geom_treemap(color = "white", show.legend = FALSE) +
+        treemapify::geom_treemap_text(colour = "black", place = "centre", grow = TRUE, reflow = TRUE) +
+        theme_bw()
+
+
+    df_treemap <- df_order %>%
+        filter(organ == "old_leaf", position == "epiphyte") %>%
+        group_by(gbr268_Order) %>%
+        summarise(Abundance = sum(Abundance), .groups = "drop") %>%
+        filter(!is.na(gbr268_Order))
+
+    ggplot(df_treemap, aes(area = Abundance, fill = gbr268_Order, label = gbr268_Order)) +
+        treemapify::geom_treemap(color = "white", show.legend = FALSE) +
+        treemapify::geom_treemap_text(colour = "black", place = "centre", grow = TRUE, reflow = TRUE) +
+        theme_bw() 
+
+
+
+
+
+
+
+
+
+    df_treemap <- df_order %>%
+        filter(organ == "root", position == "endophyte") %>%
+        group_by(gbr268_Order) %>%
+        summarise(Abundance = sum(Abundance), .groups = "drop") %>%
+        filter(!is.na(gbr268_Order))
+
+    ggplot(df_treemap, aes(area = Abundance, fill = gbr268_Order, label = gbr268_Order)) +
+        treemapify::geom_treemap(color = "white", show.legend = FALSE) +
+        treemapify::geom_treemap_text(colour = "black", place = "centre", grow = TRUE, reflow = TRUE) +
+        theme_bw() +
+        theme(legend.position = "right")
+
+
+    df_treemap <- df_order %>%
+        filter(organ == "young_leaf", position == "endophyte") %>%
+        group_by(gbr268_Order) %>%
+        summarise(Abundance = sum(Abundance), .groups = "drop") %>%
+        filter(!is.na(gbr268_Order))
+
+    ggplot(df_treemap, aes(area = Abundance, fill = gbr268_Order, label = gbr268_Order)) +
+        treemapify::geom_treemap(color = "white", show.legend = FALSE) +
+        treemapify::geom_treemap_text(colour = "black", place = "centre", grow = TRUE, reflow = TRUE) +
+        theme_bw()
+
+
+    df_treemap <- df_order %>%
+        filter(organ == "old_leaf", position == "endophyte") %>%
+        group_by(gbr268_Order) %>%
+        summarise(Abundance = sum(Abundance), .groups = "drop") %>%
+        filter(!is.na(gbr268_Order))
+
+    ggplot(df_treemap, aes(area = Abundance, fill = gbr268_Order, label = gbr268_Order)) +
+        treemapify::geom_treemap(color = "white", show.legend = FALSE) +
+        treemapify::geom_treemap_text(colour = "black", place = "centre", grow = TRUE, reflow = TRUE) +
+        theme_bw() 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    library(treemapify)
+
+    ps_filtered_tm <- filter_taxa(ps, function(x) sum(x > 0) >= (0.05 * length(x)), TRUE)
+    ps_rel_tm      <- transform_sample_counts(ps_filtered_tm, function(x) x / sum(x))
+    ps_family_tm    <- tax_glom(ps_rel_tm, taxrank = "gbr268_Family", NArm = FALSE)
+    df_family      <- psmelt(ps_family_tm)
+
+
+    df_treemap <- df_family %>%
+        filter(organ == "root", position == "epiphyte") %>%
+        group_by(gbr268_Family) %>%
+        summarise(Abundance = sum(Abundance), .groups = "drop") %>%
+        filter(!is.na(gbr268_Family))
+
+    ggplot(df_treemap, aes(area = Abundance, fill = gbr268_Family, label = gbr268_Family)) +
+        treemapify::geom_treemap(color = "white", show.legend = FALSE) +
+        treemapify::geom_treemap_text(colour = "black", place = "centre", grow = TRUE, reflow = TRUE) +
+        theme_bw() +
+        theme(legend.position = "right")
+
+
+    df_treemap <- df_family %>%
+        filter(organ == "young_leaf", position == "epiphyte") %>%
+        group_by(gbr268_Family) %>%
+        summarise(Abundance = sum(Abundance), .groups = "drop") %>%
+        filter(!is.na(gbr268_Family))
+    ggplot(df_treemap, aes(area = Abundance, fill = gbr268_Family, label = gbr268_Family)) +
+        treemapify::geom_treemap(color = "white", show.legend = FALSE) +
+        treemapify::geom_treemap_text(colour = "black", place = "centre", grow = TRUE, reflow = TRUE) +
+        theme_bw()
+
+
+    df_treemap <- df_family %>%
+        filter(organ == "old_leaf", position == "epiphyte") %>%
+        group_by(gbr268_Family) %>%
+        summarise(Abundance = sum(Abundance), .groups = "drop") %>%
+        filter(!is.na(gbr268_Family))
+    ggplot(df_treemap, aes(area = Abundance, fill = gbr268_Family, label = gbr268_Family)) +
+        treemapify::geom_treemap(color = "white", show.legend = FALSE) +
+        treemapify::geom_treemap_text(colour = "black", place = "centre", grow = TRUE, reflow = TRUE) +
+        theme_bw() 
+
+
+
+
+
+
+
+
+
+    df_treemap <- df_family %>%
+        filter(organ == "root", position == "endophyte") %>%
+        group_by(gbr268_Family) %>%
+        summarise(Abundance = sum(Abundance), .groups = "drop") %>%
+        filter(!is.na(gbr268_Family))
+    ggplot(df_treemap, aes(area = Abundance, fill = gbr268_Family, label = gbr268_Family)) +
+        treemapify::geom_treemap(color = "white", show.legend = FALSE) +
+        treemapify::geom_treemap_text(colour = "black", place = "centre", grow = TRUE, reflow = TRUE) +
+        theme_bw() +
+        theme(legend.position = "right")
+
+
+    df_treemap <- df_family %>%
+        filter(organ == "young_leaf", position == "endophyte") %>%
+        group_by(gbr268_Family) %>%
+        summarise(Abundance = sum(Abundance), .groups = "drop") %>%
+        filter(!is.na(gbr268_Family))
+    ggplot(df_treemap, aes(area = Abundance, fill = gbr268_Family, label = gbr268_Family)) +
+        treemapify::geom_treemap(color = "white", show.legend = FALSE) +
+        treemapify::geom_treemap_text(colour = "black", place = "centre", grow = TRUE, reflow = TRUE) +
+        theme_bw()
+
+
+    df_treemap <- df_family %>%
+        filter(organ == "old_leaf", position == "endophyte") %>%
+        group_by(gbr268_Family) %>%
+        summarise(Abundance = sum(Abundance), .groups = "drop") %>%
+        filter(!is.na(gbr268_Family))
+    ggplot(df_treemap, aes(area = Abundance, fill = gbr268_Family, label = gbr268_Family)) +
+        treemapify::geom_treemap(color = "white", show.legend = FALSE) +
+        treemapify::geom_treemap_text(colour = "black", place = "centre", grow = TRUE, reflow = TRUE) +
+        theme_bw() 
+
+
+
+
+
+
