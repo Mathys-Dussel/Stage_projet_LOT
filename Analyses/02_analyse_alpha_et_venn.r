@@ -50,7 +50,8 @@ plot_sig_heatmap(df_alpha, "Observed", "Significativité - Richesse Observée")
 
 plot_sig_heatmap(df_alpha, "expShannon", "Significativité - ExpShannon")
 
-
+nb_otus <- nrow(tax_table(ps))
+cat("Nombre d'OTUs différents :", nb_otus, "\n")
 
 
 plot_groupes <- function(df, x, y, facet_by) {
@@ -97,70 +98,71 @@ wrap_plots(
 
 
 
-library(vegan)
-library(ggplot2)
-library(dplyr)
-library(tidyr)
-
-otu_mat <- as(otu_table(ps), "matrix")
-if (taxa_are_rows(ps)) { otu_mat <- t(otu_mat) }
-
-out <- rarecurve(otu_mat, step = 500, label = FALSE, tidy = TRUE)
-
-colnames(out) <- c("Site", "Profondeur", "OTUs")
-
-metadata_sub <- data.frame(
-  Site = sample_names(ps), 
-  Organe = as.character(sample_data(ps)$organ)
-)
-
-rare_df <- out %>%
-  left_join(metadata_sub, by = "Site")
-
-ggplot(rare_df, aes(x = Profondeur, y = OTUs, group = Site, color = Organe)) +
-  geom_line(alpha = 0.15) + 
-  scale_color_manual(values = c("root" = "#4DAF4A", "old_leaf" = "#E41A1C", "young_leaf" = "#377EB8")) +
-  labs(title = "Courbes de raréfaction (1107 échantillons)",
-       x = "Nombre de séquences lues",
-       y = "Nombre d'OTUs (Richesse)") +
-  theme_minimal() +
-  guides(color = guide_legend(override.aes = list(alpha = 1, linewidth = 2)))
 
 
 
 
-
-
-library(vegan)
-library(ggplot2)
-
-otu_mat <- as(otu_table(ps), "matrix")
-if (taxa_are_rows(ps)) { otu_mat <- t(otu_mat) }
-
-get_specacc <- function(mat, groups, target) {
-  sub_mat <- mat[groups == target, ]
-  acc <- specaccum(sub_mat, method = "random", permutations = 100)
-  
-  return(data.frame(
-    Samples = acc$sites,
-    Richness = acc$richness,
-    SD = acc$sd,
-    Organe = target
-  ))
+if (!requireNamespace("iNEXT", quietly = TRUE)) {
+  install.packages("iNEXT")
 }
+library(iNEXT)
 
-organs <- unique(as.character(sample_data(ps)$organ))
-df_acc <- do.call(rbind, lapply(organs, function(x) get_specacc(otu_mat, sample_data(ps)$organ, x)))
+otu_mat <- as(otu_table(ps), "matrix")
+if (taxa_are_rows(ps)) otu_mat <- t(otu_mat)
 
-ggplot(df_acc, aes(x = Samples, y = Richness, color = Organe, fill = Organe)) +
-  geom_ribbon(aes(ymin = Richness - SD, ymax = Richness + SD), alpha = 0.2, color = NA) +
-  geom_line(linewidth = 1) +
-  scale_color_brewer(palette = "Set1") +
-  scale_fill_brewer(palette = "Set1") +
-  labs(title = "Courbe d'accumulation des espèces (SAC)",
-       x = "Nombre d'échantillons (Individus)",
-       y = "Nombre d'OTUs cumulés") +
+meta <- data.frame(sample_data(ps))
+meta <- meta[!is.na(meta$organ), , drop = FALSE]
+otu_mat <- otu_mat[rownames(meta), , drop = FALSE]
+
+org_idx <- split(seq_len(nrow(otu_mat)), meta$organ)
+
+abund_list <- lapply(org_idx, function(i) {
+  x <- colSums(otu_mat[i, , drop = FALSE])
+  x[x > 0]
+})
+
+rich_ine <- iNEXT(abund_list, q = 0, datatype = "abundance")
+
+p_rare <- ggiNEXT(rich_ine, type = 1, facet.var = "site", color.var = "site") +
+  labs(
+    x = "Nombre de séquences lues",
+    y = "Richesse spécifique (q = 0)",
+    color = "Organe",
+    title = "Courbes de raréfaction / extrapolation de la richesse spécifique par organe"
+  ) +
   theme_bw()
+
+print(p_rare)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -268,9 +270,8 @@ ggVennDiagram(taxons_par_organe) +
 
 
 # Diagramme d'UpSet
-
 meta <- data.frame(sample_data(ps))
-meta$category <- paste(meta$age, meta$organ, meta$position, sep = "_")
+meta$category <- paste(meta$project, meta$age, meta$organ, meta$position, sep = " ")
 
 taxa_list <- split(rownames(meta), meta$category) |>
   lapply(function(samples) {
@@ -281,101 +282,105 @@ taxa_list <- split(rownames(meta), meta$category) |>
 upset(fromList(taxa_list), nsets = length(taxa_list), order.by = "freq", 
       main.bar.color = "forestgreen", sets.bar.color = "steelblue")
 
+input_upset <- fromList(taxa_list)
+input_upset <- fromList(taxa_list)
+
+proj_cols <- c(
+  LOT1 = "#1b9e77",
+  LOT2 = "#d95f02",
+  LOT3 = "#7570b3"
+)
+
+# Colonnes correspondant aux catégories des projets
+lot1_sets <- grep("^LOT1", colnames(input_upset), value = TRUE)
+lot2_sets <- grep("^LOT2", colnames(input_upset), value = TRUE)
+lot3_sets <- grep("^LOT3", colnames(input_upset), value = TRUE)
+
+# TRUE si au moins une catégorie du projet est présente dans l'intersection
+lot1_query <- function(row, data) any(row[lot1_sets] == 1)
+lot2_query <- function(row, data) any(row[lot2_sets] == 1)
+lot3_query <- function(row, data) any(row[lot3_sets] == 1)
+
+upset(
+  input_upset,
+  nsets = ncol(input_upset),
+  order.by = "freq",
+  queries = list(
+    list(
+      query      = lot1_query,
+      params     = list(),          # params explicitement défini
+      color      = proj_cols["LOT1"],
+      active     = TRUE,
+      query.name = "LOT1"
+    ),
+    list(
+      query      = lot2_query,
+      params     = list(),
+      color      = proj_cols["LOT2"],
+      active     = TRUE,
+      query.name = "LOT2"
+    ),
+    list(
+      query      = lot3_query,
+      params     = list(),
+      color      = proj_cols["LOT3"],
+      active     = TRUE,
+      query.name = "LOT3"
+    )
+  ),
+  main.bar.color = "grey"
+)
 
 
 
-meta_proj_org <- data.frame(sample_data(ps))
-meta_proj_org$category <- paste(meta_proj_org$project, meta_proj_org$organ, sep = "_")
 
-taxa_list_proj_org <- split(rownames(meta_proj_org), meta_proj_org$category) |>
+
+meta <- data.frame(sample_data(ps))
+meta <- subset(meta, project == "LOT1")
+meta$category <- paste(meta$age, meta$organ, meta$position, sep = " ")
+
+taxa_list <- split(rownames(meta), meta$category) |>
   lapply(function(samples) {
-  taxa_sums_po <- taxa_sums(prune_samples(samples, ps))
-  names(taxa_sums_po[taxa_sums_po > 0])
+    taxa_sums <- taxa_sums(prune_samples(samples, ps))
+    names(taxa_sums[taxa_sums > 0])
   })
 
-upset(fromList(taxa_list_proj_org), nsets = length(taxa_list_proj_org), order.by = "freq", 
-  main.bar.color = "forestgreen", sets.bar.color = "steelblue")
-
-    # Pour colorer les points (intersections) ou les barres selon le LOT, 
-    # on peut utiliser l'argument `queries` d'UpSetR ou définir un vecteur de couleurs pour les sets.
-    # Voici un exemple pour colorer les sets (barres horizontales) selon le LOT :
-    couleurs_sets <- sapply(names(taxa_list_proj_org), function(x) {
-      if (grepl("LOT1", x)) return("#E41A1C") # Rouge pour LOT1
-      if (grepl("LOT2", x)) return("#377EB8") # Bleu pour LOT2
-      if (grepl("LOT3", x)) return("#4DAF4A") # Vert pour LOT3
-      return("gray")
-    })
-
-    upset(fromList(taxa_list_proj_org), nsets = length(taxa_list_proj_org), order.by = "freq", 
-          main.bar.color = "forestgreen", sets.bar.color = couleurs_sets)
-
-  meta_proj_org_pos <- data.frame(sample_data(ps))
-  meta_proj_org_pos$category <- paste(meta_proj_org_pos$project, meta_proj_org_pos$organ, meta_proj_org_pos$position, sep = "_")
-
-  taxa_list_proj_org_pos <- split(rownames(meta_proj_org_pos), meta_proj_org_pos$category) |>
-    lapply(function(samples) {
-      taxa_sums_pop <- taxa_sums(prune_samples(samples, ps))
-      names(taxa_sums_pop[taxa_sums_pop > 0])
-    })
-
-  upset(fromList(taxa_list_proj_org_pos), nsets = length(taxa_list_proj_org_pos), order.by = "freq", 
-        main.bar.color = "forestgreen", sets.bar.color = "steelblue")
+p3 =upset(fromList(taxa_list), nsets = length(taxa_list), order.by = "freq", 
+      main.bar.color = "forestgreen", sets.bar.color = "steelblue")
 
 
 
-        meta_family <- data.frame(sample_data(ps))
-        meta_family$category <- meta_family$plant_family
+meta <- data.frame(sample_data(ps))
+meta <- subset(meta, project == "LOT2")
+meta$category <- paste(meta$age, meta$organ, meta$position, sep = " ")
 
-        taxa_list_family <- split(rownames(meta_family), meta_family$category) |>
-          lapply(function(samples) {
-            taxa_sums_fam <- taxa_sums(prune_samples(samples, ps))
-            names(taxa_sums_fam[taxa_sums_fam > 0])
-          })
+taxa_list <- split(rownames(meta), meta$category) |>
+  lapply(function(samples) {
+    taxa_sums <- taxa_sums(prune_samples(samples, ps))
+    names(taxa_sums[taxa_sums > 0])
+  })
 
-        upset(fromList(taxa_list_family), nsets = length(taxa_list_family), order.by = "freq", 
-              main.bar.color = "forestgreen", sets.bar.color = "steelblue")
+p2=upset(fromList(taxa_list), nsets = length(taxa_list), order.by = "freq", 
+      main.bar.color = "forestgreen", sets.bar.color = "steelblue")
 
 
 
 
-              meta_lot1 <- data.frame(sample_data(ps)) %>% filter(project == "LOT1")
-              meta_lot1$category <- paste(meta_lot1$organ, meta_lot1$position, sep = "_")
+meta <- data.frame(sample_data(ps))
+meta <- subset(meta, project == "LOT3")
+meta$category <- paste(meta$age, meta$organ, meta$position, sep = " ")
 
-              taxa_list_lot1 <- split(rownames(meta_lot1), meta_lot1$category) |>
-                lapply(function(samples) {
-                  taxa_sums_lot1 <- taxa_sums(prune_samples(samples, ps))
-                  names(taxa_sums_lot1[taxa_sums_lot1 > 0])
-                })
+taxa_list <- split(rownames(meta), meta$category) |>
+  lapply(function(samples) {
+    taxa_sums <- taxa_sums(prune_samples(samples, ps))
+    names(taxa_sums[taxa_sums > 0])
+  })
 
-              upset(fromList(taxa_list_lot1), nsets = length(taxa_list_lot1), order.by = "freq", 
-                    main.bar.color = "forestgreen", sets.bar.color = "steelblue")
-
-
-              meta_lot1 <- data.frame(sample_data(ps)) %>% filter(project == "LOT2")
-              meta_lot1$category <- paste(meta_lot1$organ, meta_lot1$position, sep = "_")
-
-              taxa_list_lot1 <- split(rownames(meta_lot1), meta_lot1$category) |>
-                lapply(function(samples) {
-                  taxa_sums_lot1 <- taxa_sums(prune_samples(samples, ps))
-                  names(taxa_sums_lot1[taxa_sums_lot1 > 0])
-                })
-
-              upset(fromList(taxa_list_lot1), nsets = length(taxa_list_lot1), order.by = "freq", 
-                    main.bar.color = "forestgreen", sets.bar.color = "steelblue")
+p1=upset(fromList(taxa_list), nsets = length(taxa_list), order.by = "freq", 
+      main.bar.color = "forestgreen", sets.bar.color = "steelblue")
 
 
 
-              meta_lot1 <- data.frame(sample_data(ps)) %>% filter(project == "LOT3")
-              meta_lot1$category <- paste(meta_lot1$organ, meta_lot1$position, sep = "_")
-
-              taxa_list_lot1 <- split(rownames(meta_lot1), meta_lot1$category) |>
-                lapply(function(samples) {
-                  taxa_sums_lot1 <- taxa_sums(prune_samples(samples, ps))
-                  names(taxa_sums_lot1[taxa_sums_lot1 > 0])
-                })
-
-              upset(fromList(taxa_list_lot1), nsets = length(taxa_list_lot1), order.by = "freq", 
-                    main.bar.color = "forestgreen", sets.bar.color = "steelblue")
 
 
 # Diagramme de Chord
@@ -500,7 +505,7 @@ row_ha <- rowAnnotation(
   Phylum = row_meta$gbr268_Phylum,
   annotation_name_side = "top"
 )
-color_mapping <- colorRamp2(c(0, max(mat)/2, max(mat)), c("lightblue", "yellow", "red"))
+color_mapping <- colorRamp2(c(0, max(mat)/2, max(mat)), c("white", "yellow", "red"))
 ann_colors = list(
   Project = c("LOT1" = "lightblue", "LOT2" = "#D34949", "LOT3" = "grey"), # Ajustez si besoin
   Organ = c("root" = "brown", "old_leaf" = "darkgreen", "young_leaf" = "lightgreen"),

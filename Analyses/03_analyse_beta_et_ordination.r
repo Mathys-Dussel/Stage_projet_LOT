@@ -255,13 +255,17 @@ plot_ordination(ps_lot03, nmds_lot03, color = "organ", shape = "position") +
   labs(title = "LOT3 - Organe", subtitle = paste0("R2 = ", round(perm_lot03["organ", "R2"], 3), ", p = ", perm_lot03["organ", "Pr(>F)"])) +
   theme_bw()
 
-(p1 | p_org_pos_1) / (p_org_pos_2 | p_org_pos_3) + plot_annotation(title = "Ordination NMDS - LOT3")
 
 vars_pop <- c("project", "organ", "position")
 form_pop <- as.formula(paste("bray_dist ~", paste(vars_pop, collapse = " + ")))
 perm_pop <- adonis2(form_pop, data = metadata, by = "margin", permutations = 999)
 
-tab_pop <- do.call(rbind, lapply(vars_pop, function(v) extract_permanova(perm_pop, v)))
+tab_pop <- data.frame(
+  Facteur = vars_pop,
+  Df = perm_pop[vars_pop, "Df"],
+  R2 = round(perm_pop[vars_pop, "R2"], 4),
+  p_value = perm_pop[vars_pop, "Pr(>F)"]
+)
 rownames(tab_pop) <- NULL
 
 print(perm_pop)
@@ -273,30 +277,32 @@ write.csv(tab_pop, "donnees/Tableau_PERMANOVA_project_organ_position.csv", row.n
 
 p1 <- plot_ordination(ps_hel, nmds_global, color = "project", shape = "organ") +
   stat_ellipse(aes(group = project, fill = project), alpha = 0.1, geom = "polygon") +
-  labs(title = "1. Structure Globale (Projet)", 
-       subtitle = paste0("R2 Project: ", round(perm_global$R2[1], 3))) +
+  labs(title = "Structure Globale (Projet)", 
+       subtitle = paste0("R2 = ", tab_pop$R2[1], ", p = ", tab_pop$p_value[1])) +
   theme_bw()
 
 p_org_pos_1=plot_ordination(ps_lot01, nmds_lot01, color = "organ", shape = "position") +
   geom_point(size = 3) +
   scale_shape_manual(values = c("epiphyte" = 1, "endophyte" = 16)) +
   stat_ellipse(aes(group = organ)) +
-  labs(title = "LOT1 - Organe", subtitle = paste0("R2 = ", round(perm_lot01["organ", "R2"], 3), ", p = ", perm_lot01["organ", "Pr(>F)"])) +
+  labs(title = "LOT1 - Organe x position", subtitle = paste0("R2 = ", tab_pop$R2[2], ", p = ", tab_pop$p_value[2])) +
   theme_bw()
 
 p_org_pos_2=plot_ordination(ps_lot02, nmds_lot02, color = "organ", shape = "position") +
   geom_point(size = 3) +
   scale_shape_manual(values = c("epiphyte" = 1, "endophyte" = 16)) +
   stat_ellipse(aes(group = organ)) +
-  labs(title = "LOT2 - Organe", subtitle = paste0("R2 = ", round(perm_lot02["organ", "R2"], 3), ", p = ", perm_lot02["organ", "Pr(>F)"])) +
+  labs(title = "LOT2 - Organe x position", subtitle = paste0("R2 = ", tab_pop$R2[3], ", p = ", tab_pop$p_value[3])) +
   theme_bw()
 
 p_org_pos_3=plot_ordination(ps_lot03, nmds_lot03, color = "organ", shape = "position") +
   geom_point(size = 3) +
   scale_shape_manual(values = c("epiphyte" = 1, "endophyte" = 16)) +
   stat_ellipse(aes(group = organ)) +
-  labs(title = "LOT3 - Organe", subtitle = paste0("R2 = ", round(perm_lot03["organ", "R2"], 3), ", p = ", perm_lot03["organ", "Pr(>F)"])) +
+  labs(title = "LOT3 - Organe x position", subtitle = paste0("R2 = ", tab_pop$R2[4], ", p = ", tab_pop$p_value[4])) +
   theme_bw()
+
+(p1 | p_org_pos_1) / (p_org_pos_2 | p_org_pos_3) 
 
 
 ###########################
