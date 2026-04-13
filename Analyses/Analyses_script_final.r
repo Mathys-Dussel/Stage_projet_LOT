@@ -93,12 +93,13 @@ res_proj <- iNEXT3D(mat_proj, q=c(0,1,2), datatype="abundance", nboot=0, size=se
 
 
 prepare_plot <- function(res, title) {
-  p <- ggiNEXT3D(res, type = 1, facet_var = "Order.q") +
+  
+  p <- ggiNEXT3D(res, type = 1) + 
+    facet_grid(. ~ Order.q, scales = "free") + 
     theme_bw() +
     labs(title = title, x = NULL, y = "Diversity") +
     theme(legend.position = "right")
   
-  levels(p$data$Order.q) <- c("Richness (q=0)", "Shannon (q=1)", "Simpson (q=2)")
   return(p)
 }
 
