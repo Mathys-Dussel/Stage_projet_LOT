@@ -4,6 +4,7 @@ ps <- readRDS("~/Documents/Etudes/Stage_projet_LOT/CRBE/Analyses/donnees/ps_fina
 df_alpha <- readRDS("~/Documents/Etudes/Stage_projet_LOT/CRBE/Analyses/donnees/df_alpha.rds")
 
 library(phyloseq)
+library(iNEXT.3D)
 library(ggplot2)
 library(ggpubr)
 library(patchwork)
@@ -12,7 +13,8 @@ library(dplyr)
 library(UpSetR)
 library(microbiome)
 library(circlize)
-
+library(vegan)
+library(tidyr)
 
 
 
@@ -20,47 +22,103 @@ library(circlize)
 
 
 
-library(iNEXT)
+ps_trim <- filter_taxa(ps, function(x) sum(x) > 99, TRUE)
 
-otu_mat <- as(otu_table(ps), "matrix")
-if (!taxa_are_rows(ps)) {
-    otu_mat <- t(otu_mat)
+ps_merged <- merge_samples(subset_samples(ps_trim, position == "epiphyte"), "organ")
+otu_tab <- as.matrix(t(otu_table(ps_merged)))
+
+otu_num <- apply(otu_tab, 2, function(x) as.numeric(as.character(x)))
+
+otu_num[is.na(otu_num)] <- 0
+
+rownames(otu_num) <- taxa_names(ps_merged)
+otu_grouped <- as.data.frame(otu_num)
+
+
+data_list <- as.list(otu_grouped)
+data_list <- lapply(data_list, as.integer)
+write.table(data_list, "data_list.txt", sep = "\t", row.names = TRUE, col.names = NA)
+
+max_reads <- max(colSums(otu_grouped))
+paliers <- seq(10, 3649011, length.out = 20)
+
+
+res_inext <- iNEXT3D(data = data_list, 
+                   diversity = "TD", 
+                   q = 0, 
+                   datatype = "abundance",
+                   nboot = 0,       
+                   size = paliers,
+                   endpoint = 3649011) 
+
+
+saveRDS(res_inext, file = "res_inext.rds")
+
+ggiNEXT3D(res_inext, type = 1)
+
+
+
+
+
+
+
+
+
+
+
+
+library(iNEXT.3D)
+library(ggplot2)
+library(patchwork)
+
+clean_otu <- function(ps_obj, variable) {
+  ps_m <- merge_samples(ps_obj, variable)
+  tab <- as.matrix(t(otu_table(ps_m)))
+  tab_num <- apply(tab, 2, function(x) as.integer(as.character(x)))
+  tab_num[is.na(tab_num)] <- 0
+  return(tab_num)
 }
 
-meta_alpha <- as(sample_data(ps), "data.frame")
-meta_alpha$group_op <- interaction(meta_alpha$organ, meta_alpha$position, drop = TRUE)
-
-abund_list <- lapply(split(rownames(meta_alpha), meta_alpha$group_op), function(smp) {
-    colSums(otu_mat[, smp, drop = FALSE])
-})
-
-inext_res <- iNEXT(abund_list, q = 0, datatype = "abundance")
-
-df_alpha <- ggiNEXT(inext_res, type = 1, se = TRUE)$data
-
-df_alpha <- df_alpha |>
-    tidyr::separate(Assemblage, into = c("organ", "position"),
-                                    sep = "[_.]", remove = FALSE, fill = "right")
-
-p_raref_q0 <- ggplot(df_alpha, aes(x = x, y = y, colour = Method)) +
-    geom_line(linewidth = 0.8) +
-    geom_ribbon(aes(ymin = qD.LCL, ymax = qD.UCL, fill = Method),
-                            alpha = 0.2, colour = NA) +
-    facet_grid(organ ~ position, scales = "free_x") +
-    labs(x = "Nombre d'individus",
-             y = "Richesse spécifique (q = 0)",
-             colour = "Méthode",
-             fill = "Méthode") +
-    theme_bw()
-
-print(p_raref_q0)
+ps_trim <- filter_taxa(ps, function(x) sum(x) > 1000, TRUE)
 
 
+mat_epi <- clean_otu(subset_samples(ps_trim, position == "epiphyte"), "organ")
+res_epi <- iNEXT3D(mat_epi, q=c(0,1,2), datatype="abundance", nboot=0, size=seq(10, max(colSums(mat_epi)), length.out=10))
 
+mat_endo <- clean_otu(subset_samples(ps_trim, position == "endophyte"), "organ")
+res_endo <- iNEXT3D(mat_endo, q=c(0,1,2), datatype="abundance", nboot=0, size=seq(10, max(colSums(mat_endo)), length.out=10))
+
+mat_proj <- clean_otu(ps_trim, "project")
+res_proj <- iNEXT3D(mat_proj, q=c(0,1,2), datatype="abundance", nboot=0, size=seq(10, max(colSums(mat_proj)), length.out=10))
+
+
+prepare_plot <- function(res, title) {
+  p <- ggiNEXT3D(res, type = 1, facet_var = "Order.q") +
+    theme_bw() +
+    labs(title = title, x = NULL, y = "Diversity") +
+    theme(legend.position = "right")
+  
+  levels(p$data$Order.q) <- c("Richness (q=0)", "Shannon (q=1)", "Simpson (q=2)")
+  return(p)
+}
+
+p1 <- prepare_plot(res_epi, "Position: Epiphytes")
+p2 <- prepare_plot(res_endo, "Position: Endophytes")
+p3 <- prepare_plot(res_proj, "Global Projects") + labs(x = "Number of individuals")
+
+
+
+final_plot <- p1 / p2 / p3
+
+print(final_plot)
+
+ggsave("Figure_Alpha_Diversity_Complete.pdf", final_plot, width = 14, height = 12)
 
 
 
 ############## UpSetR ##############
+
+ps_bin <- transform_sample_counts(ps_rare, function(x) ifelse(x > 0, 1, 0))
 
 meta <- data.frame(sample_data(ps))
 meta$category <- paste(meta$project, meta$age, meta$organ, meta$position, sep = " ")

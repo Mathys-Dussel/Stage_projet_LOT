@@ -124,6 +124,8 @@ INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck
 INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
 INPUT /usr/local/texlive/2025/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty
 INPUT /usr/local/texlive/2025/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty
+INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/natbib/natbib.sty
+INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/natbib/natbib.sty
 INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/setspace/setspace.sty
 INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/setspace/setspace.sty
 INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
@@ -140,6 +142,7 @@ INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.st
 INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/graphics/color.sty
 INPUT ./DUSSEL-Mathys-RapportM1-2026.out
 INPUT ./DUSSEL-Mathys-RapportM1-2026.out
 INPUT DUSSEL-Mathys-RapportM1-2026.out
@@ -178,11 +181,6 @@ INPUT ./Figures/logo-UT.png
 INPUT ./Figures/logo-UT.png
 INPUT ./Figures/logo-UT.png
 INPUT ./Figures/logo-UT.png
-INPUT ./Figures/Logo-CRBE.png
-INPUT ./Figures/Logo-CRBE.png
-INPUT ./Figures/Logo-CRBE.png
-INPUT ./Figures/Logo-CRBE.png
-INPUT ./Figures/Logo-CRBE.png
 INPUT ./Figures/LOT.png
 INPUT ./Figures/LOT.png
 INPUT ./Figures/LOT.png

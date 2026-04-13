@@ -10,6 +10,14 @@
 \usepackage{eso-pic}
 \usepackage{graphicx}
 \usepackage{hyperref}
+\usepackage[round]{natbib}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true, 
+    linkcolor=black,   
+    citecolor=blue,  
+    urlcolor=blue    
+}
 
 \title{Rapport Académique}
 \author{Mathys Dussel}
@@ -27,24 +35,24 @@
 
 \AddToShipoutPictureBG*{
        \AtPageUpperLeft{%
-              \put(\LenToUnit{\paperwidth-5cm},\LenToUnit{-2.6cm}){% Ajustez les coordonnées selon vos besoins
-                     \includegraphics[width=4cm]{Figures/logo-UT.png} % Remplacez 'example-image' par le chemin de votre logo
-              }%
-       }%
+              \put(\LenToUnit{\paperwidth-5cm},\LenToUnit{-2.6cm}){
+                     \includegraphics[width=4.1cm]{Figures/logo-UT.png} 
+              }
+       }
 }
+%\AddToShipoutPictureBG*{
+       %\AtPageUpperLeft{%
+             % \put(\LenToUnit{\paperwidth-9cm},\LenToUnit{-2.8cm}){
+                    % \includegraphics[width=4cm]{Figures/Logo-CRBE.%png} 
+             % }
+       %}
+%}
 \AddToShipoutPictureBG*{
-       \AtPageUpperLeft{%
-              \put(\LenToUnit{\paperwidth-9cm},\LenToUnit{-2.8cm}){% Ajustez les coordonnées selon vos besoins
-                     \includegraphics[width=4cm]{Figures/Logo-CRBE.png} % Remplacez 'example-image' par le chemin de votre logo
-              }%
-       }%
-}
-\AddToShipoutPictureBG*{
-       \AtPageUpperLeft{%
-              \put(\LenToUnit{\paperwidth-10.6cm},\LenToUnit{-2.8cm}){% Ajustez les coordonnées selon vos besoins
-                     \includegraphics[width=1.6cm]{Figures/LOT.png} % Remplacez 'example-image' par le chemin de votre logo
-              }%
-       }%
+       \AtPageUpperLeft{
+              \put(\LenToUnit{\paperwidth-7cm},\LenToUnit{-2.8cm}){
+                     \includegraphics[width=1.4cm]{Figures/LOT.png} 
+              }
+       }
 }
     \vspace{1cm}
     {\scshape\Large Université Toulouse III - Paul Sabatier\par}
@@ -117,20 +125,17 @@ Ecologie et Evolution\par}
 \onehalfspacing
 \section{Introduction}
 
-Les arbres tropicaux âgés sont cruciaux pour approfondir les connaissances sur la biodiversité tropicale. Ils sont connus pour supporter une stratification verticale de microécosystèmes, offrant un nombre important de niches écologiques sur un même arbre. On y observe une grande diversité de milieux, tels que les cavités ligneuses (dendrotelmes), les zones d'accumulation de matière organique (humus suspendu), ainsi que des microhabitats façonnés par la flore épiphyte. Ces derniers incluent notamment les plantes à réservoir d'eau (phytotelmes), les fougères en « nid d'oiseau », et une vaste diversité d'autres taxons épiphytes. Par conséquent, une grande diversité d'organismes y trouve refuge et interagit au sein de ces microécosystèmes. 
-Bien que ce phénomène de structuration verticale soit bien documenté, peu d'etudes documentent les compositions en communautés biotiques eucaryotes, notamment les communautés fongiques, au sein de ces microécosystèmes. De plus, les processus écologiques qui façonnent la diversité et l'assemblage de ces communautés restent largement méconnus. 
+
+Les communautés fongiques jouent un rôle fondamental dans le fonctionnement des écosystèmes terrestres, participant activement aux cycles biogéochimiques et à la dynamique des populations végétales. La structuration de ces assemblages microbiens est régie par une combinaison complexe de facteurs abiotiques (température, humidité du milieu, rayonnement) et biotiques. En milieu tropical, où la diversité biologique atteint son paroxysme, les interactions durables entre les champignons et les plantes hôtes sont particulièrement prégnantes \citep{arnold_are_2000, bermudes_fungi_1989}. À l'échelle de la plante, le microbiote fongique se différencie fortement selon l'organe colonisé (racines ou feuilles) et sa position spatiale vis-à-vis des tissus végétaux. On distingue ainsi les champignons épiphytes, qui se développent à la surface des organes (phylloplan ou rhizoplan), des champignons endophytes, qui colonisent les tissus internes de manière asymptomatique. La composition de ces communautés n'est pas aléatoire : l'identité de la plante hôte, à travers ses traits fonctionnels, son exsudation racinaire et foliaire, ainsi que ses défenses immunitaires, exerce un filtre sélectif déterminant sur l'assemblage de son propre mycobiome.
+
+Pour comprendre ces interactions végétal-champignon dans des conditions de contraintes extrêmes, les plantes épiphytes constituent un modèle d'étude de premier choix. Représentant une part considérable de la diversité végétale des forêts tropicales, les épiphytes vasculaires croissent de manière non parasite sur d'autres végétaux, typiquement dans la canopée \citep{zotz_plants_2016}. Ce mode de vie les coupe de tout accès direct au sol forestier, les soumettant à une forte stratification et à des déficits chroniques en eau et en nutriments. Pour pallier ces stress abiotiques sévères, les épiphytes ont développé des stratégies d'acquisition et de conservation des ressources singulières (morphologie foliaire, structures de rétention d'eau) mais s'appuient également de manière critique sur des associations symbiotiques et mutualistes avec divers organismes (fourmis, bactéries, et champignons), qui favorisent leur nutrition et leur tolérance au stress.
+
+Malgré l'importance écologique de ces associations, les connaissances actuelles sur les communautés fongiques associées aux plantes restent très inégales. La littérature scientifique s'est historiquement concentrée sur les espèces terrestres, et plus particulièrement sur des plantes présentant un fort intérêt agronomique prédominantes dans les systèmes tropicaux, telles que le café ou le cacao \citep{vega_fungal_2008}. En ce qui concerne la flore épiphyte, les études documentant le mycobiome se focalisent presque exclusivement sur des taxons précis, écologiquement et économiquement attractifs, à l'instar des \textit{Orchidaceae}, dont la dépendance absolue aux champignons mycorhiziens pour la germination est bien caractérisée \citep{dearnaley_orchid_2012}. En revanche, la diversité fongique associée à la vaste majorité des autres lignées d'épiphytes vasculaires néotropicales demeure à ce jour largement inexplorée.
+
+C'est dans ce contexte que s'inscrit le projet \textit{Life on Trees} (LOT). Ce projet vise à combler cette lacune en explorant à large échelle la diversité et les règles d'assemblage des communautés fongiques chez une grande diversité de plantes épiphytes vasculaires tropicales, au-delà des seuls modèles classiques. En caractérisant la composition du mycobiome associé à différents organes de ces plantes, le projet LOT cherche à déterminer l'importance relative de la phylogénie de la plante hôte, de ses traits fonctionnels et des paramètres environnementaux de la canopée dans la structuration de ces communautés microbiotes. L'ambition est d'apporter un éclairage inédit sur les mécanismes d'adaptation et d'interaction qui permettent à ces plantes colonisatrices de la canopée de prospérer dans l'un des habitats les plus contraignants des forêts tropicales.
 
 
-Certaines etudes ont abordées la diversité fongiques au sein des arbres, elles se sont principalement concentrées sur les Lichens ou les endophytes fongiques cultivables. 
-
-
-Concernant les endophytes fongiques, 115 OTUs ont été identifiés à partir de 46 \textit{Hevea brasiliensis} \cite{araujo_diversity_2020}
-
-
-
-
-
-
+\citep{araujo_diversity_2020}
 
 \section{Matériels et méthodes}
 
@@ -164,6 +169,7 @@ Indice de Levins pour les OTUs les plus abondants dans chaque microhabitat.
 \listoffigures
 \listoftables
 \newpage
+
 \bibliography{BIBLIO_Stage_LOT_CRBE.bib}
 \bibliographystyle{apalike}
 

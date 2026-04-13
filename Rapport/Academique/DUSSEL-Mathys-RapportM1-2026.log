@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2026.1.27)  10 APR 2026 11:17
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2026.1.27)  10 APR 2026 12:09
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -294,36 +294,48 @@ Package: uniquecounter 2019/12/15 v1.4 Provide unlimited unique counter (HO)
 Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 285.
 )
 \Hy@SectionHShift=\skip54
-) (/usr/local/texlive/2025/texmf-dist/tex/latex/setspace/setspace.sty
+) (/usr/local/texlive/2025/texmf-dist/tex/latex/natbib/natbib.sty
+Package: natbib 2010/09/13 8.31b (PWD, AO)
+\bibhang=\skip55
+\bibsep=\skip56
+LaTeX Info: Redefining \cite on input line 694.
+\c@NAT@ctr=\count306
+)
+Package hyperref Info: Option `colorlinks' set `true' on input line 20.
+ (/usr/local/texlive/2025/texmf-dist/tex/latex/setspace/setspace.sty
 Package: setspace 2022/12/04 v6.7b set line spacing
 ) (/usr/local/texlive/2025/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2024-05-08 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count306
+\l__color_backend_stack_int=\count307
 \l__pdf_internal_box=\box54
 ) (./DUSSEL-Mathys-RapportM1-2026.aux)
 \openout1 = `DUSSEL-Mathys-RapportM1-2026.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Info: Redefining \degres on input line 20.
-LaTeX Info: Redefining \up on input line 20.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 28.
+LaTeX Font Info:    ... okay on input line 28.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 28.
+LaTeX Font Info:    ... okay on input line 28.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 28.
+LaTeX Font Info:    ... okay on input line 28.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 28.
+LaTeX Font Info:    ... okay on input line 28.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 28.
+LaTeX Font Info:    ... okay on input line 28.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 28.
+LaTeX Font Info:    ... okay on input line 28.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 28.
+LaTeX Font Info:    ... okay on input line 28.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 28.
+LaTeX Font Info:    ... okay on input line 28.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 28.
+LaTeX Font Info:    ... okay on input line 28.
+LaTeX Info: Redefining \degres on input line 28.
 
+
+Package french.ldf Warning: Please load the "natbib" package
+(french.ldf)                BEFORE babel/french; reported on input line 28.
+
+LaTeX Info: Redefining \up on input line 28.
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
 *geometry* verbose mode - [ preamble ] result:
@@ -360,16 +372,16 @@ LaTeX Info: Redefining \up on input line 20.
 
 (/usr/local/texlive/2025/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count307
+\scratchcounter=\count308
 \scratchdimen=\dimen177
 \scratchbox=\box55
-\nofMPsegments=\count308
-\nofMParguments=\count309
+\nofMPsegments=\count309
+\nofMParguments=\count310
 \everyMPshowfont=\toks27
-\MPscratchCnt=\count310
+\MPscratchCnt=\count311
 \MPscratchDim=\dimen178
-\MPnumerator=\count311
-\makeMPintoPDFobject=\count312
+\MPnumerator=\count312
+\makeMPintoPDFobject=\count313
 \everyMPtoPDFconversion=\toks28
 ) (/usr/local/texlive/2025/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
@@ -377,7 +389,7 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 48
  (/usr/local/texlive/2025/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
-Package hyperref Info: Link coloring OFF on input line 20.
+Package hyperref Info: Link coloring ON on input line 28.
  (./DUSSEL-Mathys-RapportM1-2026.out) (./DUSSEL-Mathys-RapportM1-2026.out)
 \@outlinefile=\write3
 \openout3 = `DUSSEL-Mathys-RapportM1-2026.out'.
@@ -385,35 +397,30 @@ Package hyperref Info: Link coloring OFF on input line 20.
 <Figures/branche_chargée.jpeg, id=40, 2717.15125pt x 1418.29875pt>
 File: Figures/branche_chargée.jpeg Graphic file (type jpg)
 <use Figures/branche_chargée.jpeg>
-Package pdftex.def Info: Figures/branche_chargée.jpeg  used on input line 79.
+Package pdftex.def Info: Figures/branche_chargée.jpeg  used on input line 87.
 (pdftex.def)             Requested size: 314.40001pt x 164.10725pt.
 
 
 <Figures/logo-UT.png, id=41, 1563.8425pt x 501.875pt>
 File: Figures/logo-UT.png Graphic file (type png)
 <use Figures/logo-UT.png>
-Package pdftex.def Info: Figures/logo-UT.png  used on input line 88.
-(pdftex.def)             Requested size: 113.81102pt x 36.52092pt.
-<Figures/Logo-CRBE.png, id=42, 597.6729pt x 282.3348pt>
-File: Figures/Logo-CRBE.png Graphic file (type png)
-<use Figures/Logo-CRBE.png>
-Package pdftex.def Info: Figures/Logo-CRBE.png  used on input line 88.
-(pdftex.def)             Requested size: 113.81102pt x 53.76048pt.
-<Figures/LOT.png, id=44, 120.45pt x 120.45pt>
+Package pdftex.def Info: Figures/logo-UT.png  used on input line 96.
+(pdftex.def)             Requested size: 116.65646pt x 37.43222pt.
+<Figures/LOT.png, id=42, 120.45pt x 120.45pt>
 File: Figures/LOT.png Graphic file (type png)
 <use Figures/LOT.png>
-Package pdftex.def Info: Figures/LOT.png  used on input line 88.
-(pdftex.def)             Requested size: 45.52458pt x 45.52335pt.
+Package pdftex.def Info: Figures/LOT.png  used on input line 96.
+(pdftex.def)             Requested size: 39.83368pt x 39.83316pt.
 [1
 
-{/usr/local/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc} <./Figures/logo-UT.png (PNG copy)> <./Figures/Logo-CRBE.png> <./Figures/LOT.png (PNG copy)> <./Figures/branche_chargée.jpeg>]
+{/usr/local/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc} <./Figures/logo-UT.png (PNG copy)> <./Figures/LOT.png (PNG copy)> <./Figures/branche_chargée.jpeg>]
 
 
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.95 \newpage
-              [1]
+l.103 \newpage
+               [1]
 
 [2] (./DUSSEL-Mathys-RapportM1-2026.toc)
 \tf@toc=\write4
@@ -427,15 +434,22 @@ l.95 \newpage
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.116 \newpage
+l.124 \newpage
                [1]
 
 
 pdfTeX warning (ext4): destination with the same identifier (name{page.2}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.163 \newpage
-               [2] (./DUSSEL-Mathys-RapportM1-2026.lof)
+l.136 
+       [2]
+
+
+pdfTeX warning (ext4): destination with the same identifier (name{page.3}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.168 \newpage
+               [3] (./DUSSEL-Mathys-RapportM1-2026.lof)
 \tf@lof=\write5
 \openout5 = `DUSSEL-Mathys-RapportM1-2026.lof'.
 
@@ -445,14 +459,9 @@ l.163 \newpage
 
 
 
+[4] (./DUSSEL-Mathys-RapportM1-2026.bbl)
 
-pdfTeX warning (ext4): destination with the same identifier (name{page.3}) has been already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.166 \newpage
-               [3] (./DUSSEL-Mathys-RapportM1-2026.bbl)
-
-[4] (./DUSSEL-Mathys-RapportM1-2026.aux)
+[5] (./DUSSEL-Mathys-RapportM1-2026.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
@@ -461,18 +470,18 @@ Package rerunfilecheck Info: File `DUSSEL-Mathys-RapportM1-2026.out' has not cha
 (rerunfilecheck)             Checksum: F583B78AAD98CE0BEB000D3BC8EA1ACF;1124.
  ) 
 Here is how much of TeX's memory you used:
- 12486 strings out of 473190
- 198823 string characters out of 5715800
- 619666 words of memory out of 5000000
- 35560 multiletter control sequences out of 15000+600000
+ 12833 strings out of 473190
+ 203321 string characters out of 5715800
+ 628774 words of memory out of 5000000
+ 35897 multiletter control sequences out of 15000+600000
  571817 words of font info for 61 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,11n,79p,895b,503s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,11n,79p,1408b,504s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfbx1440.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfbx1728.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfbx2488.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfcc1440.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfcc1728.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfrm1440.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfti1200.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfti1440.pfb>
-Output written on DUSSEL-Mathys-RapportM1-2026.pdf (8 pages, 1396605 bytes).
+Output written on DUSSEL-Mathys-RapportM1-2026.pdf (9 pages, 1193577 bytes).
 PDF statistics:
- 155 PDF objects out of 1000 (max. 8388607)
- 118 compressed objects within 2 object streams
- 21 named destinations out of 1000 (max. 500000)
- 93 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 174 PDF objects out of 1000 (max. 8388607)
+ 138 compressed objects within 2 object streams
+ 27 named destinations out of 1000 (max. 500000)
+ 88 words of extra memory for PDF output out of 10000 (max. 10000000)
 

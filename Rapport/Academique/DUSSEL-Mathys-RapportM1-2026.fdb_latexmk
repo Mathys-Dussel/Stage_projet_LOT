@@ -1,14 +1,14 @@
 # Fdb version 4
-["bibtex DUSSEL-Mathys-RapportM1-2026"] 1775812397.43385 "DUSSEL-Mathys-RapportM1-2026.aux" "DUSSEL-Mathys-RapportM1-2026.bbl" "DUSSEL-Mathys-RapportM1-2026" 1775812655.71086 0
-  "./BIBLIO_Stage_LOT_CRBE.bib" 1775562586.74286 3469 c46ad64c81e02186ec8b8bd77e59c9c3 ""
+["bibtex DUSSEL-Mathys-RapportM1-2026"] 1775815743.48226 "DUSSEL-Mathys-RapportM1-2026.aux" "DUSSEL-Mathys-RapportM1-2026.bbl" "DUSSEL-Mathys-RapportM1-2026" 1775815794.72761 0
+  "./BIBLIO_Stage_LOT_CRBE.bib" 1775815198.95832 4578 445b626d904fdf6b25f48bf4f580adc3 ""
   "/usr/local/texlive/2025/texmf-dist/bibtex/bst/base/apalike.bst" 1292289607 24635 604dafcc79f521a11ea73e506e1fbd98 ""
-  "DUSSEL-Mathys-RapportM1-2026.aux" 1775812655.10075 1542 d5ab7390d30c89189adfd7f54724fa95 "pdflatex"
+  "DUSSEL-Mathys-RapportM1-2026.aux" 1775815794.07741 1990 e8a1bd282b19130d2ff439b8f91311af "pdflatex"
   (generated)
   "DUSSEL-Mathys-RapportM1-2026.bbl"
   "DUSSEL-Mathys-RapportM1-2026.blg"
   (rewritten before read)
-["pdflatex"] 1775812653.66681 "/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex" "DUSSEL-Mathys-RapportM1-2026.pdf" "DUSSEL-Mathys-RapportM1-2026" 1775812655.71123 0
-  "/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex" 1775812653.36284 5287 b02c236feb9745bd62022a97e9f8ca4a ""
+["pdflatex"] 1775815792.99248 "/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex" "DUSSEL-Mathys-RapportM1-2026.pdf" "DUSSEL-Mathys-RapportM1-2026" 1775815794.7279 0
+  "/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex" 1775815792.27306 7860 465442fb73753e4ac104cbae986b53fe ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc" 1136849721 2971 def0b6c1f0b107b3b936def894055589 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/ecbx1200.tfm" 1136768653 3584 402da0b29eafbad07963b1224b222f18 ""
@@ -86,6 +86,7 @@
   "/usr/local/texlive/2025/texmf-dist/tex/latex/graphics-cfg/color.cfg" 1459978653 1213 620bba36b25224fa9b7e1ccb4ecb76fd ""
   "/usr/local/texlive/2025/texmf-dist/tex/latex/graphics-cfg/graphics.cfg" 1465944070 1224 978390e9c2234eab29404bc21b268d1e ""
   "/usr/local/texlive/2025/texmf-dist/tex/latex/graphics-def/pdftex.def" 1713382759 19440 9da9dcbb27470349a580fca7372d454b ""
+  "/usr/local/texlive/2025/texmf-dist/tex/latex/graphics/color.sty" 1730496337 7245 57f7defed4fb41562dc4b6ca13958ca9 ""
   "/usr/local/texlive/2025/texmf-dist/tex/latex/graphics/graphics.sty" 1730496337 18363 dee506cb8d56825d8a4d020f5d5f8704 ""
   "/usr/local/texlive/2025/texmf-dist/tex/latex/graphics/graphicx.sty" 1717359999 8010 6f2ad8c2b2ffbd607af6475441c7b5e4 ""
   "/usr/local/texlive/2025/texmf-dist/tex/latex/graphics/keyval.sty" 1717359999 2671 70891d50dac933918b827d326687c6e8 ""
@@ -101,6 +102,7 @@
   "/usr/local/texlive/2025/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty" 1665067230 13815 760b0c02f691ea230f5359c4e1de23a7 ""
   "/usr/local/texlive/2025/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def" 1716410060 29785 9f93ab201fe5dd053afcc6c1bcf7d266 ""
   "/usr/local/texlive/2025/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg" 1279039959 678 4792914a8f45be57bb98413425e4c7af ""
+  "/usr/local/texlive/2025/texmf-dist/tex/latex/natbib/natbib.sty" 1291685959 45456 1c8843383c0bd05870c45fa0ebea6cc2 ""
   "/usr/local/texlive/2025/texmf-dist/tex/latex/refcount/refcount.sty" 1576624809 9878 9e94e8fa600d95f9c7731bb21dfb67a4 ""
   "/usr/local/texlive/2025/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty" 1657483315 9714 ba3194bd52c8499b3f1e3eb91d409670 ""
   "/usr/local/texlive/2025/texmf-dist/tex/latex/setspace/setspace.sty" 1670275497 22490 8cac309b79a4c53a4ffce4b1b07aead0 ""
@@ -110,15 +112,14 @@
   "/usr/local/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1769534334 5467155 19efa205003f9ecad95fbbaa6ff24da1 ""
   "/usr/local/texlive/2025/texmf-var/web2c/pdftex/pdflatex.fmt" 1769534110 3345737 af50b31b4d9ecbfdf83d942c907bafd2 ""
   "/usr/local/texlive/2025/texmf.cnf" 1741450484 577 418a7058ec8e006d8704f60ecd22c938 ""
-  "DUSSEL-Mathys-RapportM1-2026.aux" 1775812655.10075 1542 d5ab7390d30c89189adfd7f54724fa95 "pdflatex"
-  "DUSSEL-Mathys-RapportM1-2026.bbl" 1775812397.66054 492 192ebe594f29e430b8964a971ac5d683 "bibtex DUSSEL-Mathys-RapportM1-2026"
-  "DUSSEL-Mathys-RapportM1-2026.lof" 1775812655.10307 29 90a531048232c08ff2a976fa2820a23e "pdflatex"
-  "DUSSEL-Mathys-RapportM1-2026.lot" 1775812655.10333 29 90a531048232c08ff2a976fa2820a23e "pdflatex"
-  "DUSSEL-Mathys-RapportM1-2026.out" 1775812655.10225 1124 f583b78aad98ce0beb000d3bc8ea1acf "pdflatex"
-  "DUSSEL-Mathys-RapportM1-2026.tex" 1775812653.36284 5287 b02c236feb9745bd62022a97e9f8ca4a ""
-  "DUSSEL-Mathys-RapportM1-2026.toc" 1775812655.10301 701 1c249c61d36f87abc3a6cf482db4fc0e "pdflatex"
+  "DUSSEL-Mathys-RapportM1-2026.aux" 1775815794.07741 1990 e8a1bd282b19130d2ff439b8f91311af "pdflatex"
+  "DUSSEL-Mathys-RapportM1-2026.bbl" 1775815743.71762 1593 be70c6f4df3ab279d5aeb75f77f40adf "bibtex DUSSEL-Mathys-RapportM1-2026"
+  "DUSSEL-Mathys-RapportM1-2026.lof" 1775815794.07882 29 90a531048232c08ff2a976fa2820a23e "pdflatex"
+  "DUSSEL-Mathys-RapportM1-2026.lot" 1775815794.07887 29 90a531048232c08ff2a976fa2820a23e "pdflatex"
+  "DUSSEL-Mathys-RapportM1-2026.out" 1775815794.0784 1124 f583b78aad98ce0beb000d3bc8ea1acf "pdflatex"
+  "DUSSEL-Mathys-RapportM1-2026.tex" 1775815792.27306 7860 465442fb73753e4ac104cbae986b53fe ""
+  "DUSSEL-Mathys-RapportM1-2026.toc" 1775815794.07877 701 b010f89cd7c064fcc34e2e35a8bf3ef5 "pdflatex"
   "Figures/LOT.png" 1775204916.18333 2200 80eee35f2954e43401f27b6a35826d4c ""
-  "Figures/Logo-CRBE.png" 1775204916.18566 305157 7e736f0ac223b86b88a2dc43bcb6f560 ""
   "Figures/branche_chargée.jpeg" 1775547636.66224 978571 ebd3bb93bf34136461358b6fdf469624 ""
   "Figures/logo-UT.png" 1775204916.18685 28404 3d2192cd491d057f960d814999814500 ""
   (generated)

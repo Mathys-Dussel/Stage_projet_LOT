@@ -3,44 +3,44 @@ Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: DUSSEL-Mathys-RapportM1-2026.aux
 The style file: apalike.bst
 Database file #1: BIBLIO_Stage_LOT_CRBE.bib
-You've used 1 entry,
+You've used 6 entries,
             1935 wiz_defined-function locations,
-            479 strings with 4165 characters,
-and the built_in function-call counts, 681 in all, are:
-= -- 59
-> -- 53
-< -- 0
-+ -- 20
-- -- 20
-* -- 71
-:= -- 125
-add.period$ -- 3
-call.type$ -- 1
-change.case$ -- 15
-chr.to.int$ -- 1
-cite$ -- 1
-duplicate$ -- 14
-empty$ -- 33
-format.name$ -- 21
-if$ -- 122
+            511 strings with 5017 characters,
+and the built_in function-call counts, 2821 in all, are:
+= -- 267
+> -- 152
+< -- 3
++ -- 54
+- -- 54
+* -- 255
+:= -- 495
+add.period$ -- 18
+call.type$ -- 6
+change.case$ -- 56
+chr.to.int$ -- 6
+cite$ -- 6
+duplicate$ -- 93
+empty$ -- 174
+format.name$ -- 62
+if$ -- 540
 int.to.chr$ -- 1
 int.to.str$ -- 0
-missing$ -- 1
-newline$ -- 8
-num.names$ -- 3
-pop$ -- 13
+missing$ -- 7
+newline$ -- 33
+num.names$ -- 18
+pop$ -- 50
 preamble$ -- 1
-purify$ -- 15
+purify$ -- 57
 quote$ -- 0
-skip$ -- 11
+skip$ -- 74
 stack$ -- 0
-substring$ -- 43
-swap$ -- 1
-text.length$ -- 0
+substring$ -- 188
+swap$ -- 15
+text.length$ -- 1
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 6
+type$ -- 34
 warning$ -- 0
-while$ -- 4
+while$ -- 22
 width$ -- 0
-write$ -- 15
+write$ -- 79
