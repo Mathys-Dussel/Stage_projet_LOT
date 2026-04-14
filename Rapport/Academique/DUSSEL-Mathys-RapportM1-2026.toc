@@ -5,6 +5,6 @@
 \contentsline {section}{\numberline {4}Matériels et méthodes}{3}{section.4}%
 \contentsline {section}{\numberline {5}Résultats}{3}{section.5}%
 \contentsline {subsection}{\numberline {5.1}Diversité alpha}{3}{subsection.5.1}%
-\contentsline {subsection}{\numberline {5.2}Diversité beta}{3}{subsection.5.2}%
-\contentsline {subsection}{\numberline {5.3}Spécialisation des niches fongiques}{3}{subsection.5.3}%
-\contentsline {section}{\numberline {6}Discussion}{3}{section.6}%
+\contentsline {subsection}{\numberline {5.2}Diversité beta}{8}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Spécialisation des niches fongiques}{8}{subsection.5.3}%
+\contentsline {section}{\numberline {6}Discussion}{8}{section.6}%

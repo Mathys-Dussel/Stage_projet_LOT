@@ -20,53 +20,6 @@ library(tidyr)
 
 ############## courbes raréfactions et extrapolations ##############
 
-
-
-ps_trim <- filter_taxa(ps, function(x) sum(x) > 99, TRUE)
-
-ps_merged <- merge_samples(subset_samples(ps_trim, position == "epiphyte"), "organ")
-otu_tab <- as.matrix(t(otu_table(ps_merged)))
-
-otu_num <- apply(otu_tab, 2, function(x) as.numeric(as.character(x)))
-
-otu_num[is.na(otu_num)] <- 0
-
-rownames(otu_num) <- taxa_names(ps_merged)
-otu_grouped <- as.data.frame(otu_num)
-
-
-data_list <- as.list(otu_grouped)
-data_list <- lapply(data_list, as.integer)
-write.table(data_list, "data_list.txt", sep = "\t", row.names = TRUE, col.names = NA)
-
-max_reads <- max(colSums(otu_grouped))
-paliers <- seq(10, 3649011, length.out = 20)
-
-
-res_inext <- iNEXT3D(data = data_list, 
-                   diversity = "TD", 
-                   q = 0, 
-                   datatype = "abundance",
-                   nboot = 0,       
-                   size = paliers,
-                   endpoint = 3649011) 
-
-
-saveRDS(res_inext, file = "res_inext.rds")
-
-ggiNEXT3D(res_inext, type = 1)
-
-
-
-
-
-
-
-
-
-
-
-
 library(iNEXT.3D)
 library(ggplot2)
 library(patchwork)
@@ -79,41 +32,149 @@ clean_otu <- function(ps_obj, variable) {
   return(tab_num)
 }
 
-ps_trim <- filter_taxa(ps, function(x) sum(x) > 1000, TRUE)
+
+ps_trim <- filter_taxa(ps, function(x) sum(x) > 500, TRUE)
+
+
+total_reads_avant <- sum(sample_sums(ps))
+total_reads_apres <- sum(sample_sums(ps_trim))
+(total_reads_apres / total_reads_avant) * 100
+
 
 
 mat_epi <- clean_otu(subset_samples(ps_trim, position == "epiphyte"), "organ")
-res_epi <- iNEXT3D(mat_epi, q=c(0,1,2), datatype="abundance", nboot=0, size=seq(10, max(colSums(mat_epi)), length.out=10))
+res_epi <- iNEXT3D(mat_epi, q=c(0,1,2), datatype="abundance", nboot=0, size=seq(10, max(1.5*colSums(mat_epi)), length.out=20))
+saveRDS(res_epi, file = "res_epi.rds")
 
 mat_endo <- clean_otu(subset_samples(ps_trim, position == "endophyte"), "organ")
-res_endo <- iNEXT3D(mat_endo, q=c(0,1,2), datatype="abundance", nboot=0, size=seq(10, max(colSums(mat_endo)), length.out=10))
+res_endo <- iNEXT3D(mat_endo, q=c(0,1,2), datatype="abundance", nboot=0, size=seq(10, max(1.5*colSums(mat_endo)), length.out=20))
+saveRDS(res_endo, file = "res_endo.rds")
 
 mat_proj <- clean_otu(ps_trim, "project")
-res_proj <- iNEXT3D(mat_proj, q=c(0,1,2), datatype="abundance", nboot=0, size=seq(10, max(colSums(mat_proj)), length.out=10))
+res_proj <- iNEXT3D(mat_proj, q=c(0,1,2), datatype="abundance", nboot=0, size=seq(10, max(1.5*colSums(mat_proj)), length.out=20))
+saveRDS(res_proj, file = "res_proj.rds")
 
 
-prepare_plot <- function(res, title) {
+
+
+
+
+library(dplyr)
+library(tidyr)
+
+extraire_tableau_complet <- function(res_obj, categorie) {
+  asy_data <- res_obj$TDAsyEst %>%
+    select(Assemblage, qTD, TD_asy, s.e.) %>%
+    mutate(across(c(TD_asy, s.e.), ~ round(., 3)))
   
-  p <- ggiNEXT3D(res, type = 1) + 
-    facet_grid(. ~ Order.q, scales = "free") + 
-    theme_bw() +
-    labs(title = title, x = NULL, y = "Diversity") +
-    theme(legend.position = "right")
+  asy_format <- asy_data %>%
+    mutate(Value_Display = ifelse(is.na(s.e.), 
+                                  as.character(TD_asy), 
+                                  paste0(TD_asy, " ± ", s.e.))) %>%
+    select(Assemblage, qTD, Value_Display) %>%
+    pivot_wider(names_from = qTD, values_from = Value_Display)
   
-  return(p)
+  equit_data <- asy_data %>%
+    select(Assemblage, qTD, TD_asy) %>%
+    pivot_wider(names_from = qTD, values_from = TD_asy) %>%
+    mutate(Equitability = round(`Shannon diversity` / `Species richness`, 2)) %>%
+    select(Assemblage, Equitability)
+  
+  final_tab <- left_join(asy_format, equit_data, by = "Assemblage") %>%
+    mutate(Category = categorie) %>%
+    select(Category, everything())
+  
+  return(final_tab)
 }
 
-p1 <- prepare_plot(res_epi, "Position: Epiphytes")
-p2 <- prepare_plot(res_endo, "Position: Endophytes")
-p3 <- prepare_plot(res_proj, "Global Projects") + labs(x = "Number of individuals")
+tab_epi_complet  <- extraire_tableau_complet(res_epi, "Epiphytes")
+tab_endo_complet <- extraire_tableau_complet(res_endo, "Endophytes")
+tab_proj_complet <- extraire_tableau_complet(res_proj, "Projets")
+
+tableau_final_global <- bind_rows(tab_epi_complet, tab_endo_complet, tab_proj_complet)
+
+print(tableau_final_global)
+
+write.csv(tableau_final_global, "Tableau_Resultats_Synthese_iNEXT.csv", row.names = FALSE)
 
 
 
-final_plot <- p1 / p2 / p3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+subset_q <- function(res, q_val) {
+  res_sub <- res
+  res_sub$iNextEst$size_based <- res_sub$iNextEst$size_based[res_sub$iNextEst$size_based$Order.q == q_val, ]
+  if ("coverage_based" %in% names(res_sub$iNextEst)) {
+    res_sub$iNextEst$coverage_based <- res_sub$iNextEst$coverage_based[res_sub$iNextEst$coverage_based$Order.q == q_val, ]
+  }
+  return(res_sub)
+}
+
+
+p1 <- ggiNEXT3D(res_epi, type = 1, facet.var = "Order.q") + 
+          facet_wrap(~Order.q, scales = "free") +
+          ggtitle("Epiphyte Diversity (q = 0, 1, 2)") +
+          theme_bw() +
+          theme(strip.text = element_text(size = 14, face = "bold"),
+                axis.title = element_text(size = 14))
+
+p2 <- ggiNEXT3D(res_endo, type = 1, facet.var = "Order.q") + 
+          facet_wrap(~Order.q, scales = "free") +
+          ggtitle("Endophyte Diversity (q = 0, 1, 2)") +
+          theme_bw() +
+          theme(strip.text = element_text(size = 14, face = "bold"),
+                axis.title = element_text(size = 14))
+
+p3 <- ggiNEXT3D(res_proj, type = 1, facet.var = "Order.q") + 
+          facet_wrap(~Order.q, scales = "free") +
+          ggtitle("Project Diversity (q = 0, 1, 2)") +
+          theme_bw() +
+          theme(strip.text = element_text(size = 14, face = "bold"),
+                axis.title = element_text(size = 14))
+
+
+
+
+
+
+p1 <- p1 + ylab("Epiphyte Diversity")
+p2 <- p2 + ylab("Endophyte Diversity")
+p3 <- p3 + ylab("Project Diversity")
+
+final_plot <- (p1 / p2 / p3) + 
+  plot_layout(guides = "collect") & 
+  theme_bw() & 
+  theme(
+    legend.position = "bottom",
+    strip.background = element_rect(fill = "white", color = "black"),
+    strip.text = element_text(size = 12, face = "bold"),
+    panel.grid.major = element_line(color = "grey90"),
+    panel.grid.minor = element_blank(),
+    plot.title = element_text(size = 14, face = "bold", hjust = 0.5)
+  ) & 
+    scale_color_manual(values = c("root" = "brown", "old_leaf" = "darkgreen", "young_leaf" = "lightgreen", "LOT1" = "lightblue", "LOT2" = "#D34949", "LOT3" = "grey")) &
+    scale_fill_manual(values = c("root" = "brown", "old_leaf" = "darkgreen", "young_leaf" = "lightgreen", "LOT1" = "lightblue", "LOT2" = "#D34949", "LOT3" = "grey")) & 
+  geom_line(linewidth = 0.5) & 
+  geom_point(size = 1)
 
 print(final_plot)
 
-ggsave("Figure_Alpha_Diversity_Complete.pdf", final_plot, width = 14, height = 12)
+
 
 
 
@@ -178,6 +239,90 @@ taxa_list <- split(rownames(meta), meta$category) |>
 
 upset(fromList(taxa_list), nsets = length(taxa_list), order.by = "freq", 
       main.bar.color = "forestgreen", sets.bar.color = "steelblue")
+
+
+
+
+library(UpSetR)
+library(cowplot)
+library(magick)
+library(patchwork)
+
+# --- 1. Fonction de capture (pour éviter l'erreur de vecteur) ---
+generate_upset_captured <- function(taxa_list, title_text = "") {
+  tmp <- tempfile(fileext = ".png")
+  # On ajuste la résolution pour que ce soit lisible
+  png(tmp, width = 1000, height = 800, res = 120)
+  
+  print(upset(fromList(taxa_list), 
+              nsets = length(taxa_list), 
+              order.by = "freq", 
+              main.bar.color = "forestgreen", 
+              sets.bar.color = "steelblue"))
+  
+  # Optionnel : ajout d'un titre simple via grid
+  grid::grid.text(title_text, x = 0.5, y = 0.95, gp = grid::gpar(fontsize = 15, font = 2))
+  
+  dev.off()
+  
+  img <- magick::image_read(tmp)
+  return(cowplot::ggdraw() + cowplot::draw_image(img))
+}
+
+# --- 2. Préparation des données pour chaque graphique ---
+
+# A. Global (Tous les projets)
+meta_all <- data.frame(sample_data(ps))
+meta_all$category <- paste(meta_all$project, meta_all$age, meta_all$organ, meta_all$position, sep = " ")
+taxa_all <- split(rownames(meta_all), meta_all$category) |>
+  lapply(function(samples) {
+    taxa_sums <- taxa_sums(prune_samples(samples, ps))
+    names(taxa_sums[taxa_sums > 0])
+  })
+
+# B. LOT1
+meta_lot1 <- subset(data.frame(sample_data(ps)), project == "LOT1")
+meta_lot1$category <- paste(meta_lot1$age, meta_lot1$organ, meta_lot1$position, sep = " ")
+taxa_lot1 <- split(rownames(meta_lot1), meta_lot1$category) |>
+  lapply(function(samples) {
+    taxa_sums <- taxa_sums(prune_samples(samples, ps))
+    names(taxa_sums[taxa_sums > 0])
+  })
+
+# C. LOT2
+meta_lot2 <- subset(data.frame(sample_data(ps)), project == "LOT2")
+meta_lot2$category <- paste(meta_lot2$age, meta_lot2$organ, meta_lot2$position, sep = " ")
+taxa_lot2 <- split(rownames(meta_lot2), meta_lot2$category) |>
+  lapply(function(samples) {
+    taxa_sums <- taxa_sums(prune_samples(samples, ps))
+    names(taxa_sums[taxa_sums > 0])
+  })
+
+# D. LOT3
+meta_lot3 <- subset(data.frame(sample_data(ps)), project == "LOT3")
+meta_lot3$category <- paste(meta_lot3$age, meta_lot3$organ, meta_lot3$position, sep = " ")
+taxa_lot3 <- split(rownames(meta_lot3), meta_lot3$category) |>
+  lapply(function(samples) {
+    taxa_sums <- taxa_sums(prune_samples(samples, ps))
+    names(taxa_sums[taxa_sums > 0])
+  })
+
+# --- 3. Génération et capture des 4 plots ---
+p1 <- generate_upset_captured(taxa_all, "Global")
+p2 <- generate_upset_captured(taxa_lot1, "Project LOT1")
+p3 <- generate_upset_captured(taxa_lot2, "Project LOT2")
+p4 <- generate_upset_captured(taxa_lot3, "Project LOT3")
+
+# --- 4. Affichage final ---
+(p1 + p2) / (p3 + p4)
+
+
+
+
+
+
+
+
 
 
 
@@ -252,9 +397,9 @@ row_ha <- rowAnnotation(
 
 color_mapping <- colorRamp2(c(0, max(mat)/2, max(mat)), c("lightblue", "yellow", "red"))
 ann_colors = list(
-    Project = c("LOT1" = "lightblue", "LOT2" = "#D34949", "LOT3" = "grey"),
-    Organ = c("root" = "brown", "old_leaf" = "darkgreen", "young_leaf" = "lightgreen"),
-    Position = c("endophyte" = "orange", "epiphyte" = "pink")
+    Project = c("LOT1" = "#7FB3D5", "LOT2" = "#D98880", "LOT3" = "#BDC3C7"),
+    Organ = c("root" = "#A93226", "old_leaf" = "#27AD60", "young_leaf" = "#A2D9CE"),
+    Position = c("endophyte" = "#FFDAB5", "epiphyte" = "#C0D461")
 )
 
 col_ha <- HeatmapAnnotation(
@@ -312,7 +457,7 @@ nmds_global <- ordinate(ps_hel, method = "NMDS", distance = "bray", k = 3)
 
 p1 <- plot_ordination(ps_hel, nmds_global, color = "project", shape = "organ") +
   stat_ellipse(aes(group = project, fill = project), alpha = 0.1, geom = "polygon") +
-  labs(title = "1. Structure Globale (Projet)", 
+  labs(title = "A. Structure Globale (Projet)", 
        subtitle = paste0("R2 Project: ", round(perm_global$R2[1], 3))) +
   theme_bw()
 
@@ -339,7 +484,7 @@ p2=plot_ordination(ps_lot01, nmds_lot01, color = "organ", shape = "position") +
   geom_point(size = 3) +
   scale_shape_manual(values = c("epiphyte" = 1, "endophyte" = 16)) +
   stat_ellipse(aes(group = organ)) +
-  labs(title = "LOT1 - Organe", subtitle = paste0("R2 = ", round(perm_lot01["organ", "R2"], 3), ", p = ", perm_lot01["organ", "Pr(>F)"])) +
+  labs(title = "B. LOT1 - Organe", subtitle = paste0("R2 = ", round(perm_lot01["organ", "R2"], 3), ", p = ", perm_lot01["organ", "Pr(>F)"])) +
   theme_bw()
 
 
@@ -370,7 +515,7 @@ p3=plot_ordination(ps_lot02, nmds_lot02, color = "organ", shape = "position") +
   geom_point(size = 3) +
   scale_shape_manual(values = c("epiphyte" = 1, "endophyte" = 16)) +
   stat_ellipse(aes(group = organ)) +
-  labs(title = "LOT2 - Organe", subtitle = paste0("R2 = ", round(perm_lot02["organ", "R2"], 3), ", p = ", perm_lot02["organ", "Pr(>F)"])) +
+  labs(title = "C. LOT2 - Organe", subtitle = paste0("R2 = ", round(perm_lot02["organ", "R2"], 3), ", p = ", perm_lot02["organ", "Pr(>F)"])) +
   theme_bw()
 
 
@@ -391,7 +536,7 @@ p4=plot_ordination(ps_lot03, nmds_lot03, color = "organ", shape = "position") +
   geom_point(size = 3) +
   scale_shape_manual(values = c("epiphyte" = 1, "endophyte" = 16)) +
   stat_ellipse(aes(group = organ)) +
-  labs(title = "LOT3 - Organe", subtitle = paste0("R2 = ", round(perm_lot03["organ", "R2"], 3), ", p = ", perm_lot03["organ", "Pr(>F)"])) +
+  labs(title = "D. LOT3 - Organe", subtitle = paste0("R2 = ", round(perm_lot03["organ", "R2"], 3), ", p = ", perm_lot03["organ", "Pr(>F)"])) +
   theme_bw()
 
 
@@ -413,7 +558,10 @@ rownames(tab_pop) <- NULL
 print(perm_pop)
 print(tab_pop)
 
-
+  organ_colors <- c("root" = "#794515", "old_leaf" = "forestgreen", "young_leaf" = "#4DCCBD")
+  p2 <- p2 + scale_color_manual(values = organ_colors)
+  p3 <- p3 + scale_color_manual(values = organ_colors)
+  p4 <- p4 + scale_color_manual(values = organ_colors)
 
 (p1 | p2) / (p3 | p4) 
 
