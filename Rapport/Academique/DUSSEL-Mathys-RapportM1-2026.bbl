@@ -1,5 +1,15 @@
 \begin{thebibliography}{}
 
+\bibitem[Altman, 1991]{altman1991practical}
+Altman, D.~G. (1991).
+\newblock {\em Practical Statistics for Medical Research}.
+\newblock Chapman and Hall/CRC.
+
+\bibitem[Anderson, 2001]{anderson2001new}
+Anderson, M.~J. (2001).
+\newblock A new method for non-parametric multivariate analysis of variance.
+\newblock {\em Austral ecology}, 26(1):32--46.
+
 \bibitem[Arnold et~al., 2000]{arnold_are_2000}
 Arnold, A.~E., Maynard, Z., Gilbert, G.~S., Coley, P.~D., and Kursar, T.~A. (2000).
 \newblock Are tropical fungal endophytes hyperdiverse?
@@ -10,15 +20,60 @@ Bermudes, D. and Benzing, D.~H. (1989).
 \newblock Fungi in neotropical epiphyte roots.
 \newblock {\em Biosystems}, 23(1):65--73.
 
+\bibitem[Bray and Curtis, 1957]{bray1957ordination}
+Bray, J.~R. and Curtis, J.~T. (1957).
+\newblock An ordination of the upland forest communities of southern wisconsin.
+\newblock {\em Ecological monographs}, 27(4):326--349.
+
+\bibitem[Chao et~al., 2014]{chao2014rarefaction}
+Chao, A., Gotelli, N.~J., Hsieh, T., Sander, E.~L., Ma, K., Colwell, R.~K., and Ellison, A.~M. (2014).
+\newblock Rarefaction and extrapolation with hill numbers: a framework for sampling and estimation in species diversity studies.
+\newblock {\em Ecological monographs}, 84(1):45--67.
+
+\bibitem[Chao et~al., 2021]{chao2021measuring}
+Chao, A., Henderson, P.~A., Chiu, C.-H., Moyes, F., Hu, K.-H., Dornelas, M., and Magurran, A.~E. (2021).
+\newblock Measuring temporal change in alpha diversity: A framework integrating taxonomic, phylogenetic and functional diversity and the inext. 3d standardization.
+\newblock {\em Methods in Ecology and Evolution}, 12(10):1926--1940.
+
+\bibitem[Conway et~al., 2017]{conway2017upsetr}
+Conway, J.~R., Lex, A., and Gehlenborg, N. (2017).
+\newblock Upsetr: an r package for the visualization of intersecting sets and their properties.
+\newblock {\em Bioinformatics}, 33(18):2938--2940.
+
 \bibitem[Dearnaley et~al., 2012]{dearnaley_orchid_2012}
 Dearnaley, J.~D., Martos, F., and Selosse, M.-A. (2012).
 \newblock Orchid mycorrhizas: molecular ecology, physiology, evolution and conservation aspects.
 \newblock {\em Fungal associations}, pages 207--230.
 
+\bibitem[Kolde et~al., 2019]{kolde2019pheatmap}
+Kolde, R. et~al. (2019).
+\newblock Pheatmap: pretty heatmaps.
+\newblock {\em R package version}, 1(2):726.
+
+\bibitem[Kruskal, 1964]{kruskal1964nonmetric}
+Kruskal, J.~B. (1964).
+\newblock Nonmetric multidimensional scaling: a numerical method.
+\newblock {\em Psychometrika}, 29(2):115--129.
+
 \bibitem[Leponce et~al., 2024]{leponce2024unveiling}
 Leponce, M., Basset, Y., Aristiz{\'a}bal-Botero, {\'A}., Ba{\"\i}ben, N., Barbut, J., Buyck, B., Butterill, P., Calders, K., C{\'a}rdenas, G., Carrias, J.-F., et~al. (2024).
 \newblock Unveiling the above-ground eukaryotic diversity supported by individual large old trees: the “life on trees” integrative protocol.
 \newblock {\em Frontiers in Forests and Global Change}, 7:1425492.
+
+\bibitem[Levins, 1968]{levins1968evolution}
+Levins, R. (1968).
+\newblock {\em Evolution in changing environments: some theoretical explorations}.
+\newblock Number~2. Princeton University Press.
+
+\bibitem[Lex et~al., 2014]{lex2014upset}
+Lex, A., Gehlenborg, N., Strobelt, H., Vuillemot, R., and Pfister, H. (2014).
+\newblock Upset: visualization of intersecting sets.
+\newblock {\em IEEE transactions on visualization and computer graphics}, 20(12):1983--1992.
+
+\bibitem[Minchin, 1987]{minchin1987evaluation}
+Minchin, P.~R. (1987).
+\newblock An evaluation of the relative robustness of techniques for ecological ordination.
+\newblock {\em Vegetatio}, 69(1):89--107.
 
 \bibitem[Vega et~al., 2008]{vega_fungal_2008}
 Vega, F.~E., Posada, F., Aime, M.~C., Pava-Ripoll, M., Infante, F., and Rehner, S.~A. (2008).

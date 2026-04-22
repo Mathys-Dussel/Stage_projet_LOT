@@ -3,8 +3,14 @@
 \contentsline {section}{\numberline {2}Abstract}{1}{section.2}%
 \contentsline {section}{\numberline {3}Introduction}{2}{section.3}%
 \contentsline {section}{\numberline {4}Matériels et méthodes}{3}{section.4}%
-\contentsline {section}{\numberline {5}Résultats}{3}{section.5}%
-\contentsline {subsection}{\numberline {5.1}Diversité alpha}{3}{subsection.5.1}%
-\contentsline {subsection}{\numberline {5.2}Diversité beta}{9}{subsection.5.2}%
-\contentsline {subsection}{\numberline {5.3}Spécialisation des niches fongiques}{9}{subsection.5.3}%
-\contentsline {section}{\numberline {6}Discussion}{9}{section.6}%
+\contentsline {subsection}{\numberline {4.1}Échantillonnage et bioinformatique}{3}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Analyses de diversité}{4}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Partage des OTUs et abondances relatives}{5}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.4}Analyses de similarités}{5}{subsection.4.4}%
+\contentsline {subsection}{\numberline {4.5}Spécialisation des niches fongiques}{6}{subsection.4.5}%
+\contentsline {section}{\numberline {5}Résultats}{6}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Analyses de diversité Alpha}{6}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Partage des OTUs et abondances relatives}{8}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Analyses de similarités}{10}{subsection.5.3}%
+\contentsline {subsection}{\numberline {5.4}Spécialisation des niches fongiques}{11}{subsection.5.4}%
+\contentsline {section}{\numberline {6}Discussion}{12}{section.6}%

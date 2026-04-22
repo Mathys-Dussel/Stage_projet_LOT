@@ -1,0 +1,5 @@
+"Panel","Figure","Effect","Samples","Df","R2","F","p_value","Significance","NMDS_stress"
+"A","Structure globale (Projet)","project",1075,2,0.108,69.483,"0.001","**",0.136
+"B","LOT1 - Organe","organ",402,2,0.079,17.802,"0.001","**",0.15
+"C","LOT2 - Organe","organ",267,2,0.085,12.716,"0.001","**",0.148
+"D","LOT3 - Organe","organ",406,2,0.086,19.752,"0.001","**",0.149

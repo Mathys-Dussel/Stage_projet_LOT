@@ -397,7 +397,7 @@ library(matrixStats)
 
 ps_filtered <- filter_taxa(
   ps,
-  function(x) sum(x > 0) >= ceiling(0.05 * length(x)),
+  function(x) sum(x > 0) >= ceiling(0.01 * length(x)),
   TRUE
 )
 
@@ -555,7 +555,7 @@ perm_global <- adonis2(
   bray_dist ~ project + organ + position,
   data = metadata,
   by = "margin",
-  permutations = 99
+  permutations = 999
 )
 nmds_global <- ordinate(ps_hel, method = "NMDS", distance = "bray", k = 3)
 
@@ -633,7 +633,7 @@ perm_lot02 <- adonis2(
   formula_lot02,
   data = as(sample_data(ps_lot02), "data.frame"),
   by = "margin",
-  permutations = 99
+  permutations = 999
 )
 
 nmds_lot02 <- ordinate(ps_lot02, method = "NMDS", distance = "bray", k = 3)
@@ -668,7 +668,7 @@ perm_lot03 <- adonis2(
   bray_lot03 ~ organ + position,
   data = as(sample_data(ps_lot03), "data.frame"),
   by = "margin",
-  permutations = 99
+  permutations = 999
 )
 
 nmds_lot03 <- ordinate(ps_lot03, method = "NMDS", distance = "bray", k = 3)
@@ -832,13 +832,12 @@ library(vegan)
 library(ANCOMBC)
 library(tidyr)
 
-
+# Calcul de la niche de Levins
 ps_merged <- merge_samples(ps, "organ")
 otu_merged <- as.matrix(otu_table(ps_merged))
 if (taxa_are_rows(ps_merged)) {
   otu_merged <- t(otu_merged)
 }
-
 levins_raw <- niche.width(otu_merged, method = "levins")
 niche_scores <- (as.numeric(levins_raw) - 1) / (3 - 1)
 names(niche_scores) <- colnames(levins_raw)
@@ -851,16 +850,10 @@ if (taxa_are_rows(ps_rel)) {
 
 calc_mean_niche <- function(sample_row, scores) {
   present <- sample_row > 0
-  if (sum(present) == 0) {
-    return(NA)
-  }
-
+  if (sum(present) == 0) return(NA)
   sub_scores <- scores[names(sample_row)[present]]
   sub_abund <- sample_row[present]
-
-  return(
-    sum(sub_abund * sub_scores, na.rm = TRUE) / sum(sub_abund, na.rm = TRUE)
-  )
+  sum(sub_abund * sub_scores, na.rm = TRUE) / sum(sub_abund, na.rm = TRUE)
 }
 
 sample_indices <- apply(otu_all, 1, calc_mean_niche, scores = niche_scores)
@@ -870,7 +863,10 @@ final_df <- data.frame(
   Sample = names(sample_indices),
   Levins_Mean = as.numeric(sample_indices)
 ) %>%
-  mutate(organ = metadata$organ[match(Sample, rownames(metadata))])
+  mutate(
+    organ = metadata$organ[match(Sample, rownames(metadata))],
+    project = metadata$project[match(Sample, rownames(metadata))]
+  )
 
 niche_summary <- final_df %>%
   filter(!is.nan(Levins_Mean) & !is.na(Levins_Mean)) %>%
@@ -883,17 +879,83 @@ niche_summary <- final_df %>%
 
 print(niche_summary)
 
+# Tests Kruskal-Wallis
+kruskal_organ_by_lot <- final_df %>%
+  filter(!is.na(Levins_Mean), !is.na(organ), !is.na(project)) %>%
+  group_by(project) %>%
+  summarise(
+    p_value = kruskal.test(Levins_Mean ~ organ)$p.value,
+    .groups = "drop"
+  )
+print("Kruskal-Wallis par lot (organes):")
+print(kruskal_organ_by_lot)
 
-final_df$project <- metadata$project[match(final_df$Sample, rownames(metadata))]
+kruskal_lot_by_organ <- final_df %>%
+  filter(!is.na(Levins_Mean), !is.na(organ), !is.na(project)) %>%
+  group_by(organ) %>%
+  summarise(
+    p_value = kruskal.test(Levins_Mean ~ project)$p.value,
+    .groups = "drop"
+  )
+print("Kruskal-Wallis par organe (lots):")
+print(kruskal_lot_by_organ)
+
+# Post-hoc Dunn test si significatif
+if (!requireNamespace("FSA", quietly = TRUE)) install.packages("FSA")
+library(FSA)
+
+dunn_organ_by_lot <- final_df %>%
+  filter(!is.na(Levins_Mean), !is.na(organ), !is.na(project)) %>%
+  group_by(project) %>%
+  group_modify(~ {
+    if (length(unique(.x$organ)) > 1) {
+      dunn <- FSA::dunnTest(Levins_Mean ~ organ, data = .x, method = "bonferroni")
+      data.frame(dunn$res, project = unique(.x$project))
+    } else {
+      data.frame()
+    }
+  }) %>% ungroup()
+
+dunn_lot_by_organ <- final_df %>%
+  filter(!is.na(Levins_Mean), !is.na(organ), !is.na(project)) %>%
+  group_by(organ) %>%
+  group_modify(~ {
+    if (length(unique(.x$project)) > 1) {
+      dunn <- FSA::dunnTest(Levins_Mean ~ project, data = .x, method = "bonferroni")
+      data.frame(dunn$res, organ = unique(.x$organ))
+    } else {
+      data.frame()
+    }
+  }) %>% ungroup()
+
+print("Dunn post-hoc organes par lot :")
+print(dunn_organ_by_lot)
+print("Dunn post-hoc lots par organe :")
+print(dunn_lot_by_organ)
+
 final_df$project <- as.factor(final_df$project)
+final_df$organ <- factor(final_df$organ, levels = c("root", "young_leaf", "old_leaf"))
 
+# Préparation des comparaisons pour stat_pvalue_manual
+# On prépare une table pour chaque projet avec les comparaisons et p-values
+comparisons_organ_by_lot <- dunn_organ_by_lot %>%
+  filter(!is.na(P.adj)) %>%
+  mutate(
+    group1 = gsub(" vs .*", "", Comparison),
+    group2 = gsub(".* vs ", "", Comparison),
+    y.position = tapply(final_df$Levins_Mean, final_df$project, max, na.rm = TRUE)[project] + 0.05,
+    p.adj.signif = symnum(P.adj, corr = FALSE, na = FALSE,
+                          cutpoints = c(0, 0.001, 0.01, 0.05, 1),
+                          symbols = c("***", "**", "*", "ns"))
+  )
 
-final_df$organ <- factor(
-  final_df$organ,
-  levels = c("root", "young_leaf", "old_leaf")
-)
+# Pour éviter les superpositions, on décale les y.position pour chaque comparaison
+comparisons_organ_by_lot <- comparisons_organ_by_lot %>%
+  group_by(project) %>%
+  mutate(y.position = y.position + row_number() * 0.03) %>%
+  ungroup()
 
-
+# Plot
 p_project_organ <- ggplot(
   final_df,
   aes(x = project, y = Levins_Mean, fill = organ)
@@ -904,18 +966,18 @@ p_project_organ <- ggplot(
     width = 0.6,
     position = position_dodge(0.8)
   ) +
-  geom_point(
+  geom_jitter(
     aes(color = organ),
     position = position_jitterdodge(jitter.width = 0.15, dodge.width = 0.8),
-    alpha = 0.4,
+    alpha = 0.5,
     size = 1
   ) +
   labs(
     title = "Niche fongique par projet et organe",
     x = "Projet",
     y = "Indice de Levins Moyen",
-    fill = "organ",
-    color = "organ"
+    fill = "Organe",
+    color = "Organe"
   ) +
   theme_minimal() +
   theme(
@@ -923,16 +985,7 @@ p_project_organ <- ggplot(
     axis.text.x = element_text(size = 11, face = "bold", angle = 45, hjust = 1),
     axis.text.y = element_text(size = 11, face = "bold"),
     title = element_text(size = 13, face = "bold")
-  )
-
-p_project_organ_final <- p_project_organ +
-  stat_compare_means(
-    aes(group = organ),
-    method = "kruskal.test",
-    label = "p.signif"
-  )
-
-p_project_organ_final <- p_project_organ_final +
+  ) +
   scale_fill_manual(
     values = c(
       "root" = "#914e27",
@@ -948,4 +1001,20 @@ p_project_organ_final <- p_project_organ_final +
     )
   )
 
-print(p_project_organ_final)
+# Ajout des étoiles de significativité avec stat_pvalue_manual
+if (nrow(comparisons_organ_by_lot) > 0) {
+  p_project_organ <- p_project_organ +
+    stat_pvalue_manual(
+      data = comparisons_organ_by_lot,
+      label = "p.adj.signif",
+      y.position = "y.position",
+      xmin = "group1",
+      xmax = "group2",
+      group = "project",
+      tip.length = 0.01,
+      step.increase = 0,
+      hide.ns = TRUE
+    )
+}
+
+print(p_project_organ)

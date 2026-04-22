@@ -50,7 +50,7 @@
 % Examples:
 % =======================
 %% Example: Using numerical, sort-by-authors citations.
-\documentclass[num-refs,twocolumn]{wiley-article}
+\documentclass[alpha-refs,twocolumn]{wiley-article}
 
 %% Example: Using author-year citations and anonymising submission
 % \documentclass[blind,alpha-refs]{wiley-article}
@@ -68,9 +68,17 @@
 % \makeatletter
 
 % \makeatother
+\usepackage{lscape}
+\usepackage{afterpage}
 
 \usepackage{graphicx}
 \usepackage{eso-pic}
+\usepackage{stfloats}
+\usepackage{float}
+\usepackage[section]{placeins}
+\usepackage{caption}
+\captionsetup[figure]{font=small,labelfont=bf}
+
 
 % Ajout du logo en haut à droite de la première page
 \AddToShipoutPictureBG*{
@@ -80,19 +88,36 @@
               }%
        }%
 }
+
 \AddToShipoutPictureBG*{
        \AtPageUpperLeft{%
-              \put(\LenToUnit{\paperwidth-7cm},\LenToUnit{-2.8cm}){% Ajustez les coordonnées selon vos besoins
-                     \includegraphics[width=3cm]{Figures/Logo-CRBE.png} % Remplacez 'example-image' par le chemin de votre logo
+              \put(\LenToUnit{\paperwidth-6.8cm},\LenToUnit{-2.65cm}){% Ajustez les coordonnées selon vos besoins
+                     \includegraphics[width=2.7cm]{Figures/Logo-CRBE.png} % Remplacez 'example-image' par le chemin de votre logo
               }%
        }%
 }
 
+\AddToShipoutPictureBG*{
+       \AtPageUpperLeft{%
+              \put(\LenToUnit{\paperwidth-8cm},\LenToUnit{-2.6cm}){% Ajustez les coordonnées selon vos besoins
+                     \includegraphics[width=1cm]{Figures/LOT.png} % Remplacez 'example-image' par le chemin de votre logo
+              }%
+       }%
+}
+
+\usepackage{xcolor}
+\usepackage{hyperref}
+\hypersetup{
+       colorlinks=true,
+       citecolor=blue,
+       linkcolor=black,
+       urlcolor=blue
+}
 \usepackage{siunitx}
 
 % Update article type if known
-\papertype{Résultats d'analyses}
-\paperfield{Stage M1 Biodiversité Écologie Évolution}
+\papertype{Journal of Ecology}
+\paperfield{Tropical Ecology}
 
 \title{Composition et assemblage des communautés fongiques chez les plantes épiphytes vasculaires tropicales}
 
@@ -107,85 +132,272 @@
 
 
 
-\runningauthor{Mathys Dussel--D'hervé}
+\runningauthor{Dussel--D'hervé et al.}
 \begin{document}
 
 \begin{frontmatter}
 \maketitle
 
 \begin{abstract}
-Tropical forests harbor exceptional plant and microbial biodiversity that plays a critical role in ecosystem functioning and biogeochemical cycles. Among this diversity, vascular epiphytes are essential components of the tropical canopy, yet the composition and assembly of their associated fungal communities remain poorly understood. This study investigates the structure of fungal assemblages across different taxonomic groups of epiphytes, specifically comparing roots and leaves, as well as surface (episphere) versus internal tissues (endosphere). Utilizing samples collected in Peru and Colombia under the 'Life on Trees' program, fungal communities were characterized via high-throughput metabarcoding of the ITS region using Illumina MiSeq sequencing. Following bioinformatic processing, alpha and beta diversity will be analyzed using biodiversity indices, ordination methods (NMDS, PCoA), and multivariate statistical tests (PERMANOVA). This research aims to determine how host taxonomy and functional strategies for water and nutrient acquisition shape distinct fungal niches, providing a better understanding of plant-microorganism interactions within the tropical canopy.
+Les forêts tropicales abritent une biodiversité végétale et microbienne exceptionnelle, essentielle au fonctionnement des écosystèmes et aux cycles biogéochimiques. Parmi cette diversité, les épiphytes vasculaires constituent des éléments clés de la canopée, mais la composition et l’assemblage de leurs communautés fongiques restent encore mal connus. Ce travail explore la structure des assemblages fongiques associés à différents groupes taxonomiques d’épiphytes, en comparant racines et feuilles, ainsi que les fractions de surface (épiphytes) et internes (endophytes). À partir d’échantillons collectés au Pérou dans le cadre du programme « Life on Trees », les communautés fongiques ont été caractérisées par métabarcoding haut débit de la région ITS. Les analyses de diversité alpha et bêta, d’ordination (NMDS) et de tests multivariés (PERMANOVA) permettent de mettre en évidence l’influence du microhabitat et de la stratégie fonctionnelle de l’hôte sur la structuration des niches fongiques. Ces résultats apportent un éclairage nouveau sur les interactions plantes-microorganismes au sein de la canopée tropicale.
 
-\keywords{Vascular epiphytes, Tropical canopy, Fungal communities, Metabarcoding, ITS, Microbial ecology, Plant-microbe interactions, Biogeochemical cycles}
+\keywords{Épiphytes vasculaires, Canopée tropicale, Communautés fongiques, Métabarcoding, ITS, Écologie microbienne, Interactions plante-microbe, Cycles biogéochimiques}
 \end{abstract}
 \end{frontmatter}
 
 \section{Introduction}
 
-Les forêts tropicales abritent une biodiversité végétale et microbienne exceptionnelle dont les interactions complexes régissent les cycles biogéochimiques et le maintien des fonctions écosystémiques. Au sein de la canopée, les plantes épiphytes vasculaires constituent une composante structurelle majeure, jouant un rôle déterminant dans la rétention d’eau et le recyclage des nutriments. Bien que leur importance écologique soit reconnue, les communautés microbiennes qui leur sont associées, et plus particulièrement le mycobiote, demeurent largement méconnues par rapport aux espèces ligneuses terrestres. Comprendre la composition et les mécanismes d’assemblage de ces communautés fongiques représente donc un enjeu de premier plan pour appréhender les symbioses en canopée et leur influence sur le fonctionnement des forêts tropicales.
 
-La structuration de ces communautés fongiques pourrait être dictée par plusieurs filtres écologiques complémentaires. D'une part, la taxonomie de l'hôte pourrait exercer un contrôle sur les cortèges fongiques, reflétant une certaine spécificité entre la plante et ses partenaires microbiens. D'autre part, l'hétérogénéité des niches au sein d'un même individu, notamment entre les feuilles et les racines, suggère que les stratégies fonctionnelles d'acquisition des ressources influencent fortement la diversité microbienne. Enfin, le compartimentage entre la surface des organes (épisphère) et l'intérieur des tissus (endosphère) constitue une barrière environnementale et physiologique susceptible de sélectionner des taxons aux traits de vie distincts.
+Les champignons ont une importance cruciale pour le bon fonctionnement des écosystèmes terrestres. Ils animent les cycles biogéochimiques et influencent directement la dynamique des végétaux. Comment ces assemblages microbiens se structurent-ils ? C'est le résultat d'un mélange complexe de facteurs biotiques et abiotiques, comme la température ou l'humidité. Dans les milieux tropicaux, foyers d'une biodiversité record, les liens entre champignons et plantes hôtes prennent une ampleur toute particulière \citep{arnold_are_2000, bermudes_fungi_1989}. Si l'on regarde à l'échelle d'une plante, le microbiote fongique varie beaucoup d'un organe à l'autre (feuilles, racines) et selon son emplacement. On sépare généralement les épiphytes, vivant en surface, des endophytes, présents au cœur des tissus. L'identité de la plante joue un rôle de filtre sélectif. Par ses traits fonctionnels, ses exsudats ou encore son système immunitaire, l'hôte façonne son propre mycobiome.
 
-Pour tester ces hypothèses, cette étude s'appuie sur un échantillonnage conséquent réalisé au Pérou et en Colombie dans le cadre du programme « Life on Trees ». L’utilisation du métabarcoding haut débit ciblant la région ITS a permis de caractériser avec précision la diversité fongique associée à différentes espèces d'épiphytes. Les analyses statistiques, incluant des méthodes d'ordination NMDS et des tests de PERMANOVA, visent à quantifier l'influence respective du projet d'étude, de l'organe, de la position tissulaire et de la famille botanique de l'hôte sur l'assemblage des communautés. En complément, l'intégration de données microclimatiques permet d'explorer l'impact de gradients de température et d'humidité sur la richesse et la diversité fongique au sein de l'architecture complexe des arbres hôtes.
+Afin de mieux saisir ces interactions sous contraintes extrêmes, les plantes épiphytes offrent un modèle d'étude tout trouvé. Elles représentent en effet une part immense de la flore des canopées tropicales et poussent sur d'autres arbres, sans pour autant les parasiter \citep{zotz_plants_2016}. Ce mode de vie « suspendu » les prive d'un accès au sol. Elles subissent un manque d'eau et de nutriments. Pour faire face à ces stress sévères, ces plantes ont dû innover. Elles s'en remettent de manière vitale à des associations avec d'autres organismes : animaux, bactéries ou champignons. Ces alliances mutualistes améliorent leur nutrition et les aident à tenir face au stress ambiant.
+
+Pourtant, malgré un tel enjeu écologique, nos connaissances sur ces communautés fongiques sont encore très légères. Très souvent, la recherche s'est focalisée sur les plantes terrestres. Elle s'est même penchée en priorité sur celles ayant une valeur agronomique sous les tropiques, comme le café ou le cacao \citep{vega_fungal_2008}. Quand on s’intéresse spécifiquement à la flore épiphyte, le constat est similaire : les travaux portent presque toujours sur quelques « stars » écologiques ou économiques. Les \textit{Orchidaceae} en sont le meilleur exemple, avec leur dépendance quasi totale aux mycorhizes pour pouvoir germer \citep{dearnaley_orchid_2012}. À l'inverse, l'immense majorité des autres lignées d'épiphytes vasculaires néotropicales reste, d'un point de vue fongique, une véritable zone d'ombre à ce jour.
+
+
+C'est exactement dans ce contexte qu'intervient le projet \textit{Life on Trees} (LOT), qui vise à inventorier l'ensemble de la biodiversité eucaryote (animaux, plantes, champignons et protistes) hébergée par un seul arbre tropical, en s'intéressant notamment aux communautés fongiques. Bien que l'étude du mycobiome et de son rôle dans l'adaptation aux conditions extrêmes de la canopée soit centrale, ce projet s'inscrit dans un programme interdisciplinaire plus vaste. Pour ce faire, LOT mène un effort d'échantillonnage inédit sur trois arbres géants situés à différentes altitudes le long des Andes péruviennes (à 400 m, 800 m et 2500 m), afin de générer des données de référence sur l'assemblage de ces communautés complexes.
+
+
+
 
 \section{Matériels et méthodes}
 
-\paragraph{Échantillonnage et préparation des données}
+\subsection{Échantillonnage et bioinformatique}
 
-L'étude a été conduite à partir d'échantillons de plantes épiphytes vasculaires collectés au Pérou et en Colombie dans le cadre du programme de recherche international « Life on Trees » (LOT). Afin de garantir la robustesse des analyses comparatives, le jeu de données initial a fait l'objet d'un filtrage rigoureux consistant à exclure les familles botaniques sous-représentées, telles que les Moraceae et les Fabaceae. Les séquences de la région ITS (Internal Transcribed Spacer) ont été obtenues par séquençage à haut débit sur plateforme Illumina MiSeq. Le traitement bioinformatique a permis de générer une table d'Unités Taxonomiques Opérationnelles (OTU) nettoyée, laquelle a été intégrée dans un objet de classe phyloseq sous l'environnement R. Pour les analyses de diversité bêta, une transformation de Hellinger a été appliquée aux abondances brutes afin de minimiser l'influence des taxons rares et de normaliser les écarts de profondeur de séquençage entre les échantillons.
 
-\paragraph{Analyses de la diversité alpha et partage des taxons}
 
-La diversité alpha a été caractérisée par deux indices complémentaires : la richesse spécifique observée ($q=0$) et l'exponentielle de l'indice de Shannon ($q=1$), cette dernière permettant une meilleure prise en compte de l'équitabilité des communautés. Les différences de diversité entre les groupes (organes, positions, projets) ont été évaluées par des tests non paramétriques de Kruskal-Wallis, suivis de tests de Wilcoxon par paires avec correction de Benjamini-Hochberg pour les comparaisons multiples. La distribution et le partage des OTU entre les différents compartiments (racines, jeunes feuilles, vieilles feuilles) ont été visualisés à l'aide de diagrammes de Venn, de graphiques UpSetR et de diagrammes de Chord. Ces approches ont permis d'identifier le "core microbiota" au niveau de la famille ainsi que les taxons partagés ou spécifiques à chaque niche écologique
+Les trois arbres étudiés dans le projet LOT s’échelonnent le long d’un gradient altitudinal dans les Andes péruviennes. Cette configuration offre un terrain d’exploration unique pour saisir l’impact de l’altitude et des conditions locales sur la diversité fongique. Le premier site, LOT1, se situe à environ 400 mètres d’altitude, en pleine Amazonie. Ici, la chaleur et l’humidité règnent en maîtres. Plus haut, à 800 mètres, LOT2 occupe une zone de transition, à la frontière entre la forêt tropicale de plaine et les premiers contreforts montagneux. Enfin, LOT3 culmine à 2500 mètres, au cœur de la forêt de nuage andine. Ce dernier site se distingue par des températures plus fraîches, une humidité persistante et une lumière tamisée par la brume.
 
-\paragraph{Structure des communautés et analyses statistiques multidimensionnelles}
+Tous ces sites sont rattachés à la station biologique de Wayqecha, dans la région de Cusco, gérée par l’ONG Amazon Conservation. Ce choix n’est pas anodin : il permet de s’appuyer sur un suivi écologique de longue durée et sur des infrastructures de recherche solides. Les arbres sélectionnés appartiennent à différentes espèces. LOT1 est un \textit{Dussia tessmannii} (Fabaceae), LOT2 un \textit{Ficus americana subsp. andicola} (Moraceae) et LOT3 un \textit{Brosimum cf. utile} (Moraceae). Ils servent de support pour inventorier la biodiversité associée à un seul hôte. En comparant à la fois différents sites et divers microhabitats au sein de chaque arbre, cette approche vise à mieux comprendre comment les gradients environnementaux et les caractéristiques propres à chaque arbre influencent la structuration des communautés fongiques chez les plantes épiphytes vasculaires tropicales.
 
-La structure globale des communautés fongiques a été explorée par des méthodes d'ordination en positionnement multidimensionnel non métrique (NMDS) basées sur des distances de Bray-Curtis. L'influence des facteurs structurants (projet, organe, position et taxonomie de l'hôte) sur la composition fongique a été quantifiée par des analyses de variance moléculaire de type PERMANOVA (fonction adonis2, 99 permutations). Parallèlement, l'homogénéité de la dispersion des communautés a été vérifiée par des tests de permutation sur les variances (betadisper). Pour identifier les taxons présentant des abondances différentielles significatives entre les organes, l'outil statistique ANCOM-BC2 (Analysis of Compositions of Microbiomes with Bias Correction) a été utilisé, appliquant une correction de Holm pour les valeurs de p.
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\linewidth]{Figures/sampling_protocol.png}
+    \caption[Protocole d'isolement des champignons de surface et endophytes chez les plantes épiphytes.]{
+        Procédure pour l'isolement des champignons de surface et endophytes chez les plantes épiphytes.\\
+        {\footnotesize
+        (A) Pour chaque individu de plante épiphyte, une jeune feuille entièrement développée, une vieille feuille et différentes parties du système racinaire ont été échantillonnées. 
+        (B) L'échantillonnage des micromycètes de la surface de la feuille a été réalisé à l'aide d'un morceau de papier Whatman préalablement imbibé de tampon CTAB stérile. 
+        (C) Stérilisation de surface pour l'isolement des endophytes en trempant successivement les portions de tissus dans de l'éthanol à 70\,\%, de l'eau stérile, de l'hypochlorite de sodium à 9\,\%, puis en les lavant deux fois dans de l'eau stérile, et enfin en les immergeant dans un tampon CTAB stérile. 
+        (D) La conservation de l'ADN a été effectuée dans des tubes Eppendorf stériles avec du tampon CTAB. 
+        (E) Flux de travail du métabarcoding de l'ADN.\\
+        Crédits images : (A) Charlie Delhumeau, (B--D) CL. \citep{leponce2024unveiling}
+        }
+    }
+    \label{fig:ma_figure}
+\end{figure}
 
-\paragraph{Caractérisation fonctionnelle et niche écologique}
 
-L'annotation fonctionnelle des OTU a été réalisée par l'interpellation de la base de données FungalTraits, permettant d'assigner des modes de vie (saprotrophes, pathogènes, endophytes) aux taxons identifiés au niveau de l'espèce. L'influence des facteurs environnementaux et taxonomiques sur ces traits fonctionnels a été testée par une analyse canonique des corrélations (ACC), dont la significativité des termes a été évaluée par des tests de permutation. Enfin, la largeur de niche fongique par organe a été estimée via l'indice de Levins normalisé (compris entre 0 pour les spécialistes et 1 pour les généralistes), calculé sur les abondances fusionnées par type d'organe.
+L’échantillonnage suivi dans ce travail reprend le protocole décrit par \citet{leponce2024unveiling}. Les communautés fongiques ont été étudiées à partir de plantes épiphytes vasculaires déjà collectées. Pour chaque individu, trois compartiments ont été ciblés afin de représenter différents microhabitats de la plante hôte : une jeune feuille entièrement développée, une vieille feuille et plusieurs portions du système racinaire.
 
-\paragraph{Modélisation du microclimat et de la richesse spécifique}
+Deux fractions fongiques ont ensuite été distinguées. Les champignons présents à la surface des feuilles ont été prélevés par frottis à l’aide d’un papier Whatman stérile imbibé de tampon CTAB. Les endophytes, eux, ont été isolés après une stérilisation de surface des tissus végétaux. Celle-ci reposait sur une succession de bains d’éthanol, d’eau stérile et d'hypochlorite de sodium, puis sur plusieurs rinçages avant la conservation des échantillons dans le tampon CTAB. Cette étape était essentielle, car elle permettait de distinguer les champignons vivant à la surface des organes de ceux présents à l’intérieur des tissus.
 
-L'impact des variables microclimatiques sur la diversité fongique a été analysé pour le site LOT1 en utilisant les mesures de température et d'humidité enregistrées sur différentes zones de l'arbre (base, tronc, cœur, périphérie de la canopée). Les relations entre ces variables et la richesse spécifique (Observed) ou la diversité (ExpShannon) ont été modélisées à l'aide de modèles linéaires généralisés à distribution binomiale négative (GLM-NB), permettant de gérer la surdispersion des données de comptage. La validité de ces modèles a été contrôlée par l'analyse des résidus simulés avec le package DHARMa, incluant des tests d'uniformité, de dispersion et de zéro-inflation.
+La caractérisation des communautés fongiques a ensuite reposé sur une approche de métabarcoding haut débit ciblant la région ITS (\textit{Internal Transcribed Spacer}), couramment utilisée comme marqueur de référence pour l’étude de la diversité fongique. Après amplification par PCR, les produits obtenus ont été séquencés sur une plateforme Illumina MiSeq. Le traitement bioinformatique a compris plusieurs étapes successives : démultiplexage des lectures, contrôle qualité, suppression des séquences de faible qualité et des chimères, puis regroupement en unités taxonomiques opérationnelles (OTUs). Une assignation taxonomique a ensuite été réalisée à l’aide de bases de référence adaptées aux champignons. Au terme de cette chaîne d’analyse, une table de contingence recensant le nombre de séquences par échantillon a été obtenue. C’est sur cette base qu’ont été menées l’ensemble des analyses de diversité et de composition présentées ici \citep{leponce2024unveiling}.
+
+
+\subsection{Analyses de diversité}
+
+Pour comparer la diversité alpha, nous avons utilisé les nombres de Hill, suivant l’approche développée par \citet{chao2014rarefaction}. Cette méthode permet de représenter à la fois la raréfaction, c’est-à-dire l’interpolation, et l’extrapolation des courbes de diversité. Trois ordres ont été retenus. Le premier, \(q=0\), correspond à la richesse spécifique. Le second, \(q=1\), traduit le nombre effectif d’espèces associé à l’indice de Shannon. Enfin, \(q=2\) repose sur l’indice de Simpson et donne davantage de poids aux taxons dominants. Ces différents indices ont ensuite été comparés entre les microhabitats de la plante hôte — jeunes feuilles, vieilles feuilles et racines — ainsi qu’entre les trois sites d’échantillonnage (LOT1, LOT2 et LOT3).
+
+Les courbes ont été générées sous \texttt{R} avec le package \texttt{iNEXT.3D} \citep{chao2021measuring}. Des intervalles de confiance à 95\,\% ont été estimés par bootstrap à partir de 50 réplicats. Ce cadre d’analyse est particulièrement utile lorsque l’effort d’échantillonnage varie d’une catégorie à l’autre, car il permet de comparer les niveaux de diversité sur une base standardisée.
+
+Nous avons également calculé l’équitabilité à l’aide de l’indice de Pielou, défini par :
+\[ J = \frac{H'}{\ln(S)} \]
+où \(H'\) désigne l’indice de Shannon et \(S\) la richesse spécifique. Cet indice permet d’évaluer dans quelle mesure les abondances sont réparties de façon homogène au sein des communautés fongiques.
+
+\subsection{Partage des OTUs et abondances relatives}
+Le partage des OTUs entre microhabitats a été étudié à l’aide de diagrammes UpSet \citep{lex2014upset}. Ce type de représentation est particulièrement utile pour comparer plusieurs ensembles à la fois. Il reste aussi plus lisible qu’un diagramme de Venn dès que le nombre de catégories devient important. Il permet ainsi de repérer les OTUs communs à plusieurs compartiments de la plante, mais aussi ceux qui semblent propres à un microhabitat donné. Les graphiques ont été produits sous \texttt{R} avec le package \texttt{UpSetR} \citep{conway2017upsetr}.
+
+Pour compléter cette approche, les taxons les plus abondants dans chaque microhabitat ont été résumés dans un tableau de chaleur. Les données ont été exprimées en abondances relatives, puis transformées en scores Z (centrées et réduites par microhabitat), afin de comparer les profils malgré les différences de profondeur de séquençage. Cette représentation permet de visualiser rapidement les OTUs dominants et de mieux faire ressortir les variations de composition entre jeunes feuilles, vieilles feuilles et racines. Le tableau a été construit à partir des OTUs présents dans au moins 5\% des échantillons de chaque microhabitat, avec le package \texttt{pheatmap} sous \texttt{R} \citep{kolde2019pheatmap}. Le score Z est défini comme la différence entre la valeur observée et la moyenne, divisée par l'écart-type \citep{altman1991practical}.
+
+Ces deux approches se complètent. Les diagrammes UpSet décrivent le degré de partage des OTUs entre habitats, tandis que le tableau de chaleur met en avant les taxons dominants qui contribuent le plus aux différences observées entre compartiments.
+
+\subsection{Analyses de similarités}
+
+Pour étudier les différences de composition entre communautés fongiques, nous avons analysé la diversité bêta à partir d’une matrice de dissimilarité de Bray--Curtis calculée sur les abondances relatives des OTUs \citep{bray1957ordination}. Cette mesure est couramment utilisée pour les données de communautés, car elle intègre l’information d’abondance tout en restant peu sensible aux doubles absences.
+
+La structure des assemblages a ensuite été explorée par une ordination NMDS (\textit{Non-metric Multidimensional Scaling}), réalisée sous \texttt{R} \citep{kruskal1964nonmetric,minchin1987evaluation}. L’objectif de cette approche est de projeter les échantillons dans un espace de faible dimension, de façon à restituer au mieux les relations de similarité observées entre eux. La qualité de cette représentation a été évaluée à l’aide de la valeur de stress. Des valeurs inférieures à 0{,}2 sont considérées comme suffisamment fiables pour une interprétation écologique \citep{kruskal1964nonmetric}.
+
+Enfin, les différences de composition entre groupes ont été testées par PERMANOVA (\textit{Permutational Multivariate Analysis of Variance}) avec la fonction \texttt{adonis2} du package \texttt{vegan} \citep{anderson2001new} à 999 permutations. Selon le jeu de données considéré, les effets du site (LOT1, LOT2, LOT3) et du microhabitat (jeunes feuilles, vieilles feuilles, racines) ont été examinés séparément. La significativité a été évaluée par permutations, et les résultats sont présentés sous la forme du \(R^2\), de la statistique pseudo-\(F\) de Fisher et de la valeur de \(p\).
+
+\subsection{Spécialisation des niches fongiques}
+
+L’amplitude de niche des OTUs a été évaluée à partir de l’indice de Levins \citep{levins1968evolution}. Cet indice permet d’apprécier dans quelle mesure un taxon est réparti entre plusieurs microhabitats. En pratique, il aide à distinguer des OTUs plutôt généralistes, présents dans différents compartiments de la plante, de taxons plus spécialisés, associés à un nombre plus limité d’habitats.
+
+Pour chaque OTU \(j\), l’indice brut a été calculé de la manière suivante :
+\[ B_j = \frac{1}{\sum_{i=1}^{n} p_{ij}^{2}} \]
+
+dans laquelle \(p_{ij}\) correspond à la proportion relative de l’OTU \(j\) dans le microhabitat \(i\), et \(n\) au nombre total de microhabitats pris en compte. Lorsque \(B_j\) est élevé, cela signifie que l’OTU est réparti de façon plus homogène entre les habitats considérés et présente donc une niche plus large.
+
+Pour rendre les comparaisons entre taxons plus directes, une version standardisée de cet indice a aussi été utilisée :
+
+\[ B_{A} = \frac{B_j - 1}{n - 1} \]
+
+Cette transformation ramène les valeurs entre 0 et 1. Des valeurs faibles traduisent une forte spécialisation, tandis que des valeurs plus élevées indiquent au contraire une occupation plus régulière des différents microhabitats. Afin d’éviter que les taxons rares ne brouillent les tendances générales, l’analyse a été restreinte aux OTUs les plus abondants. Cela permet de mieux faire ressortir les grands patrons de spécialisation au sein des communautés fongiques associées aux plantes épiphytes.
+
+
+
 
 \section{Résultats}
 
-\paragraph{Diversité alpha et partage des communautés}
-
-L'analyse de la diversité alpha révèle des contrastes marqués selon les compartiments de la plante épiphyte. La richesse spécifique observée (q=0) et la diversité de Shannon (q=1) montrent des tendances significatives entre les racines et les feuilles, ainsi qu'entre l'épisphère et l'endosphère (Tests de Kruskal-Wallis, p<0.05). Les racines présentent généralement une richesse en OTU plus élevée que les tissus foliaires. L'analyse des diagrammes de Venn et UpSetR met en évidence un faible partage de taxons entre les racines et les feuilles, suggérant une forte spécialisation des niches. Bien que certains taxons soient ubiquistes, une large fraction des OTU est strictement inféodée à un type d'organe ou à une position (endosphère vs épisphère), soulignant l'importance du micro-habitat dans la sélection des communautés fongiques.
-
-\begin{figure*}[t]
+\subsection{Analyses de diversité Alpha}
+\begin{figure*}[htbp]
     \centering
+    \includegraphics[width=0.8\textwidth]{Figures/rarefaction_alpha_div.png}
+    \caption{Courbes de raréfaction et d'extrapolation pour la diversité alpha (q=0 : richesse spécifique, q=1 : diversité de Shannon exponentielle et q=2 : diversité de Simpson inverse) des communautés fongiques associées aux plantes épiphytes. Les courbes sont présentées pour différents organes (feuilles jeunes, feuilles vieilles, racines) ou différents sites (LOT1, LOT2 ou LOT3). Les intervalles de confiance à 95\% sont indiqués par des zones ombrées.}
+    \label{fig:inext}
+\end{figure*} 
+\begin{table*}[htbp]
+    \centering
+    {\fontsize{8}{9.6}\selectfont
+    \renewcommand{\arraystretch}{1.25}
+    \setlength{\tabcolsep}{15pt}
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{llllll}
+        \hline
+        \textbf{Position} & \textbf{Organes} & \textbf{Richesse (q0)} & \textbf{Shannon (q1)} & \textbf{Simpson (q2)} & \textbf{Équitabilité} \\
+        \hline
+        \multicolumn{6}{l}{\textbf{Diversité par organes et position}} \\
+        Epiphytes  & Old leaf   & $1903.132 \pm 4.092$ & $335.264 \pm 0.452$ & $113.957 \pm 0.297$ & 0.18 \\[0.2em]
+                   & Root       & $2603.267 \pm 4.366$ & $584.089 \pm 0.442$ & $255.381 \pm 0.287$ & 0.22 \\[0.2em]
+                   & Young leaf & $2018.329 \pm 5.493$ & $324.232 \pm 0.387$ & $135.603 \pm 0.229$ & 0.16 \\[0.3em]
+        Endophytes & Old leaf   & $2415.849 \pm 6.878$ & $199.032 \pm 0.203$ & $49.380 \pm 0.073$  & 0.08 \\[0.2em]
+                   & Root       & $2422.284 \pm 6.803$ & $413.761 \pm 0.228$ & $176.767 \pm 0.162$ & 0.17 \\[0.2em]
+                   & Young leaf & $2466.674 \pm 5.309$ & $177.815 \pm 0.221$ & $44.826 \pm 0.078$  & 0.07 \\
+        \multicolumn{6}{l}{\textbf{Diversité par projets}} \\
+        Projets    & LOT1       & $1680.161 \pm 4.884$ & $381.82 \pm 0.281$  & $102.611 \pm 0.147$ & 0.23 \\[0.2em]
+                   & LOT2       & $1753.821 \pm 5.547$ & $290.496 \pm 0.232$ & $110.127 \pm 0.152$ & 0.17 \\[0.2em]
+                   & LOT3       & $2031 \pm 5.601$     & $306.332 \pm 0.195$ & $101.155 \pm 0.114$ & 0.15 \\
+        \hline
+    \end{tabular}%
+    }}
+    \caption{Diversité alpha des communautés fongiques selon la catégorie et l'assemblage.}
+    \label{tab:diversite_alpha}
+\end{table*}
 
-    \includegraphics[width=0.4\linewidth]{Figures/plot-30.png} 
-       \includegraphics[width=0.5\linewidth]{Figures/plot-36.png} 
-    \caption{Diversité alpha des communautés fongiques. (gauche) Richesse spécifique observée et indice de Shannon selon l'organe et la position. (droite) Diagramme UpSet illustrant les taxons exclusifs et partagés entre les niches.}
-    \label{fig:alpha_results}
+    Les courbes de raréfaction et d’extrapolation (figure \ref{fig:inext}) révèlent des contrastes marqués de diversité alpha, aussi bien entre microhabitats qu’entre sites. On remarque que les courbes pour les indices \(q=0\), \(q=1\) et \(q=2\) atteignent rapidement un plateau, ce qui suggère que l’échantillonnage a permis de bien cerner la diversité des taxons les plus fréquents et dominants. 
+
+    Si l’on compare les différents organes, les racines se distinguent nettement par leurs valeurs de diversité, systématiquement plus élevées que celles des feuilles pour les indices de Shannon et de Simpson (voir tableau \ref{tab:diversite_alpha}). Chez les épiphytes de surface, elles affichent la plus forte richesse (\(2603.267 \pm 4.366\)), mais aussi les diversités de Shannon (\(584.089 \pm 0.442\)) et de Simpson (\(255.381 \pm 0.287\)) les plus importantes. Chez les endophytes, la richesse spécifique (\(q=0\)) des racines (\(2422.284 \pm 6.803\)) est légèrement inférieure à celle des jeunes feuilles (\(2466.674 \pm 5.309\)), mais les racines présentent des niveaux de diversité bien supérieurs pour \(q=1\) (\(413.761 \pm 0.228\)) et \(q=2\) (\(176.767 \pm 0.162\)). À l’inverse, les feuilles, surtout chez les endophytes, hébergent des communautés moins équilibrées, dominées par un petit nombre d’OTUs.
+
+    Les différences entre feuilles jeunes et vieilles varient selon la fraction fongique considérée. Chez les épiphytes de surface, les vieilles feuilles montrent une richesse légèrement inférieure à celle des jeunes feuilles, mais une diversité de Shannon et de Simpson un peu plus élevée. Cela laisse penser que la distribution des abondances y est plus homogène. Pour les endophytes, les feuilles jeunes et vieilles présentent des richesses proches (\(\sim 2400{-}2460\) OTUs), mais les indices \(q=1\) et \(q=2\) restent faibles, ce qui traduit une forte dominance de quelques taxons. Les indices d’équitabilité confirment cette tendance : ils sont particulièrement bas dans les feuilles endophytiques (\(J = 0.07\) à \(0.08\)), alors qu’ils atteignent des valeurs plus élevées dans les racines (\(J = 0.17\) à \(0.22\)).
+
+    Du côté des sites, c’est à LOT3 que la richesse spécifique atteint son maximum (\(2031 \pm 5.601\)), tandis que LOT1 se distingue par la plus forte diversité de Shannon (\(381.82 \pm 0.281\)) et la meilleure équitabilité (\(J = 0.23\)). LOT2, quant à lui, présente une richesse intermédiaire et la diversité de Simpson la plus élevée (\(110.127 \pm 0.152\)). Toutefois, les écarts entre sites restent moins prononcés que ceux observés entre organes. Globalement, ces résultats montrent que le microhabitat, et en particulier l’opposition racines/feuilles, façonne plus fortement la diversité alpha des communautés fongiques que la localisation géographique du site.
+
+
+
+
+
+\subsection{Partage des OTUs et abondances relatives}
+
+
+
+\begin{figure*}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Figures/upset_plots.png}
+    \caption{Diagrammes UpSet pour les OTUs partagés entre les microhabitats.}
+    \label{fig:upset}
 \end{figure*}
 
-\paragraph{Structuration des communautés (Diversité bêta)}
+Les diagrammes UpSet (figure \ref{fig:upset}) illustrent la répartition des OTUs entre les différents microhabitats. On observe qu’un noyau d’OTUs est partagé par plusieurs compartiments, mais une grande partie de la diversité reste propre à chaque organe. Les racines, en particulier, se démarquent par un nombre élevé d’OTUs exclusifs. Cela traduit une composition fongique originale, distincte de celle des feuilles. À l’opposé, les feuilles jeunes et vieilles partagent davantage leurs communautés, ce qui suggère une proximité écologique entre ces deux types de tissus.
 
-L'ordination par positionnement multidimensionnel non métrique (NMDS) montre une structuration nette des communautés fongiques. À l'échelle globale, le facteur "Projet" (site d'étude) explique une part significative de la variance ($R^2=0.108, p<0.01$). Toutefois, des analyses plus fines révèlent que l'organe (racine vs feuille) et la position (endophyte vs épiphyte) sont des déterminants majeurs de la composition du mycobiote. L'ordination globale (Stress = 0.13, k=3) affiche une séparation claire entre les échantillons racinaires et foliaires. Les tests de PERMANOVA confirment que la famille botanique de l'hôte exerce également un contrôle significatif sur l'assemblage fongique, bien que son effet soit parfois secondaire par rapport à la différenciation des organes.
+Ce constat rejoint les résultats de diversité alpha, qui montraient déjà une richesse particulièrement élevée dans les racines. Il semble donc que ce microhabitat soit à la fois un refuge pour des taxons spécialisés et un point de rencontre pour des espèces plus généralistes. Les feuilles, quant à elles, hébergent des assemblages plus proches, probablement en raison de conditions environnementales et physiologiques similaires.
 
-\paragraph{Compositions taxonomiques et niches fonctionnelles}
+En résumé, la distribution des OTUs fongiques apparaît fortement structurée par le microhabitat. Les différences entre organes souterrains et aériens sont nettes, et le rôle du compartiment racinaire comme réservoir de diversité se confirme à travers ces analyses.
 
-Les diagrammes de Chord et les analyses d'abondances relatives indiquent une dominance de certains groupes taxonomiques selon les niches. Les communautés sont largement dominées par les Ascomycota et les Basidiomycota, mais les proportions de classes varient : les racines hébergent une diversité fonctionnelle distincte de celle des feuilles. L'indice de Levins calculé montre que les communautés fongiques foliaires ont tendance à présenter des niches plus étroites (spécialisation plus forte) par rapport aux communautés racinaires. L'analyse fonctionnelle via FungalTraits révèle une prédominance de taxons saprotrophes dans l'épisphère, tandis que les symbiotes et endophytes potentiels sont plus représentés dans l'endosphère.
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\linewidth]{Figures/heatmap_orders.png}
+    \caption{Tableau des OTUs les plus abondants dans chaque microhabitat.}
+    \label{fig:abondances}
+\end{figure}
 
 
-\paragraph{Influence des variables microclimatiques}
 
-Les modèles linéaires généralisés (GLM-NB) appliqués aux données du site LOT1 démontrent une influence significative des facteurs environnementaux sur la richesse fongique. L'humidité relative moyenne et la température interagissent pour structurer la diversité. Les tests de diagnostic (DHARMa) valident la robustesse des modèles, ne montrant ni surdispersion (p=0.835) ni inflation de zéros (p=1). Une humidité élevée couplée à des températures stables dans les zones protégées de l'arbre (cœur de la canopée, base) favorise une richesse spécifique plus élevée par rapport à la périphérie de la canopée, soumise à des stress hydriques plus importants.
+Le tableau de chaleur des OTUs les plus abondants (figure \ref{fig:abondances}) illustre clairement à quel point la composition des communautés varie d’un microhabitat à l’autre. Les racines, par exemple, se démarquent nettement : elles hébergent un ensemble d’OTUs dominants qui diffèrent en grande partie de ceux retrouvés dans les feuilles. Ce contraste souligne la forte structuration des assemblages fongiques selon l’organe étudié. À l’inverse, les feuilles jeunes et vieilles affichent des profils d’abondance plus similaires. On y retrouve plusieurs OTUs dominants communs, même si leur abondance relative varie parfois sensiblement d’un compartiment à l’autre.
+
+
+On remarque aussi que la distribution des taxons dominants n’est pas homogène. Certains OTUs semblent presque exclusifs à un seul microhabitat, ce qui suggère une affinité particulière pour des conditions locales spécifiques. D’autres, au contraire, sont présents dans plusieurs compartiments, mais leur importance relative fluctue fortement selon l’organe. Cette organisation montre que les différences entre organes ne reposent pas uniquement sur la présence ou l’absence de certains taxons, mais aussi sur des changements dans la hiérarchie d’abondance parmi les OTUs partagés.
+
+Dans l’ensemble, ces observations rejoignent les résultats des diagrammes UpSet et des analyses de diversité alpha. Les racines apparaissent comme un réservoir de diversité original, tandis que les feuilles partagent davantage leurs taxons dominants. Ainsi, le microhabitat au sein de la plante hôte s’impose comme un facteur clé, à la fois pour la composition et pour la structure d’abondance des communautés fongiques.
+
+\subsection{Analyses de similarités}
+
+
+
+L’ordination NMDS (figure \ref{fig:nmds}) révèle une structuration nette des communautés fongiques, à la fois selon le site d’échantillonnage et le microhabitat (voir tableau \ref{tab:permanova_nmds}). À l’échelle globale (panel A), on observe que les échantillons tendent à se regrouper en fonction du projet LOT, ce qui traduit un effet du site sur la composition des assemblages. La PERMANOVA confirme cette tendance (\(R^2 = 0.108\), pseudo-\(F = 69.483\), \(p = 0.010\)), même si une part importante de la variation reste partagée entre les différents sites.
+
+Lorsqu’on examine chaque projet séparément (panels B à D), la structuration selon l’organe devient également très marquée. Dans les trois sites, les racines forment un groupe distinct, bien séparé des feuilles, tandis que les feuilles jeunes et vieilles présentent un recouvrement plus important. Les tests de PERMANOVA montrent un effet significatif de l’organe dans le LOT1 (\(R^2 = 0.079\), \(F = 17.802\), \(p = 0.001\)), LOT2 (\(R^2 = 0.085\), \(F = 12.716\), \(p = 0.010\)) et LOT3 (\(R^2 = 0.086\), \(F = 19.752\), \(p = 0.010\)).
+
+Les valeurs de stress des ordinations, comprises entre \(0.136\) et \(0.150\), restent bien en dessous du seuil de 0{,}2. Cela garantit une représentation fidèle des relations de dissimilarité entre échantillons. En résumé, ces analyses montrent que la composition des communautés fongiques varie non seulement entre les sites andins, mais aussi, et surtout, entre les différents organes de la plante hôte. L’effet du microhabitat apparaît ainsi particulièrement déterminant dans la structuration de ces assemblages.
+
+
+
+\begin{figure*}[htbp]
+       \centering
+       \includegraphics[width=0.8\textwidth]{Figures/NMDS.png}
+       \caption{Ordination NMDS des communautés fongiques associées aux plantes épiphytes.}
+       \label{fig:nmds}
+\end{figure*}
+
+\begin{table*}[htbp]
+       \centering
+       \caption{Résultats des analyses de structure des communautés fongiques par NMDS et PERMANOVA selon les panels présentés en figure \ref{fig:nmds}.}
+       \label{tab:permanova_nmds}
+       \vspace{0.5cm}
+       \renewcommand{\arraystretch}{1.2}
+       \setlength{\tabcolsep}{8pt}
+       \resizebox{\textwidth}{!}{%
+       \begin{tabular}{llllllllll}
+              \hline
+              \textbf{Panel} & \textbf{Analyse} & \textbf{Effet testé} & \textbf{Échantillons} & \textbf{Df} & \textbf{R\textsuperscript{2}} & \textbf{F} & \textbf{p-value} & \textbf{Significativité} & \textbf{Stress NMDS} \\
+              \hline
+              A & Structure globale (Projet) & Projet & 1075 & 2 & 0.108 & 69.483 & 0.001 & ** & 0.136 \\
+              B & LOT1 -- Organe             & Organe & 402  & 2 & 0.079 & 17.802 & 0.001 & ** & 0.150 \\
+              C & LOT2 -- Organe             & Organe & 267  & 2 & 0.085 & 12.716 & 0.001 & ** & 0.148 \\
+              D & LOT3 -- Organe             & Organe & 406  & 2 & 0.086 & 19.752 & 0.001 & ** & 0.149 \\
+              \hline
+       \end{tabular}%
+       }
+\end{table*}
+
+\subsection{Spécialisation des niches fongiques}
+
+
+
+
+
+L’examen des valeurs de l’indice de Levins (figure \ref{fig:niches_levins}) met en lumière une grande diversité d’amplitudes de niche parmi les OTUs dominants. Beaucoup de taxons affichent des scores faibles à intermédiaires, ce qui traduit une répartition inégale entre les différents microhabitats et suggère une certaine spécialisation. À l’opposé, quelques OTUs se distinguent par des valeurs nettement plus élevées, caractéristiques d’un comportement généraliste et d’une présence plus équilibrée dans plusieurs compartiments de la plante.
+
+Les OTUs dominants retrouvés dans les racines illustrent particulièrement bien ce phénomène de spécialisation. Plusieurs d’entre eux semblent presque exclusivement associés à ce microhabitat, confirmant ainsi que les racines abritent un ensemble original de champignons adaptés à des conditions spécifiques. Ce constat fait écho aux résultats précédents, qui montraient déjà une richesse élevée et une composition singulière dans ce compartiment.
+Du côté des feuilles, qu’elles soient jeunes ou vieilles, les OTUs dominants présentent le plus souvent des amplitudes de niche intermédiaires. Cela laisse penser que ces deux types de tissus partagent une partie de leur cortège fongique, sans pour autant être identiques. Les conditions écologiques des feuilles, bien que proches, permettent à certains taxons de s’installer dans les deux compartiments, tandis que d’autres restent plus fidèles à un stade foliaire particulier.
+
+En somme, l’analyse de l’indice de Levins met en évidence une organisation non aléatoire des communautés fongiques au sein de la plante hôte. On observe une coexistence de spécialistes, principalement cantonnés à un microhabitat, et de généralistes capables d’occuper plusieurs compartiments. Ce schéma confirme le rôle central du microhabitat comme filtre écologique dans l’assemblage des communautés fongiques associées aux plantes épiphytes.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{Figures/niches_de_levins.png}
+    \caption{Indice de Levins pour les OTUs les plus abondants dans chaque microhabitat.}
+    \label{fig:niches_levins}
+\end{figure}
+\FloatBarrier
 
 \section{Discussion}
 
-\bibliography{bibliographie.bib}
+La structuration des communautés fongiques chez les plantes épiphytes tropicales met en lumière l’influence majeure du microhabitat sur la diversité et la composition des assemblages. Nos résultats montrent que les racines, qu’elles soient en surface ou endophytes, hébergent non seulement la plus grande richesse spécifique, mais aussi les communautés les plus diversifiées et les plus équitables. Ce constat rejoint les observations faites dans d’autres systèmes tropicaux, où les racines constituent souvent un réservoir de diversité microbienne, probablement en raison de leur rôle central dans l’acquisition des ressources et de la complexité de leur environnement immédiat.
 
-\listoffigures
-\listoftables
+À l’inverse, les feuilles, surtout lorsqu’on considère la fraction endophyte, présentent des communautés dominées par un petit nombre de taxons. Cette faible équitabilité pourrait refléter une sélection plus stricte exercée par les tissus foliaires, qui imposent des contraintes physiologiques et chimiques fortes. Il est intéressant de noter que les feuilles jeunes et vieilles partagent une partie de leur cortège fongique, mais conservent aussi des spécificités, suggérant que le stade de développement foliaire module l’assemblage des communautés.
 
-\appendix
-\section{Annexes}
+Le partage des OTUs entre microhabitats, révélé par les diagrammes UpSet, confirme l’existence d’un noyau de taxons généralistes, capables de coloniser plusieurs compartiments de la plante. Toutefois, la majorité des OTUs reste propre à un organe donné, en particulier dans les racines. Cette spécialisation est corroborée par l’indice de Levins, qui met en évidence la coexistence de spécialistes et de généralistes au sein des communautés dominantes. Ce schéma d’assemblage, où le microhabitat agit comme un filtre écologique fort, est cohérent avec les modèles actuels de structuration des microbiotes végétaux.
+
+Les analyses de similarité (NMDS et PERMANOVA) soulignent également l’importance du site d’échantillonnage, même si son effet reste moins marqué que celui du microhabitat. Les différences entre les trois arbres étudiés pourraient refléter des variations locales de climat, de substrat ou de composition de la flore épiphyte. Néanmoins, la structuration la plus nette s’observe toujours entre organes, ce qui suggère que les contraintes internes à la plante priment sur les facteurs environnementaux externes.
+
+Ces résultats ouvrent plusieurs perspectives. D’abord, ils invitent à approfondir l’étude des interactions fonctionnelles entre champignons et épiphytes, notamment pour comprendre comment la spécialisation des niches fongiques contribue à l’adaptation des plantes aux conditions extrêmes de la canopée. Ensuite, ils soulignent la nécessité d’élargir les analyses à d’autres groupes fonctionnels (bactéries, protistes) et à d’autres régions tropicales, afin de tester la généralité des patrons observés ici.
+
+Enfin, ce travail met en avant la pertinence des approches de métabarcoding et des analyses multivariées pour décrypter la complexité des communautés microbiennes associées aux plantes. Il montre que, même dans des milieux aussi riches et peu explorés que la canopée tropicale, il est possible d’identifier des règles d’assemblage robustes, gouvernées par la structure interne de l’hôte et la spécialisation écologique des micro-organismes. Ces connaissances sont essentielles pour mieux comprendre le fonctionnement des écosystèmes tropicaux et anticiper leur réponse aux changements globaux.
+
+\bibliography{BIBLIO_Stage_LOT_CRBE.bib}
+
+
+
 
 \end{document}

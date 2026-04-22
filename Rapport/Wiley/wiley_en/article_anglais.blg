@@ -1,0 +1,48 @@
+This is BibTeX, Version 0.99d (TeX Live 2025)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: article_anglais.aux
+The style file: rss.bst
+Database file #1: BIBLIO_Stage_LOT_CRBE.bib
+Warning--there's a number but no series in levins1968evolution
+You've used 17 entries,
+            2705 wiz_defined-function locations,
+            700 strings with 7926 characters,
+and the built_in function-call counts, 9260 in all, are:
+= -- 868
+> -- 506
+< -- 10
++ -- 200
+- -- 177
+* -- 822
+:= -- 1733
+add.period$ -- 36
+call.type$ -- 17
+change.case$ -- 141
+chr.to.int$ -- 17
+cite$ -- 18
+duplicate$ -- 381
+empty$ -- 624
+format.name$ -- 221
+if$ -- 1789
+int.to.chr$ -- 1
+int.to.str$ -- 1
+missing$ -- 20
+newline$ -- 76
+num.names$ -- 68
+pop$ -- 158
+preamble$ -- 1
+purify$ -- 125
+quote$ -- 0
+skip$ -- 230
+stack$ -- 0
+substring$ -- 511
+swap$ -- 76
+text.length$ -- 1
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 144
+warning$ -- 1
+while$ -- 77
+width$ -- 0
+write$ -- 210
+(There was 1 warning)
