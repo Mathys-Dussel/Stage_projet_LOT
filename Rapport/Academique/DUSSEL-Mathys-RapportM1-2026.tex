@@ -61,7 +61,7 @@
     \vspace{1cm}
     
     {\Large\bfseries Stage réalisé dans le cadre du module Initiation à la Recherche \\[0.3cm] Master 1 Biodiversité,
-Ecologie et Evolution\par}
+Écologie et Évolution\par}
     \vspace{0.5cm}
     
     \rule{\linewidth}{0.5mm} \\[0.4cm]
@@ -95,12 +95,18 @@ Ecologie et Evolution\par}
     {\large Année universitaire 2025-2026\par}
     \vspace{0.5cm}
     {\large \today\par}
+      \vspace{0.5cm}
+    \footnotesize{Source de l'image de couverture : Branche charg\'ee d'\'epiphytes, arbre LOT02, PN Yanachaga-Chemill\'en, Charlie Delhumeau, projet Life on Trees (LOT), 2023.}
 \end{titlepage}
 
 \renewcommand{\maketitle}{}
 \maketitle
 
 \thispagestyle{empty}
+
+
+
+
 \section*{Avant-propos}
 \newpage
 
@@ -158,9 +164,9 @@ C'est exactement dans ce contexte qu'intervient le projet \textit{Life on Trees}
     \end{minipage}
 \end{figure}
 
-Les trois arbres étudiés dans le projet LOT s’échelonnent le long d’un gradient altitudinal dans les Andes péruviennes. Cette configuration offre un terrain d’exploration unique pour saisir l’impact de l’altitude et des conditions locales sur la diversité fongique. Le premier site, LOT1, se situe à environ 400 mètres d’altitude, en pleine Amazonie. Ici, la chaleur et l’humidité règnent en maîtres. Plus haut, à 800 mètres, LOT2 occupe une zone de transition, à la frontière entre la forêt tropicale de plaine et les premiers contreforts montagneux. Enfin, LOT3 culmine à 2500 mètres, au cœur de la forêt de nuage andine. Ce dernier site se distingue par des températures plus fraîches, une humidité persistante et une lumière tamisée par la brume.
+Les trois arbres étudiés dans le projet LOT s’échelonnent le long d’un gradient altitudinal dans les Andes péruviennes. Cette configuration offre un terrain d’exploration unique pour saisir l’impact de l’altitude et des conditions locales sur la diversité fongique. Le premier site, LOT1, se situe à environ 400 mètres d’altitude, en pleine Amazonie. Plus haut, à 800 mètres, LOT2 occupe une zone de transition, à la frontière entre la forêt tropicale et les premiers contreforts montagneux. Enfin, LOT3 culmine à 2400 mètres, au cœur de la forêt de nuage andine. Ce dernier site se distingue par des températures plus fraîches, une humidité persistante et une lumière tamisée par la brume.
 
-Tous ces sites sont rattachés à la station biologique de Wayqecha, dans la région de Cusco, gérée par l’ONG Amazon Conservation. Ce choix n’est pas anodin : il permet de s’appuyer sur un suivi écologique de longue durée et sur des infrastructures de recherche solides. Les arbres sélectionnés appartiennent à différentes espèces. LOT1 est un \textit{Dussia tessmannii} (Fabaceae), LOT2 un \textit{Ficus americana subsp. andicola} (Moraceae) et LOT3 un \textit{Brosimum cf. utile} (Moraceae). Ils servent de support pour inventorier la biodiversité associée à un seul hôte. En comparant à la fois différents sites et divers microhabitats au sein de chaque arbre, cette approche vise à mieux comprendre comment les gradients environnementaux et les caractéristiques propres à chaque arbre influencent la structuration des communautés fongiques chez les plantes épiphytes vasculaires tropicales.
+Les arbres sélectionnés appartiennent à différentes espèces. LOT1 est un \textit{Dussia tessmannii} (Fabaceae), LOT2 un \textit{Ficus americana subsp. andicola} (Moraceae) et LOT3 un \textit{Brosimum cf. utile} (Moraceae). Ils servent de support pour inventorier la biodiversité associée à un seul hôte. En comparant à la fois différents sites et divers microhabitats au sein de chaque arbre, cette approche vise à mieux comprendre comment les gradients environnementaux et les caractéristiques propres à chaque arbre influencent la structuration des communautés fongiques chez les plantes épiphytes vasculaires tropicales.
 
 L’échantillonnage suivi dans ce travail reprend le protocole décrit par \citet{leponce2024unveiling}. Les communautés fongiques ont été étudiées à partir de plantes épiphytes vasculaires déjà collectées. Pour chaque individu, trois compartiments ont été ciblés afin de représenter différents microhabitats de la plante hôte : une jeune feuille entièrement développée, une vieille feuille et plusieurs portions du système racinaire.
 
@@ -184,9 +190,11 @@ J = \frac{H'}{\ln(S)}
 où \(H'\) désigne l’indice de Shannon et \(S\) la richesse spécifique. Cet indice permet d’évaluer dans quelle mesure les abondances sont réparties de façon homogène au sein des communautés fongiques.
 
 \subsection{Partage des OTUs et abondances relatives}
+
 Le partage des OTUs entre microhabitats a été étudié à l’aide de diagrammes UpSet \citep{lex2014upset}. Ce type de représentation est particulièrement utile pour comparer plusieurs ensembles à la fois. Il reste aussi plus lisible qu’un diagramme de Venn dès que le nombre de catégories devient important. Il permet ainsi de repérer les OTUs communs à plusieurs compartiments de la plante, mais aussi ceux qui semblent propres à un microhabitat donné. Les graphiques ont été produits sous \texttt{R} avec le package \texttt{UpSetR} \citep{conway2017upsetr}.
 
-Pour compléter cette approche, les taxons les plus abondants dans chaque microhabitat ont été résumés dans un tableau de chaleur. Les données ont été exprimées en abondances relatives, puis transformées en scores Z (centrées et réduites par microhabitat), afin de comparer les profils malgré les différences de profondeur de séquençage. Cette représentation permet de visualiser rapidement les OTUs dominants et de mieux faire ressortir les variations de composition entre jeunes feuilles, vieilles feuilles et racines. Le tableau a été construit à partir des OTUs présents dans au moins 5\% des échantillons de chaque microhabitat, avec le package \texttt{pheatmap} sous \texttt{R} \citep{kolde2019pheatmap}. Le score Z est défini comme la différence entre la valeur observée et la moyenne, divisée par l'écart-type \citep{altman1991practical}.
+Pour compléter cette approche, les taxons les plus abondants dans chaque microhabitat ont été résumés dans un tableau de chaleur. Les données ont été exprimées en abondances relatives, puis transformées en scores Z (centrées et réduites par microhabitat) \citep{altman1991practical}, afin de comparer les profils malgré les différences de profondeur de séquençage. Cette représentation permet de visualiser rapidement les OTUs dominants et de mieux faire ressortir les variations de composition entre jeunes feuilles, vieilles feuilles et racines. Le tableau a été construit à partir des OTUs présents dans au moins 5\% des échantillons de chaque microhabitat, avec le package \texttt{pheatmap} sous \texttt{R} \citep{kolde2019pheatmap}. Le score Z est défini comme la différence entre la valeur observée et la moyenne, divisée par l'écart-type.
+
 
 Ces deux approches se complètent. Les diagrammes UpSet décrivent le degré de partage des OTUs entre habitats, tandis que le tableau de chaleur met en avant les taxons dominants qui contribuent le plus aux différences observées entre compartiments.
 
@@ -216,7 +224,9 @@ Pour rendre les comparaisons entre taxons plus directes, une version standardis�
 B_{A} = \frac{B_j - 1}{n - 1}
 \]
 
-Cette transformation ramène les valeurs entre 0 et 1. Des valeurs faibles traduisent une forte spécialisation, tandis que des valeurs plus élevées indiquent au contraire une occupation plus régulière des différents microhabitats. Afin d’éviter que les taxons rares ne brouillent les tendances générales, l’analyse a été restreinte aux OTUs les plus abondants. Cela permet de mieux faire ressortir les grands patrons de spécialisation au sein des communautés fongiques associées aux plantes épiphytes.
+Cette transformation ramène les valeurs entre 0 et 1. Des valeurs faibles traduisent une forte spécialisation, tandis que des valeurs plus élevées indiquent au contraire une occupation plus régulière des différents microhabitats. Afin d’éviter que les taxons rares ne brouillent les tendances générales, l’analyse a été restreinte aux OTUs les plus abondants. Cela permet de mieux faire ressortir les grands patrons de spécialisation au sein des communautés fongiques associées aux plantes épiphytes. 
+
+Pour savoir si les organes influances les degés de spécialisation des OTUs, nous avons comparé les distributions de \(B_A\) entre les différentes catégories d’organes (jeunes feuilles, vieilles feuilles, racines) à l’aide de tests non paramétriques de Wilcoxon, réalisés séparément pour chaque site d’échantillonnage (LOT1, LOT2, LOT3). Les p-values ont été ajustées pour tenir compte des comparaisons multiples selon la méthode de Benjamini--Hochberg \citep{benjamini1995controlling}.
 
 
 
@@ -238,7 +248,7 @@ Cette transformation ramène les valeurs entre 0 et 1. Des valeurs faibles tradu
     \label{fig:inext}
     \end{figure}
 
-    Les courbes de raréfaction et d’extrapolation (figure \ref{fig:inext}) révèlent des contrastes marqués de diversité alpha, aussi bien entre microhabitats qu’entre sites. On remarque que les courbes pour les indices \(q=0\), \(q=1\) et \(q=2\) atteignent rapidement un plateau, ce qui suggère que l’échantillonnage a permis de bien cerner la diversité des taxons les plus fréquents et dominants. 
+    Les courbes de raréfaction et d’extrapolation (figure \ref{fig:inext}) révèlent des différences marquées de diversité alpha, aussi bien entre organes qu’entre sites. On remarque que les courbes pour les indices \(q=0\), \(q=1\) et \(q=2\) atteignent rapidement un plateau, ce qui suggère que l’échantillonnage a permis de bien prendre  en compte la diversité des taxons les plus fréquents et dominants. 
 
     Si l’on compare les différents organes, les racines se distinguent nettement par leurs valeurs de diversité, systématiquement plus élevées que celles des feuilles pour les indices de Shannon et de Simpson (voir tableau \ref{tab:diversite_alpha}). Chez les épiphytes de surface, elles affichent la plus forte richesse (\(2603.267 \pm 4.366\)), mais aussi les diversités de Shannon (\(584.089 \pm 0.442\)) et de Simpson (\(255.381 \pm 0.287\)) les plus importantes. Chez les endophytes, la richesse spécifique (\(q=0\)) des racines (\(2422.284 \pm 6.803\)) est légèrement inférieure à celle des jeunes feuilles (\(2466.674 \pm 5.309\)), mais les racines présentent des niveaux de diversité bien supérieurs pour \(q=1\) (\(413.761 \pm 0.228\)) et \(q=2\) (\(176.767 \pm 0.162\)). À l’inverse, les feuilles, surtout chez les endophytes, hébergent des communautés moins équilibrées, dominées par un petit nombre d’OTUs.
 
@@ -279,9 +289,9 @@ Cette transformation ramène les valeurs entre 0 et 1. Des valeurs faibles tradu
 
 \subsection{Partage des OTUs et abondances relatives}
 
-\begin{figure}[!h]
+\begin{figure}[h]
     \centering
-    \includegraphics[width=1\textwidth]{Figures/upset_plots.png}
+    \includegraphics[width=0.97\textwidth]{Figures/upset_plots.png}
     \caption{Diagrammes UpSet pour les OTUs partagés entre les microhabitats.}
     \label{fig:upset}
 \end{figure}
@@ -292,9 +302,9 @@ Ce constat rejoint les résultats de diversité alpha, qui montraient déjà une
 
 En résumé, la distribution des OTUs fongiques apparaît fortement structurée par le microhabitat. Les différences entre organes souterrains et aériens sont nettes, et le rôle du compartiment racinaire comme réservoir de diversité se confirme à travers ces analyses.
 
-\begin{figure}[!h]
+\begin{figure}[H]
     \centering
-    \begin{minipage}[c]{0.62\textwidth}
+    \begin{minipage}[c]{0.5\textwidth}
         \centering
         \includegraphics[width=\linewidth]{Figures/heatmap_orders.png}
     \end{minipage}
@@ -315,19 +325,14 @@ On remarque aussi que la distribution des taxons dominants n’est pas homogène
 Dans l’ensemble, ces observations rejoignent les résultats des diagrammes UpSet et des analyses de diversité alpha. Les racines apparaissent comme un réservoir de diversité original, tandis que les feuilles partagent davantage leurs taxons dominants. Ainsi, le microhabitat au sein de la plante hôte s’impose comme un facteur clé, à la fois pour la composition et pour la structure d’abondance des communautés fongiques.
 
 \subsection{Analyses de similarités}
-\begin{figure}[!h]
+\begin{figure}[H]
     \centering
     \includegraphics[width=1\textwidth]{Figures/NMDS.png}
     \caption{Ordination NMDS des communautés fongiques associées aux plantes épiphytes.}
     \label{fig:nmds}
 \end{figure}
 
-L’ordination NMDS (figure \ref{fig:nmds}) révèle une structuration nette des communautés fongiques, à la fois selon le site d’échantillonnage et le microhabitat (voir tableau \ref{tab:permanova_nmds}). À l’échelle globale (panel A), on observe que les échantillons tendent à se regrouper en fonction du projet LOT, ce qui traduit un effet du site sur la composition des assemblages. La PERMANOVA confirme cette tendance (\(R^2 = 0.108\), pseudo-\(F = 69.483\), \(p = 0.010\)), même si une part importante de la variation reste partagée entre les différents sites.
-
-Lorsqu’on examine chaque projet séparément (panels B à D), la structuration selon l’organe devient également très marquée. Dans les trois sites, les racines forment un groupe distinct, bien séparé des feuilles, tandis que les feuilles jeunes et vieilles présentent un recouvrement plus important. Les tests de PERMANOVA montrent un effet significatif de l’organe dans le LOT1 (\(R^2 = 0.079\), \(F = 17.802\), \(p = 0.001\)), LOT2 (\(R^2 = 0.085\), \(F = 12.716\), \(p = 0.010\)) et LOT3 (\(R^2 = 0.086\), \(F = 19.752\), \(p = 0.010\)).
-
-Les valeurs de stress des ordinations, comprises entre \(0.136\) et \(0.150\), restent bien en dessous du seuil de 0{,}2. Cela garantit une représentation fidèle des relations de dissimilarité entre échantillons. En résumé, ces analyses montrent que la composition des communautés fongiques varie non seulement entre les sites andins, mais aussi, et surtout, entre les différents organes de la plante hôte. L’effet du microhabitat apparaît ainsi particulièrement déterminant dans la structuration de ces assemblages.
-\begin{table}[!h]
+\begin{table}[H]
     \centering
     \caption{Résultats des analyses de structure des communautés fongiques par NMDS et PERMANOVA selon les panels présentés en figure \ref{fig:nmds}.}
     \label{tab:permanova_nmds}
@@ -354,27 +359,39 @@ Les valeurs de stress des ordinations, comprises entre \(0.136\) et \(0.150\), r
 
 
 
-\begin{figure}[!h]
-    \centering
-    \begin{minipage}[c]{0.68\textwidth}
+\begin{figure}[H]
         \centering
-        \includegraphics[width=\linewidth]{Figures/niches_de_levins.png}
-    \end{minipage}
-    \hfill
-    \begin{minipage}[c]{0.28\textwidth}
+        \includegraphics[width=\linewidth]{Figures/niches_levins.png}
         \caption{Indice de Levins pour les OTUs les plus abondants dans chaque microhabitat.}
         \label{fig:niches_levins}
-    \end{minipage}
 \end{figure}
 
-L’examen des valeurs de l’indice de Levins (figure \ref{fig:niches_levins}) met en lumière une grande diversité d’amplitudes de niche parmi les OTUs dominants. Beaucoup de taxons affichent des scores faibles à intermédiaires, ce qui traduit une répartition inégale entre les différents microhabitats et suggère une certaine spécialisation. À l’opposé, quelques OTUs se distinguent par des valeurs nettement plus élevées, caractéristiques d’un comportement généraliste et d’une présence plus équilibrée dans plusieurs compartiments de la plante.
 
-Les OTUs dominants retrouvés dans les racines illustrent particulièrement bien ce phénomène de spécialisation. Plusieurs d’entre eux semblent presque exclusivement associés à ce microhabitat, confirmant ainsi que les racines abritent un ensemble original de champignons adaptés à des conditions spécifiques. Ce constat fait écho aux résultats précédents, qui montraient déjà une richesse élevée et une composition singulière dans ce compartiment.
 
-Du côté des feuilles, qu’elles soient jeunes ou vieilles, les OTUs dominants présentent le plus souvent des amplitudes de niche intermédiaires. Cela laisse penser que ces deux types de tissus partagent une partie de leur cortège fongique, sans pour autant être identiques. Les conditions écologiques des feuilles, bien que proches, permettent à certains taxons de s’installer dans les deux compartiments, tandis que d’autres restent plus fidèles à un stade foliaire particulier.
-
-En somme, l’analyse de l’indice de Levins met en évidence une organisation non aléatoire des communautés fongiques au sein de la plante hôte. On observe une coexistence de spécialistes, principalement cantonnés à un microhabitat, et de généralistes capables d’occuper plusieurs compartiments. Ce schéma confirme le rôle central du microhabitat comme filtre écologique dans l’assemblage des communautés fongiques associées aux plantes épiphytes.
-
+\begin{table}[H]
+    \centering
+    {\footnotesize
+    \caption{Comparaisons multiples de l'indice de Levins moyen (\textit{Levins\_Mean}) entre microhabitats pour chaque projet (test de Wilcoxon, p-values ajustées).}
+    \label{tab:levins_pairwise}
+    \renewcommand{\arraystretch}{1.2}
+    \setlength{\tabcolsep}{6pt}
+    \begin{tabular}{ccccccccc}
+        \hline
+        \textbf{Projet} & \textbf{Groupe 1} & \textbf{Groupe 2} & \textbf{n$_1$} & \textbf{n$_2$} & \textbf{Statistique} & \textbf{p} & \textbf{p adj.} & \textbf{Signif.} \\
+        \hline
+        LOT1 & Racine & Feuille jeune & 140 & 129 & 1005 & $2.45\times 10^{-36}$ & $7.35\times 10^{-36}$ & **** \\
+        LOT1 & Racine & Feuille vieille & 140 & 133 & 1872 & $3.88\times 10^{-30}$ & $8.73\times 10^{-30}$ & **** \\
+        LOT1 & Feuille jeune & Feuille vieille & 129 & 133 & 11870 & $8.01\times 10^{-8}$ & $9.01\times 10^{-8}$ & **** \\
+        LOT2 & Racine & Feuille jeune & 134 & 62 & 152 & $2.35\times 10^{-27}$ & $4.23\times 10^{-27}$ & **** \\
+        LOT2 & Racine & Feuille vieille & 134 & 71 & 520 & $1.03\times 10^{-25}$ & $1.55\times 10^{-25}$ & **** \\
+        LOT2 & Feuille jeune & Feuille vieille & 62 & 71 & 3425 & $3.42\times 10^{-8}$ & $4.40\times 10^{-8}$ & **** \\
+        LOT3 & Racine & Feuille jeune & 143 & 129 & 598 & $1.92\times 10^{-40}$ & $1.73\times 10^{-39}$ & **** \\
+        LOT3 & Racine & Feuille vieille & 143 & 134 & 1064 & $2.06\times 10^{-37}$ & $9.27\times 10^{-37}$ & **** \\
+        LOT3 & Feuille jeune & Feuille vieille & 129 & 134 & 10532 & 0.002 & 0.002 & ** \\
+        \hline
+    \end{tabular}
+    }
+\end{table}
 
 \section{Discussion}
 

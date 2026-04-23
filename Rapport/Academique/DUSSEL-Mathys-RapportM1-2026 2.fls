@@ -191,6 +191,7 @@ INPUT ./Figures/branche_chargée.jpeg
 INPUT ./Figures/branche_chargée.jpeg
 INPUT ./Figures/branche_chargée.jpeg
 INPUT ./Figures/branche_chargée.jpeg
+INPUT /usr/local/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/ecss0800.tfm
 INPUT /usr/local/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/ecss1000.tfm
 INPUT ./Figures/logo-UT.png
 INPUT ./Figures/logo-UT.png
@@ -204,11 +205,8 @@ INPUT ./Figures/LOT.png
 INPUT ./Figures/LOT.png
 INPUT /usr/local/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map
 INPUT /usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc
-INPUT ./DUSSEL-Mathys-RapportM1-2026.toc
-INPUT ./DUSSEL-Mathys-RapportM1-2026.toc
-INPUT DUSSEL-Mathys-RapportM1-2026.toc
-INPUT /usr/local/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/ecsx1200.tfm
 OUTPUT DUSSEL-Mathys-RapportM1-2026.toc
+INPUT /usr/local/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/ecsx1200.tfm
 INPUT /usr/local/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/ecsi1200.tfm
 INPUT /usr/local/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/ecsx1440.tfm
 INPUT ./Figures/sampling_protocol.png
@@ -222,7 +220,6 @@ INPUT ./Figures/rarefaction_alpha_div.png
 INPUT ./Figures/rarefaction_alpha_div.png
 INPUT ./Figures/rarefaction_alpha_div.png
 INPUT ./Figures/rarefaction_alpha_div.png
-INPUT /usr/local/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/ecss0800.tfm
 INPUT /usr/local/texlive/2025/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm
 INPUT /usr/local/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/ecsx0800.tfm
 INPUT ./Figures/upset_plots.png

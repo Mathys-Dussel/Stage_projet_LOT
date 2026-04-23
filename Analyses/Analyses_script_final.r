@@ -21,7 +21,7 @@ library(tidyr)
 ############## courbes raréfactions et extrapolations ##############
 
 
-clean_otu <- function(ps_obj, variable) {
+nettoyage_otu <- function(ps_obj, variable) {
   ps_m <- merge_samples(ps_obj, variable)
   tab <- as.matrix(t(otu_table(ps_m)))
   tab_num <- apply(tab, 2, function(x) as.integer(as.character(x)))
@@ -38,7 +38,7 @@ total_reads_apres <- sum(sample_sums(ps_trim))
 (total_reads_apres / total_reads_avant) * 100
 
 
-mat_epi <- clean_otu(subset_samples(ps_trim, position == "epiphyte"), "organ")
+mat_epi <- nettoyage_otu(subset_samples(ps_trim, position == "epiphyte"), "organ")
 res_epi <- iNEXT3D(
   mat_epi,
   q = c(0, 1, 2),
@@ -48,7 +48,7 @@ res_epi <- iNEXT3D(
 )
 saveRDS(res_epi, file = "res_epi.rds")
 
-mat_endo <- clean_otu(subset_samples(ps_trim, position == "endophyte"), "organ")
+mat_endo <- nettoyage_otu(subset_samples(ps_trim, position == "endophyte"), "organ")
 res_endo <- iNEXT3D(
   mat_endo,
   q = c(0, 1, 2),
@@ -58,7 +58,7 @@ res_endo <- iNEXT3D(
 )
 saveRDS(res_endo, file = "res_endo.rds")
 
-mat_proj <- clean_otu(ps_trim, "project")
+mat_proj <- nettoyage_otu(ps_trim, "project")
 res_proj <- iNEXT3D(
   mat_proj,
   q = c(0, 1, 2),
@@ -131,9 +131,8 @@ row.names = FALSE)
 
 
 
-# Couleurs pour les deux types de graphiques
-custom_colors <- c("root" = "#8B4513", "old_leaf" = "#2E7D32", "young_leaf" = "#81C784")
-project_colors <- c("LOT1" = "#1F78B4", "LOT2" = "#E31A1C", "LOT3" = "#33A02C")
+couleurs_organes <- c("root" = "#8B4513", "old_leaf" = "#2E7D32", "young_leaf" = "#81C784")
+couleurs_projets <- c("LOT1" = "#1F78B4", "LOT2" = "#E31A1C", "LOT3" = "#33A02C")
 
 plot_final_premium <- function(res_obj, title_label, palette_couleurs) {
   
@@ -145,19 +144,14 @@ plot_final_premium <- function(res_obj, title_label, palette_couleurs) {
     )
 
   ggplot(df, aes(x = m, y = qTD, color = Assemblage, fill = Assemblage)) +
-    # OPTIMISATION OMBRES : 
-    # 1. Augmentation de l'alpha (0.35)
-    # 2. Ajout d'une bordure de ruban très fine (linewidth = 0.1) pour la structure
     geom_ribbon(aes(ymin = qTD.LCL, ymax = qTD.UCL, group = interaction(Assemblage, Order.q)), 
-            alpha = 0.5,      # Augmente l'opacité
-            color = "black",  # Ajoute un contour pour "marquer" l'ombre
-            linewidth = 0.2,  # Très fin pour ne pas alourdir
+            alpha = 0.5,      
+            color = "black",  
+            linewidth = 0.2,  
             linetype = "dotted") +
     
-    # Lignes de tendance
     geom_line(aes(linetype = Method), linewidth = 1.1) +
     
-    # Points observés plus contrastés
     geom_point(data = filter(df, Method == "Observed"), size = 3.5, shape = 17) +
     
     facet_wrap(~ Order.q, scales = "free", ncol = 3) +
@@ -173,7 +167,7 @@ plot_final_premium <- function(res_obj, title_label, palette_couleurs) {
       strip.background = element_rect(fill = "grey95", color = "grey90"),
       panel.border = element_rect(color = "grey90", fill = NA),
       panel.grid.minor = element_blank(),
-      panel.grid.major = element_line(color = "grey92"), # Grille plus douce
+      panel.grid.major = element_line(color = "grey92"), 
       axis.title = element_text(face = "bold", size = 10),
       legend.key.width = unit(1.5, "cm")
     ) +
@@ -182,12 +176,10 @@ plot_final_premium <- function(res_obj, title_label, palette_couleurs) {
          title = title_label)
 }
 
-# Génération des graphiques avec leurs palettes respectives
-p_epi_final  <- plot_final_premium(res_epi, "A. Communautés Epiphytes", custom_colors)
-p_endo_final <- plot_final_premium(res_endo, "B. Communautés Endophytes", custom_colors)
-p_proj_final <- plot_final_premium(res_proj, "C. Communautés Projets", project_colors)
+p_epi_final  <- plot_final_premium(res_epi, "A. Communautés Epiphytes", couleurs_organes)
+p_endo_final <- plot_final_premium(res_endo, "B. Communautés Endophytes", couleurs_organes)
+p_proj_final <- plot_final_premium(res_proj, "C. Communautés Projets", couleurs_projets)
 
-# Assemblage final
 design_final <- (p_epi_final / p_endo_final / p_proj_final) + 
   plot_layout(guides = 'collect') & 
   theme(legend.position = "bottom", 
@@ -297,7 +289,7 @@ library(cowplot)
 library(magick)
 library(patchwork)
 
-generate_upset_captured <- function(taxa_list, title_text = "") {
+assemblage_des_upset <- function(taxa_list, title_text = "") {
   tmp <- tempfile(fileext = ".png")
   png(tmp, width = 1000, height = 800, res = 120)
 
@@ -376,10 +368,10 @@ taxa_lot3 <- split(rownames(meta_lot3), meta_lot3$category) |>
     names(taxa_sums[taxa_sums > 0])
   })
 
-p1 <- generate_upset_captured(taxa_all, "Global")
-p2 <- generate_upset_captured(taxa_lot1, "Project LOT1")
-p3 <- generate_upset_captured(taxa_lot2, "Project LOT2")
-p4 <- generate_upset_captured(taxa_lot3, "Project LOT3")
+p1 <- assemblage_des_upset(taxa_all, "Global")
+p2 <- assemblage_des_upset(taxa_lot1, "Project LOT1")
+p3 <- assemblage_des_upset(taxa_lot2, "Project LOT2")
+p4 <- assemblage_des_upset(taxa_lot3, "Project LOT3")
 
 (p1 + p2) / (p3 + p4)
 
@@ -395,13 +387,13 @@ library(dplyr)
 library(tidyr)
 library(matrixStats)
 
-ps_filtered <- filter_taxa(
+ps_filtrés <- filter_taxa(
   ps,
   function(x) sum(x > 0) >= ceiling(0.01 * length(x)),
   TRUE
 )
 
-ps_rel <- transform_sample_counts(ps_filtered, function(x) x / sum(x))
+ps_rel <- transform_sample_counts(ps_filtrés, function(x) x / sum(x))
 
 ps_order <- tax_glom(ps_rel, taxrank = "gbr268_Order", NArm = FALSE)
 df_order <- psmelt(ps_order)
@@ -817,27 +809,23 @@ write.csv(
 
 ########### Niches de Levins ###########
 
+
 library(dplyr)
+library(tidyr)
 library(phyloseq)
 library(ggplot2)
-library(ggVennDiagram)
-library(microbiome)
-library(RColorBrewer)
-library(cluster)
-library(ape)
 library(ggpubr)
-library(ggtree)
+library(rstatix)
 library(spaa)
-library(vegan)
-library(ANCOMBC)
-library(tidyr)
 
-# Calcul de la niche de Levins
+
 ps_merged <- merge_samples(ps, "organ")
 otu_merged <- as.matrix(otu_table(ps_merged))
 if (taxa_are_rows(ps_merged)) {
   otu_merged <- t(otu_merged)
 }
+
+
 levins_raw <- niche.width(otu_merged, method = "levins")
 niche_scores <- (as.numeric(levins_raw) - 1) / (3 - 1)
 names(niche_scores) <- colnames(levins_raw)
@@ -864,157 +852,68 @@ final_df <- data.frame(
   Levins_Mean = as.numeric(sample_indices)
 ) %>%
   mutate(
-    organ = metadata$organ[match(Sample, rownames(metadata))],
-    project = metadata$project[match(Sample, rownames(metadata))]
-  )
+    organ = factor(metadata$organ[match(Sample, rownames(metadata))], 
+                   levels = c("root", "young_leaf", "old_leaf")),
+    project = as.factor(metadata$project[match(Sample, rownames(metadata))])
+  ) %>%
+  filter(!is.na(Levins_Mean))
 
-niche_summary <- final_df %>%
-  filter(!is.nan(Levins_Mean) & !is.na(Levins_Mean)) %>%
-  group_by(organ) %>%
-  summarise(
-    Moyenne = mean(Levins_Mean),
-    SD = sd(Levins_Mean),
-    n = n()
-  )
 
-print(niche_summary)
 
-# Tests Kruskal-Wallis
-kruskal_organ_by_lot <- final_df %>%
-  filter(!is.na(Levins_Mean), !is.na(organ), !is.na(project)) %>%
+
+
+stat_df <- final_df %>%
   group_by(project) %>%
-  summarise(
-    p_value = kruskal.test(Levins_Mean ~ organ)$p.value,
-    .groups = "drop"
-  )
-print("Kruskal-Wallis par lot (organes):")
-print(kruskal_organ_by_lot)
+  wilcox_test(Levins_Mean ~ organ) %>%
+  adjust_pvalue(method = "BH") %>%
+  add_significance("p.adj") %>%
+  add_y_position(step.increase = 0.1)
 
-kruskal_lot_by_organ <- final_df %>%
-  filter(!is.na(Levins_Mean), !is.na(organ), !is.na(project)) %>%
-  group_by(organ) %>%
-  summarise(
-    p_value = kruskal.test(Levins_Mean ~ project)$p.value,
-    .groups = "drop"
-  )
-print("Kruskal-Wallis par organe (lots):")
-print(kruskal_lot_by_organ)
 
-# Post-hoc Dunn test si significatif
-if (!requireNamespace("FSA", quietly = TRUE)) install.packages("FSA")
-library(FSA)
-
-dunn_organ_by_lot <- final_df %>%
-  filter(!is.na(Levins_Mean), !is.na(organ), !is.na(project)) %>%
-  group_by(project) %>%
-  group_modify(~ {
-    if (length(unique(.x$organ)) > 1) {
-      dunn <- FSA::dunnTest(Levins_Mean ~ organ, data = .x, method = "bonferroni")
-      data.frame(dunn$res, project = unique(.x$project))
-    } else {
-      data.frame()
-    }
-  }) %>% ungroup()
-
-dunn_lot_by_organ <- final_df %>%
-  filter(!is.na(Levins_Mean), !is.na(organ), !is.na(project)) %>%
-  group_by(organ) %>%
-  group_modify(~ {
-    if (length(unique(.x$project)) > 1) {
-      dunn <- FSA::dunnTest(Levins_Mean ~ project, data = .x, method = "bonferroni")
-      data.frame(dunn$res, organ = unique(.x$organ))
-    } else {
-      data.frame()
-    }
-  }) %>% ungroup()
-
-print("Dunn post-hoc organes par lot :")
-print(dunn_organ_by_lot)
-print("Dunn post-hoc lots par organe :")
-print(dunn_lot_by_organ)
-
-final_df$project <- as.factor(final_df$project)
-final_df$organ <- factor(final_df$organ, levels = c("root", "young_leaf", "old_leaf"))
-
-# Préparation des comparaisons pour stat_pvalue_manual
-# On prépare une table pour chaque projet avec les comparaisons et p-values
-comparisons_organ_by_lot <- dunn_organ_by_lot %>%
-  filter(!is.na(P.adj)) %>%
-  mutate(
-    group1 = gsub(" vs .*", "", Comparison),
-    group2 = gsub(".* vs ", "", Comparison),
-    y.position = tapply(final_df$Levins_Mean, final_df$project, max, na.rm = TRUE)[project] + 0.05,
-    p.adj.signif = symnum(P.adj, corr = FALSE, na = FALSE,
-                          cutpoints = c(0, 0.001, 0.01, 0.05, 1),
-                          symbols = c("***", "**", "*", "ns"))
+  stat_df_clean <- stat_df %>%
+    mutate(across(where(is.list), ~ sapply(., function(x) paste(x, collapse = "; "))))
+  
+  write.csv(
+    stat_df_clean,
+    "~/Documents/Etudes/Stage_projet_LOT/CRBE/Analyses/donnees/stat_df_levins_niche.csv",
+    row.names = FALSE
   )
 
-# Pour éviter les superpositions, on décale les y.position pour chaque comparaison
-comparisons_organ_by_lot <- comparisons_organ_by_lot %>%
-  group_by(project) %>%
-  mutate(y.position = y.position + row_number() * 0.03) %>%
-  ungroup()
 
-# Plot
-p_project_organ <- ggplot(
-  final_df,
-  aes(x = project, y = Levins_Mean, fill = organ)
-) +
+p <- ggplot(final_df, aes(x = organ, y = Levins_Mean, fill = organ)) +
   geom_boxplot(
-    alpha = 0.6,
+    alpha = 0.7,
     outlier.shape = NA,
-    width = 0.6,
-    position = position_dodge(0.8)
+    width = 0.6
   ) +
   geom_jitter(
     aes(color = organ),
-    position = position_jitterdodge(jitter.width = 0.15, dodge.width = 0.8),
-    alpha = 0.5,
-    size = 1
+    width = 0.15,
+    alpha = 0.4,
+    size = 1.2
   ) +
+  stat_pvalue_manual(
+    stat_df, 
+    label = "p.adj.signif", 
+    tip.length = 0.02,
+    hide.ns = TRUE
+  ) +
+  facet_wrap(~project, strip.position = "bottom") +
+  scale_fill_manual(values = c("root" = "#914e27", "young_leaf" = "#83d483", "old_leaf" = "#1d5d1d")) +
+  scale_color_manual(values = c("root" = "#914e27", "young_leaf" = "#83d483", "old_leaf" = "#1d5d1d")) +
   labs(
     title = "Niche fongique par projet et organe",
-    x = "Projet",
-    y = "Indice de Levins Moyen",
-    fill = "Organe",
-    color = "Organe"
+    x = "Sites",
+    y = "Indice de Levins Moyen"
   ) +
-  theme_minimal() +
+  theme_bw() +
   theme(
     panel.grid.minor = element_blank(),
-    axis.text.x = element_text(size = 11, face = "bold", angle = 45, hjust = 1),
-    axis.text.y = element_text(size = 11, face = "bold"),
-    title = element_text(size = 13, face = "bold")
-  ) +
-  scale_fill_manual(
-    values = c(
-      "root" = "#914e27",
-      "young_leaf" = "#83d483",
-      "old_leaf" = "#1d5d1d"
-    )
-  ) +
-  scale_color_manual(
-    values = c(
-      "root" = "#914e27",
-      "young_leaf" = "#83d483",
-      "old_leaf" = "#1d5d1d"
-    )
+    strip.background = element_blank(),
+    strip.text = element_text(size = 12, face = "bold"),
+    axis.text.x = element_blank(), # On cache "root/leaf" en bas car on a la légende et les facettes
+    axis.ticks.x = element_blank(),
+    panel.spacing = unit(1, "lines") # Espace entre les LOTS
   )
 
-# Ajout des étoiles de significativité avec stat_pvalue_manual
-if (nrow(comparisons_organ_by_lot) > 0) {
-  p_project_organ <- p_project_organ +
-    stat_pvalue_manual(
-      data = comparisons_organ_by_lot,
-      label = "p.adj.signif",
-      y.position = "y.position",
-      xmin = "group1",
-      xmax = "group2",
-      group = "project",
-      tip.length = 0.01,
-      step.increase = 0,
-      hide.ns = TRUE
-    )
-}
-
-print(p_project_organ)
+print(p)

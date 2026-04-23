@@ -11,6 +11,6 @@
 \contentsline {section}{\numberline {5}Résultats}{6}{section.5}%
 \contentsline {subsection}{\numberline {5.1}Analyses de diversité Alpha}{6}{subsection.5.1}%
 \contentsline {subsection}{\numberline {5.2}Partage des OTUs et abondances relatives}{8}{subsection.5.2}%
-\contentsline {subsection}{\numberline {5.3}Analyses de similarités}{11}{subsection.5.3}%
-\contentsline {subsection}{\numberline {5.4}Spécialisation des niches fongiques}{12}{subsection.5.4}%
+\contentsline {subsection}{\numberline {5.3}Analyses de similarités}{10}{subsection.5.3}%
+\contentsline {subsection}{\numberline {5.4}Spécialisation des niches fongiques}{11}{subsection.5.4}%
 \contentsline {section}{\numberline {6}Discussion}{12}{section.6}%
