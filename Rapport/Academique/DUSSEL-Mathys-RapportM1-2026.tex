@@ -12,6 +12,7 @@
 \usepackage{graphicx}
 \usepackage{hyperref}
 \usepackage[round]{natbib}
+\usepackage{colortbl} % Added for \rowcolor
 \usepackage{hyperref}
 \hypersetup{
     colorlinks=true, 
@@ -42,16 +43,16 @@
               }
        }
 }
-%\AddToShipoutPictureBG*{
-       %\AtPageUpperLeft{%
-             % \put(\LenToUnit{\paperwidth-9cm},\LenToUnit{-2.8cm}){
-                    % \includegraphics[width=4cm]{Figures/Logo-CRBE.%png} 
-             % }
-       %}
-%}
 \AddToShipoutPictureBG*{
-       \AtPageUpperLeft{
-              \put(\LenToUnit{\paperwidth-7cm},\LenToUnit{-2.8cm}){
+       \AtPageUpperLeft{%
+             \put(\LenToUnit{\paperwidth-9cm},\LenToUnit{-2.8cm}){
+                    \includegraphics[width=4cm]{Figures/Logo-CRBE.png} 
+             }
+    }
+}
+\AddToShipoutPictureBG*{
+       \AtPageUpperLeft{%
+              \put(\LenToUnit{\paperwidth-20cm},\LenToUnit{-2.8cm}){
                      \includegraphics[width=1.4cm]{Figures/LOT.png} 
               }
        }
@@ -133,53 +134,89 @@
 \onehalfspacing
 \section{Introduction}
 
+Les communautés fongiques jouent un rôle fondamental dans le fonctionnement des écosystèmes terrestres. Ils animent les cycles biogéochimiques, décomposent la matière organique et influencent directement la dynamique des végétaux. Leur organisation résulte d’un enchevêtrement complexe de facteurs biotiques et abiotiques, tels que la température, l’humidité ou encore la nature de l’hôte. Dans les milieux tropicaux, véritables foyers de biodiversité, les interactions entre champignons et plantes prennent une dimension particulière \citep{arnold_are_2000, bermudes_fungi_1989}. À l’échelle d’une plante, le microbiote fongique varie fortement d’un organe à l’autre (feuilles, racines) et selon la localisation des champignons. On distingue généralement les épiphytes, présents en surface, des endophytes, qui colonisent l’intérieur des tissus. L’identité de la plante hôte agit comme un filtre sélectif : par ses traits fonctionnels, ses exsudats ou son système immunitaire, elle façonne son propre mycobiome.
 
-Les champignons ont une importance cruciale pour le bon fonctionnement des écosystèmes terrestres. Ils animent les cycles biogéochimiques et influencent directement la dynamique des végétaux. Comment ces assemblages microbiens se structurent-ils ? C'est le résultat d'un mélange complexe de facteurs biotiques et abiotiques, comme la température ou l'humidité. Dans les milieux tropicaux, foyers d'une biodiversité record, les liens entre champignons et plantes hôtes prennent une ampleur toute particulière \citep{arnold_are_2000, bermudes_fungi_1989}. Si l'on regarde à l'échelle d'une plante, le microbiote fongique varie beaucoup d'un organe à l'autre (feuilles, racines) et selon son emplacement. On sépare généralement les épiphytes, vivant en surface, des endophytes, présents au cœur des tissus. L'identité de la plante joue un rôle de filtre sélectif. Par ses traits fonctionnels, ses exsudats ou encore son système immunitaire, l'hôte façonne son propre mycobiome.
+Pour mieux comprendre ces interactions sous contraintes extrêmes, les plantes épiphytes constituent un modèle d’étude idéal. Elles représentent une part considérable de la flore des canopées tropicales et poussent sur d’autres arbres, sans pour autant les parasiter \citep{zotz_plants_2016}. Ce mode de vie « suspendu » les prive d’un accès direct au sol. Elles doivent composer avec un manque chronique d’eau et de nutriments. Face à ces stress, les épiphytes ont développé des stratégies originales. Elles s’appuient sur des associations étroites avec d’autres organismes — animaux, bactéries, champignons — qui améliorent leur nutrition et leur tolérance aux conditions difficiles.
 
-Afin de mieux saisir ces interactions sous contraintes extrêmes, les plantes épiphytes offrent un modèle d'étude tout trouvé. Elles représentent en effet une part immense de la flore des canopées tropicales et poussent sur d'autres arbres, sans pour autant les parasiter \citep{zotz_plants_2016}. Ce mode de vie « suspendu » les prive d'un accès au sol. Elles subissent un manque d'eau et de nutriments. Pour faire face à ces stress sévères, ces plantes ont dû innover. Elles s'en remettent de manière vitale à des associations avec d'autres organismes : animaux, bactéries ou champignons. Ces alliances mutualistes améliorent leur nutrition et les aident à tenir face au stress ambiant.
+Pourtant, malgré leur importance écologique, les communautés fongiques associées à ces plantes restent largement méconnues. La recherche s’est longtemps concentrée sur les plantes terrestres, et plus encore sur les espèces à intérêt agronomique sous les tropiques, comme le café ou le cacao \citep{vega_fungal_2008}. Concernantla flore épiphyte, le constat est similaire : la plupart des études portent sur quelques groupes emblématiques, notamment les \textit{Orchidaceae}, célèbres pour leur dépendance quasi totale aux mycorhizes lors de la germination \citep{dearnaley_orchid_2012}. À l’inverse, la grande majorité des autres lignées d’épiphytes vasculaires néotropicales demeure, du point de vue fongique, une véritable terra incognita.
 
-Pourtant, malgré un tel enjeu écologique, nos connaissances sur ces communautés fongiques sont encore très légères. Très souvent, la recherche s'est focalisée sur les plantes terrestres. Elle s'est même penchée en priorité sur celles ayant une valeur agronomique sous les tropiques, comme le café ou le cacao \citep{vega_fungal_2008}. Quand on s’intéresse spécifiquement à la flore épiphyte, le constat est similaire : les travaux portent presque toujours sur quelques « stars » écologiques ou économiques. Les \textit{Orchidaceae} en sont le meilleur exemple, avec leur dépendance quasi totale aux mycorhizes pour pouvoir germer \citep{dearnaley_orchid_2012}. À l'inverse, l'immense majorité des autres lignées d'épiphytes vasculaires néotropicales reste, d'un point de vue fongique, une véritable zone d'ombre à ce jour.
-
-
-C'est exactement dans ce contexte qu'intervient le projet \textit{Life on Trees} (LOT), qui vise à inventorier l'ensemble de la biodiversité eucaryote (animaux, plantes, champignons et protistes) hébergée par un seul arbre tropical, en s'intéressant notamment aux communautés fongiques. Bien que l'étude du mycobiome et de son rôle dans l'adaptation aux conditions extrêmes de la canopée soit centrale, ce projet s'inscrit dans un programme interdisciplinaire plus vaste. Pour ce faire, LOT mène un effort d'échantillonnage inédit sur trois arbres géants situés à différentes altitudes le long des Andes péruviennes (à 400 m, 800 m et 2500 m), afin de générer des données de référence sur l'assemblage de ces communautés complexes.
+C’est dans ce contexte que s’inscrit le projet \textit{Life on Trees} (LOT). Son objectif : inventorier l’ensemble de la biodiversité eucaryote (animaux, plantes, champignons, protistes) hébergée par un seul arbre tropical, en s’intéressant notamment aux communautés fongiques. Si l’étude du mycobiome et de son rôle dans l’adaptation aux conditions extrêmes de la canopée est centrale, le projet s’inscrit dans une démarche interdisciplinaire plus large. Pour cela, LOT a mis en place un effort d’échantillonnage inédit sur trois arbres géants, situés à différentes altitudes le long des Andes péruviennes (400 m, 800 m et 2500 m). Cette approche vise à générer des données de référence sur l’assemblage de ces communautés complexes, et à mieux comprendre les mécanismes qui les sous-tendent.
 
 
 
 
 \section{Matériels et méthodes}
 
-\subsection{Échantillonnage et bioinformatique}
+\subsection{Sites d'étude et plantes échantillonnées}
+
+Les trois arbres étudiés dans le projet LOT s’échelonnent le long d’un gradient altitudinal dans les Andes péruviennes. Cette configuration permet de couvrir une gamme de conditions locales, même si l’effet direct de l’altitude ou des facteurs abiotiques n’a pas été testé de façon spécifique dans ce travail. Le premier site, LOT1, se situe à environ 400 mètres d’altitude, en Amazonie. LOT2 est à 800 mètres, dans une zone de transition entre forêt tropicale et piémont andin. Enfin, LOT3 culmine à 2400 mètres, au cœur de la forêt de nuage andine, caractérisée par des températures plus fraîches et une humidité persistante.
+
+Les arbres sélectionnés appartiennent à différentes espèces et sont tous des arbres âgés. LOT1 est un \textit{Dussia tessmannii} (Fabaceae), LOT2 un \textit{Ficus americana subsp. andicola} (Moraceae) et LOT3 un \textit{Brosimum cf. utile} (Moraceae). Ils servent de support pour inventorier la biodiversité associée à un seul hôte. En comparant à la fois différents sites et divers microhabitats au sein de chaque arbre, cette approche vise à mieux comprendre comment les gradients environnementaux et les caractéristiques propres à chaque arbre influencent la structuration des communautés fongiques chez les plantes épiphytes vasculaires tropicales.
+
+\begin{table}[H]
+    \centering
+    \caption{Nombre d'individus échantillonnés par famille de plante hôte et par site (\textit{n} = nombre total). \small La table de taxonomie complète (Famille, Genre, Espèce) est disponible en annexe.}
+    \renewcommand{\arraystretch}{1.1}
+    \setlength{\tabcolsep}{6pt}
+    {\footnotesize
+    \begin{tabular}{lcccc}
+        \hline
+        \textbf{Famille} & \textbf{LOT1} & \textbf{LOT2} & \textbf{LOT3} & \textbf{Total} \\
+        \hline
+        Araceae         & 21 & 0 & 9 & 30 \\
+        Araliaceae      & 0  & 0 & 1 & 1 \\
+        Bromeliaceae    & 27 & 5 & 10 & 42 \\
+        Clusiaceae      & 0  & 0 & 2 & 2 \\
+        Cyclanthaceae   & 5  & 0 & 0 & 5 \\
+        Dryopteridaceae & 3  & 3 & 0 & 6 \\
+        Ericaceae       & 0  & 3 & 5 & 8 \\
+        Gesneriaceae    & 3  & 0 & 0 & 3 \\
+        Lauraceae       & 0  & 1 & 0 & 1 \\
+        Melastomataceae & 0  & 0 & 2 & 2 \\
+        Orchidaceae     & 25 & 4 & 7 & 36 \\
+        Piperaceae      & 0  & 1 & 1 & 2 \\
+        Polypodiaceae   & 0  & 1 & 0 & 1 \\
+        Primulaceae     & 0  & 0 & 1 & 1 \\
+        Rubiaceae       & 0  & 0 & 3 & 3 \\
+        \hline
+    \end{tabular}
+    }
+    \label{tab:plant_families}
+\end{table}
+
+Les plantes épiphytes échantillonnées dans le cadre de cette étude couvrent une large diversité taxonomique, comme l’illustre le tableau~\ref{tab:plant_families}. Elles appartiennent à quinze familles principales, dont les plus représentées sont les Orchidaceae, Bromeliaceae et Araceae. Ces groupes sont caractéristiques des canopées tropicales et jouent un rôle clé dans la structuration de la flore épiphyte. Les Orchidaceae, avec plus de 350 individus recensés, témoignent de leur importance écologique et de leur diversité remarquable dans ces milieux. Les Bromeliaceae, également très abondantes, sont connues pour leurs adaptations à la vie suspendue, notamment la capacité à stocker l’eau dans leurs rosettes foliaires. Les Araceae, quant à elles, illustrent la variété des stratégies morphologiques adoptées par les épiphytes pour coloniser différents microhabitats de l’arbre hôte.
+
+Cette diversité d’espèces et de familles permet d’explorer comment l’identité phylogénétique des plantes épiphytes pourrait influencer la composition et la diversité des communautés fongiques associées. L’échantillonnage couvre un large spectre de formes de vie, de tailles et de stratégies écologiques. Il offre ainsi un aperçu représentatif de la flore épiphyte vasculaire des Andes péruviennes. Cependant, aucune donnée sur les traits fonctionnels des plantes n’a été récoltée dans cette étude. Il n’a donc pas été possible de tester directement leur effet sur la structuration des communautés fongiques.
+
+Il est important de rappeler que le projet \textit{Life on Trees} n’avait pas pour objectif principal l’étude des communautés fongiques. L’échantillonnage des plantes épiphytes n’a donc pas été conçu pour optimiser spécifiquement l’analyse des communautés fongiques. Par conséquent, la représentativité ou l’exhaustivité des communautés fongiques associées pourrait être limitée par ce protocole. Certains biais d’échantillonnage ne peuvent donc être exclus pour les analyses mycologiques.
+
+\subsection{Echantillonnage fongiques et bioinformatique}
+
 
 \begin{figure}[H]
     \centering
-    \begin{minipage}[c]{0.42\textwidth}
-        \centering
+    \begin{minipage}{0.3\linewidth}
         \includegraphics[width=\linewidth]{Figures/sampling_protocol.png}
-    \end{minipage}
+    \end{minipage}%
     \hfill
-    \begin{minipage}[c]{0.54\textwidth}
-        \caption[Procédure pour l'isolement des champignons de surface et endophytes chez les plantes épiphytes.]{Procédure pour l'isolement des champignons de surface et endophytes chez les plantes épiphytes.\\[0.3em]
-        {\footnotesize (A) Pour chaque individu de plante épiphyte, une jeune feuille entièrement développée, une vieille feuille et différentes parties du système racinaire ont été échantillonnées. (B) L'échantillonnage des micromycètes de la surface de la feuille a été réalisé à l'aide d'un morceau de papier Whatman préalablement imbibé de tampon CTAB stérile. (C) Stérilisation de surface pour l'isolement des endophytes en trempant successivement les portions de tissus dans de l'éthanol à 70 \%, de l'eau stérile, de l'hypochlorite de sodium à 9 \%, puis en les lavant deux fois dans de l'eau stérile, et enfin en les immergeant dans un tampon CTAB stérile. (D) La conservation de l'ADN a été effectuée dans des tubes Eppendorf stériles avec du tampon CTAB. (E) Flux de travail du métabarcoding de l'ADN. Crédits images : (A) Charlie Delhumeau, (B--D) CL. \citep{leponce2024unveiling}}}
+    \begin{minipage}{0.7\linewidth}
+        \caption[Procédure pour l'isolement des champignons de surface et endophytes chez les plantes épiphytes.]{\small
+        Procédure pour l'isolement des champignons de surface et endophytes chez les plantes épiphytes.\citep{leponce2024unveiling}}
         \label{fig:ma_figure}
     \end{minipage}
 \end{figure}
 
-Les trois arbres étudiés dans le projet LOT s’échelonnent le long d’un gradient altitudinal dans les Andes péruviennes. Cette configuration offre un terrain d’exploration unique pour saisir l’impact de l’altitude et des conditions locales sur la diversité fongique. Le premier site, LOT1, se situe à environ 400 mètres d’altitude, en pleine Amazonie. Plus haut, à 800 mètres, LOT2 occupe une zone de transition, à la frontière entre la forêt tropicale et les premiers contreforts montagneux. Enfin, LOT3 culmine à 2400 mètres, au cœur de la forêt de nuage andine. Ce dernier site se distingue par des températures plus fraîches, une humidité persistante et une lumière tamisée par la brume.
-
-Les arbres sélectionnés appartiennent à différentes espèces. LOT1 est un \textit{Dussia tessmannii} (Fabaceae), LOT2 un \textit{Ficus americana subsp. andicola} (Moraceae) et LOT3 un \textit{Brosimum cf. utile} (Moraceae). Ils servent de support pour inventorier la biodiversité associée à un seul hôte. En comparant à la fois différents sites et divers microhabitats au sein de chaque arbre, cette approche vise à mieux comprendre comment les gradients environnementaux et les caractéristiques propres à chaque arbre influencent la structuration des communautés fongiques chez les plantes épiphytes vasculaires tropicales.
-
-L’échantillonnage suivi dans ce travail reprend le protocole décrit par \citet{leponce2024unveiling}. Les communautés fongiques ont été étudiées à partir de plantes épiphytes vasculaires déjà collectées. Pour chaque individu, trois compartiments ont été ciblés afin de représenter différents microhabitats de la plante hôte : une jeune feuille entièrement développée, une vieille feuille et plusieurs portions du système racinaire.
-
-Deux fractions fongiques ont ensuite été distinguées. Les champignons présents à la surface des feuilles ont été prélevés par frottis à l’aide d’un papier Whatman stérile imbibé de tampon CTAB. Les endophytes, eux, ont été isolés après une stérilisation de surface des tissus végétaux. Celle-ci reposait sur une succession de bains d’éthanol, d’eau stérile et d'hypochlorite de sodium, puis sur plusieurs rinçages avant la conservation des échantillons dans le tampon CTAB. Cette étape était essentielle, car elle permettait de distinguer les champignons vivant à la surface des organes de ceux présents à l’intérieur des tissus.
-
-La caractérisation des communautés fongiques a ensuite reposé sur une approche de métabarcoding haut débit ciblant la région ITS (\textit{Internal Transcribed Spacer}), couramment utilisée comme marqueur de référence pour l’étude de la diversité fongique. Après amplification par PCR, les produits obtenus ont été séquencés sur une plateforme Illumina MiSeq. Le traitement bioinformatique a compris plusieurs étapes successives : démultiplexage des lectures, contrôle qualité, suppression des séquences de faible qualité et des chimères, puis regroupement en unités taxonomiques opérationnelles (OTUs). Une assignation taxonomique a ensuite été réalisée à l’aide de bases de référence adaptées aux champignons. Au terme de cette chaîne d’analyse, une table de contingence recensant le nombre de séquences par échantillon a été obtenue. C’est sur cette base qu’ont été menées l’ensemble des analyses de diversité et de composition présentées ici \citep{leponce2024unveiling}.
+La caractérisation des communautés fongiques a ensuite reposé sur une approche de métabarcoding haut débit ciblant la région ITS (\textit{Internal Transcribed Spacer}), couramment utilisée comme marqueur de référence pour l’étude de la diversité fongique. Après amplification par PCR, les produits obtenus ont été séquencés sur une plateforme Illumina MiSeq. Le traitement bioinformatique a compris plusieurs étapes successives : démultiplexage des lectures, contrôle qualité, suppression des séquences de faible qualité et des chimères, puis regroupement en unités taxonomiques opérationnelles (OTUs). Une assignation taxonomique a ensuite été réalisée à l’aide de bases de référence adaptées aux champignons. Au terme de cette chaîne d’analyse, une table de contingence recensant le nombre de séquences par échantillon a été obtenue. C’est sur cette base qu’ont été menées l’ensemble des analyses de diversité et de composition présentées ici \citep{leponce2024unveiling}. Pour le site LOT2, les amplifications des échantillons d’épiphytes de feuilles ont échoué. Par conséquent, aucun séquençage n’a pu être réalisé pour ces compartiments, et il n’existe donc pas de données pour les épiphytes des feuilles à ce site.
 
 
-\subsection{Analyses de diversité}
+\subsection{Analyse des données}
 
-Pour comparer la diversité alpha, nous avons utilisé les nombres de Hill, suivant l’approche développée par \citet{chao2014rarefaction}. Cette méthode permet de représenter à la fois la raréfaction, c’est-à-dire l’interpolation, et l’extrapolation des courbes de diversité. Trois ordres ont été retenus. Le premier, \(q=0\), correspond à la richesse spécifique. Le second, \(q=1\), traduit le nombre effectif d’espèces associé à l’indice de Shannon. Enfin, \(q=2\) repose sur l’indice de Simpson et donne davantage de poids aux taxons dominants. Ces différents indices ont ensuite été comparés entre les microhabitats de la plante hôte — jeunes feuilles, vieilles feuilles et racines — ainsi qu’entre les trois sites d’échantillonnage (LOT1, LOT2 et LOT3).
+\subsubsection{Analyses de diversité alpha}
 
-Les courbes ont été générées sous \texttt{R} avec le package \texttt{iNEXT.3D} \citep{chao2021measuring}. Des intervalles de confiance à 95\,\% ont été estimés par bootstrap à partir de 50 réplicats. Ce cadre d’analyse est particulièrement utile lorsque l’effort d’échantillonnage varie d’une catégorie à l’autre, car il permet de comparer les niveaux de diversité sur une base standardisée.
+\paragraph{Courbes de raréfaction}
+La comparaison de la diversité alpha a été réalisée à l’aide des nombres de Hill, selon l’approche de \citet{chao2014rarefaction}. Cette méthode permet de représenter à la fois la raréfaction (interpolation) et l’extrapolation des courbes de diversité. Trois ordres ont été considérés : \(q=0\) (richesse spécifique), \(q=1\) (nombre effectif d’espèces basé sur l’indice de Shannon) et \(q=2\) (indice de Simpson, qui accorde plus de poids aux taxons dominants). Ces indices ont ensuite été comparés entre les différents microhabitats de la plante hôte — jeunes feuilles, vieilles feuilles et racines — ainsi qu’entre les trois sites d’échantillonnage (LOT1, LOT2 et LOT3).
+
+Les courbes ont été générées sous \texttt{R} avec le package \texttt{iNEXT.3D} \citep{chao2021measuring}. Ce package applique une raréfaction/extrapolation basée sur la taille d’échantillonnage, ce qui permet de comparer la diversité sur une base standardisée, sans avoir à fixer un seuil arbitraire de profondeur de séquençage. Les intervalles de confiance à 95\,\% ont été estimés par bootstrap à partir de 50 réplicats. Ainsi, les données n’ont pas été rarifiées de façon classique (par sous-échantillonnage à une profondeur commune), mais la méthode de \texttt{iNEXT.3D} tient compte des différences d’effort d’échantillonnage pour estimer et comparer la diversité.
 
 Nous avons également calculé l’équitabilité à l’aide de l’indice de Pielou, défini par :
 
@@ -189,24 +226,37 @@ J = \frac{H'}{\ln(S)}
 
 où \(H'\) désigne l’indice de Shannon et \(S\) la richesse spécifique. Cet indice permet d’évaluer dans quelle mesure les abondances sont réparties de façon homogène au sein des communautés fongiques.
 
-\subsection{Partage des OTUs et abondances relatives}
+\paragraph{Partage des OTUs }
 
-Le partage des OTUs entre microhabitats a été étudié à l’aide de diagrammes UpSet \citep{lex2014upset}. Ce type de représentation est particulièrement utile pour comparer plusieurs ensembles à la fois. Il reste aussi plus lisible qu’un diagramme de Venn dès que le nombre de catégories devient important. Il permet ainsi de repérer les OTUs communs à plusieurs compartiments de la plante, mais aussi ceux qui semblent propres à un microhabitat donné. Les graphiques ont été produits sous \texttt{R} avec le package \texttt{UpSetR} \citep{conway2017upsetr}.
+Le partage des OTUs fongiques entre microhabitats et sites a été évalué à l’aide de diagrammes UpSet, construits à partir des données de présence/absence issues de l’objet phyloseq sous \texttt{R}. Les abondances ont d’abord été transformées en valeurs binaires, puis les OTUs présents dans chaque groupe (défini par la combinaison du site, de l’organe et de la position) ont été extraits. Les listes d’OTUs par groupe ont servi à générer les diagrammes UpSet, permettant de quantifier les OTUs partagés et spécifiques à chaque microhabitat.
 
-Pour compléter cette approche, les taxons les plus abondants dans chaque microhabitat ont été résumés dans un tableau de chaleur. Les données ont été exprimées en abondances relatives, puis transformées en scores Z (centrées et réduites par microhabitat) \citep{altman1991practical}, afin de comparer les profils malgré les différences de profondeur de séquençage. Cette représentation permet de visualiser rapidement les OTUs dominants et de mieux faire ressortir les variations de composition entre jeunes feuilles, vieilles feuilles et racines. Le tableau a été construit à partir des OTUs présents dans au moins 5\% des échantillons de chaque microhabitat, avec le package \texttt{pheatmap} sous \texttt{R} \citep{kolde2019pheatmap}. Le score Z est défini comme la différence entre la valeur observée et la moyenne, divisée par l'écart-type.
+Pour cette visualisation, nous avons utilisé le package \texttt{UpSetR} et sa fonction \texttt{upset}, qui permettent de représenter efficacement les intersections entre ensembles, bien au-delà des capacités des diagrammes de Venn classiques \citep{lex2014upset}. \texttt{UpSetR} offre une interface flexible pour explorer les partages complexes entre groupes, en affichant le nombre d’OTUs partagés par différentes combinaisons de microhabitats ou de sites.
+
+Des diagrammes distincts ont été produits pour l’ensemble des échantillons (global) et pour chaque site (LOT1, LOT2, LOT3). Cette méthode permet de visualiser la structure du partage de la diversité fongique, en identifiant à la fois les OTUs communs à plusieurs compartiments et ceux spécifiques à certains organes ou sites. L’analyse met ainsi en évidence le rôle structurant du microhabitat dans la composition des communautés fongiques.
 
 
-Ces deux approches se complètent. Les diagrammes UpSet décrivent le degré de partage des OTUs entre habitats, tandis que le tableau de chaleur met en avant les taxons dominants qui contribuent le plus aux différences observées entre compartiments.
 
-\subsection{Analyses de similarités}
 
-Pour étudier les différences de composition entre communautés fongiques, nous avons analysé la diversité bêta à partir d’une matrice de dissimilarité de Bray--Curtis calculée sur les abondances relatives des OTUs \citep{bray1957ordination}. Cette mesure est couramment utilisée pour les données de communautés, car elle intègre l’information d’abondance tout en restant peu sensible aux doubles absences.
+\subsubsection{Analyses de diversité bêta}
+
+\paragraph{Tableau de chaleur et abondances relatives}
+
+
+Pour une première exploration de la diversité bêta, nous avons résumé les taxons les plus abondants dans chaque microhabitat à l’aide d’un tableau de chaleur. Les abondances relatives des OTUs ont été transformées en scores Z (centrées et réduites par microhabitat) \citep{altman1991practical}, ce qui permet de comparer les profils d’abondance malgré les différences de profondeur de séquençage. Cette représentation met en évidence les OTUs dominants et les variations de composition entre jeunes feuilles, vieilles feuilles et racines.
+
+Le tableau de chaleur a été construit à partir des OTUs présents dans au moins 5\,\% des échantillons de chaque microhabitat, à l’aide du package \texttt{pheatmap} sous \texttt{R} \citep{kolde2019pheatmap}. Le score Z correspond à la différence entre la valeur observée et la moyenne, divisée par l’écart-type.
+
+\paragraph{Ordinations}
+
+Pour étudier les différences de composition entre communautés fongiques, nous avons d'abord appliqué une transformation de Hellinger aux abondances relatives des OTUs, afin de limiter l'influence des zéros et de rendre les distances écologiquement plus pertinentes. Ensuite, la diversité bêta a été analysée à partir d’une matrice de dissimilarité de Bray--Curtis calculée sur ces données transformées \citep{bray1957ordination}. Cette mesure est couramment utilisée pour les données de communautés, car elle intègre l’information d’abondance tout en restant peu sensible aux doubles absences.
 
 La structure des assemblages a ensuite été explorée par une ordination NMDS (\textit{Non-metric Multidimensional Scaling}), réalisée sous \texttt{R} \citep{kruskal1964nonmetric,minchin1987evaluation}. L’objectif de cette approche est de projeter les échantillons dans un espace de faible dimension, de façon à restituer au mieux les relations de similarité observées entre eux. La qualité de cette représentation a été évaluée à l’aide de la valeur de stress. Des valeurs inférieures à 0{,}2 sont considérées comme suffisamment fiables pour une interprétation écologique \citep{kruskal1964nonmetric}.
 
-Enfin, les différences de composition entre groupes ont été testées par PERMANOVA (\textit{Permutational Multivariate Analysis of Variance}) avec la fonction \texttt{adonis2} du package \texttt{vegan} \citep{anderson2001new} à 999 permutations. Selon le jeu de données considéré, les effets du site (LOT1, LOT2, LOT3) et du microhabitat (jeunes feuilles, vieilles feuilles, racines) ont été examinés séparément. La significativité a été évaluée par permutations, et les résultats sont présentés sous la forme du \(R^2\), de la statistique pseudo-\(F\) de Fisher et de la valeur de \(p\).
+Enfin, les différences de composition entre groupes ont été testées par PERMANOVA (\textit{Permutational Multivariate Analysis of Variance}) avec la fonction \texttt{adonis2} du package \texttt{vegan} \citep{anderson2001new} à 999 permutations. Selon le jeu de données considéré, les effets du site (LOT1, LOT2, LOT3) et du microhabitat (jeunes feuilles, vieilles feuilles, racines) ont été examinés séparément. La significativité a été évaluée par permutations (999), et les résultats sont présentés sous la forme du \(R^2\), de la statistique pseudo-\(F\) de Fisher et de la valeur de \(p\).
 
-\subsection{Spécialisation des niches fongiques}
+Pour comparer plus finement les différences entre groupes, la fonction \texttt{pairwise.adonis} a été utilisée pour réaliser des comparaisons par paires. Cela permet d'identifier précisément quelles paires de microhabitats ou de sites présentent des différences significatives de composition fongique.
+
+\paragraph{Spécialisation des niches fongiques}
 
 L’amplitude de niche des OTUs a été évaluée à partir de l’indice de Levins \citep{levins1968evolution}. Cet indice permet d’apprécier dans quelle mesure un taxon est réparti entre plusieurs microhabitats. En pratique, il aide à distinguer des OTUs plutôt généralistes, présents dans différents compartiments de la plante, de taxons plus spécialisés, associés à un nombre plus limité d’habitats.
 
@@ -235,16 +285,16 @@ Pour savoir si les organes influances les degés de spécialisation des OTUs, no
 
 \subsection{Analyses de diversité Alpha}
 
+\paragraph{Courbes de raréfactions/extrapolations}
+
 \begin{figure}[!h]
     \centering
     \includegraphics[width=1\textwidth]{Figures/rarefaction_alpha_div.png}
-    \caption{Courbes de raréfaction et d'extrapolation pour la diversité alpha
-    (q=0 : richesse spécifique, q=1 : diversité de Shannon exponentielle et
-    q=2 : diversité de Simpson inverse) des communautés fongiques associées aux
-    plantes épiphytes. Les courbes sont présentées pour différents organes
-    (feuilles jeunes, feuilles vieilles, racines) ou différents sites
-    (LOT1, LOT2 ou LOT3). Les intervalles de confiance à 95\% sont indiqués
-    par des zones ombrées.}
+    \caption[Courbes de raréfaction/extrapolation pour la diversité alpha]{Courbes de raréfaction et d'extrapolation pour la diversité alpha des communautés fongiques associées aux plantes épiphytes.}
+\begin{flushleft}
+\footnotesize
+(q=0 : richesse spécifique, q=1 : diversité de Shannon exponentielle et q=2 : diversité de Simpson inverse)  Les courbes sont présentées pour différents organes (feuilles jeunes, feuilles vieilles, racines) ou différents sites (LOT1, LOT2 ou LOT3). Les intervalles de confiance à 95\% sont indiqués par des zones ombrées.
+\end{flushleft}
     \label{fig:inext}
     \end{figure}
 
@@ -287,7 +337,7 @@ Pour savoir si les organes influances les degés de spécialisation des OTUs, no
     \end{table}
 
 
-\subsection{Partage des OTUs et abondances relatives}
+\paragraph{Partage des OTUs}
 
 \begin{figure}[h]
     \centering
@@ -295,14 +345,17 @@ Pour savoir si les organes influances les degés de spécialisation des OTUs, no
     \caption{Diagrammes UpSet pour les OTUs partagés entre les microhabitats.}
     \label{fig:upset}
 \end{figure}
+Les diagrammes UpSet (figure \ref{fig:upset}) illustrent d'abord la répartition des OTUs entre les différents sites d’échantillonnage. On observe que chaque site (LOT1, LOT2, LOT3) possède à la fois un noyau d’OTUs partagés et une proportion importante d’OTUs spécifiques, traduisant l’influence du contexte local sur la composition des communautés fongiques. Le LOT3, en particulier, se distingue par une spécialisation plus marquée, avec davantage d’OTUs exclusifs, tandis que le LOT1 présente une communauté plus homogène et un partage plus important entre microhabitats.
 
-Les diagrammes UpSet (figure \ref{fig:upset}) illustrent la répartition des OTUs entre les différents microhabitats. On observe qu’un noyau d’OTUs est partagé par plusieurs compartiments, mais une grande partie de la diversité reste propre à chaque organe. Les racines, en particulier, se démarquent par un nombre élevé d’OTUs exclusifs. Cela traduit une composition fongique originale, distincte de celle des feuilles. À l’opposé, les feuilles jeunes et vieilles partagent davantage leurs communautés, ce qui suggère une proximité écologique entre ces deux types de tissus.
+En ce qui concerne les organes, les racines se démarquent nettement par un nombre élevé d’OTUs exclusifs, confirmant leur rôle de réservoir pour des taxons spécialisés. Les feuilles, qu’elles soient jeunes ou vieilles, partagent une plus grande partie de leur diversité, ce qui reflète des conditions écologiques et physiologiques plus proches entre ces compartiments.
 
-Ce constat rejoint les résultats de diversité alpha, qui montraient déjà une richesse particulièrement élevée dans les racines. Il semble donc que ce microhabitat soit à la fois un refuge pour des taxons spécialisés et un point de rencontre pour des espèces plus généralistes. Les feuilles, quant à elles, hébergent des assemblages plus proches, probablement en raison de conditions environnementales et physiologiques similaires.
+Enfin, l’analyse selon la position (épiphyte/endophyte) montre que chaque compartiment héberge également des assemblages fongiques distincts, avec des OTUs spécifiques à la surface ou à l’intérieur des tissus. Toutefois, le partage entre positions reste moins marqué que celui observé entre organes ou sites, suggérant que le microhabitat et le contexte environnemental jouent un rôle plus structurant dans la différenciation des communautés fongiques associées aux plantes épiphytes.
 
-En résumé, la distribution des OTUs fongiques apparaît fortement structurée par le microhabitat. Les différences entre organes souterrains et aériens sont nettes, et le rôle du compartiment racinaire comme réservoir de diversité se confirme à travers ces analyses.
+\subsection{Analyses de diversité bêta}
 
-\begin{figure}[H]
+
+
+\begin{figure}[h!]
     \centering
     \begin{minipage}[c]{0.5\textwidth}
         \centering
@@ -315,49 +368,117 @@ En résumé, la distribution des OTUs fongiques apparaît fortement structurée 
     \end{minipage}
 \end{figure}
 
+\begin{figure}[h!]
+        \centering
+        \includegraphics[width=0.9\linewidth]{Figures/abondances_relatives.png}
+        \caption{Abondances relatives des OTUs dans chaque microhabitat.}
+        \label{fig:abondances_rel}
+\end{figure}
 
 
-Le tableau de chaleur des OTUs les plus abondants (figure \ref{fig:abondances}) illustre clairement à quel point la composition des communautés varie d’un microhabitat à l’autre. Les racines, par exemple, se démarquent nettement : elles hébergent un ensemble d’OTUs dominants qui diffèrent en grande partie de ceux retrouvés dans les feuilles. Ce contraste souligne la forte structuration des assemblages fongiques selon l’organe étudié. À l’inverse, les feuilles jeunes et vieilles affichent des profils d’abondance plus similaires. On y retrouve plusieurs OTUs dominants communs, même si leur abondance relative varie parfois sensiblement d’un compartiment à l’autre.
 
 
-On remarque aussi que la distribution des taxons dominants n’est pas homogène. Certains OTUs semblent presque exclusifs à un seul microhabitat, ce qui suggère une affinité particulière pour des conditions locales spécifiques. D’autres, au contraire, sont présents dans plusieurs compartiments, mais leur importance relative fluctue fortement selon l’organe. Cette organisation montre que les différences entre organes ne reposent pas uniquement sur la présence ou l’absence de certains taxons, mais aussi sur des changements dans la hiérarchie d’abondance parmi les OTUs partagés.
+La figure~\ref{fig:abondances} présente le tableau de chaleur (heatmap) des abondances relatives des principaux ordres fongiques dans chaque microhabitat, en tenant compte des différents sites, organes et positions (épiphyte/endophyte). On observe une structuration nette des communautés selon ces facteurs. Les racines, qu'elles soient épiphytes ou endophytes, se distinguent par une forte abondance de certains ordres comme les Sebacinales, Trechisporales et Agaricales, appartenant à la classe des Agariomycetes ,typiques de champignons associés aux racines ou au sol. Les feuilles, en particulier les jeunes, montrent une dominance d'ordres tels que les Wallemiales, Exobasidiales, et Diaporthales, souvent associés à des champignons foliaires ou pathogènes opportunistes.
 
-Dans l’ensemble, ces observations rejoignent les résultats des diagrammes UpSet et des analyses de diversité alpha. Les racines apparaissent comme un réservoir de diversité original, tandis que les feuilles partagent davantage leurs taxons dominants. Ainsi, le microhabitat au sein de la plante hôte s’impose comme un facteur clé, à la fois pour la composition et pour la structure d’abondance des communautés fongiques.
+La structuration par site est également visible, LOT3 présente une composition fongique différente, avec une plus grande représentation de certains ordres comme les Helotiales ou Mycosphaerellales, alors que LOT1 (site amazonien) est marqué par une dominance des Hypocreales et Glomerellales. Les compartiments endophytes et épiphytes affichent aussi des profils distincts, les endophytes étant souvent plus riches en ordres spécialisés (Glomerellales et Helotiales), tandis que les épiphytes hébergent des assemblages plus diversifiés mais dominés par quelques groupes généralistes (Hypocreales et Mycosphaerellales).
 
-\subsection{Analyses de similarités}
-\begin{figure}[H]
+La figure~\ref{fig:abondances_rel} détaille la composition des communautés fongiques à l’échelle des classes, selon la famille de plante hôte, l’organe (racine, feuille jeune, feuille vieille) et la position (épiphyte/endophyte) tous LOTs confondus. Chaque panneau correspond à un compartiment, permettant de comparer finement les profils taxonomiques.
+
+On observe une structuration nette selon l’organe et la position. Les feuilles sont dominées par les Dothideomycetes (phylum Ascomycota, souvent des champignons foliaires, pathogènes ou endophytes~\citep{arnold_are_2000, hyde2013families}) et Sordariomycetes (Ascomycota, incluant de nombreux endophytes et pathogènes~\citep{arnold_are_2000, petrini1991fungal}), avec une présence accrue de Lecanoromycetes (Ascomycota) dans les feuilles âgées.
+
+Les racines présentent une forte abondance de Leotiomycetes (Ascomycota, comprenant de nombreux endophytes racinaires et certains pathogènes) et d’Agaricomycetes (Basidiomycota, groupe majeur de champignons à fructification, incluant de nombreux symbiotes mycorhiziens~\citep{tedersoo2014global}), particulièrement marquée chez les épiphytes.
+
+La position (épiphyte/endophyte) module la dominance de certaines classes : les endophytes foliaires sont riches en Sordariomycetes, tandis que les épiphytes présentent davantage de Dothideomycetes. Dans les racines, les endophytes sont plus riches en Leotiomycetes et Dothideomycetes, alors que les épiphytes sont dominés par les Agaricomycetes .
+
+Ainsi, la composition des communautés fongiques varie principalement selon l’organe, la position et le stade foliaire, chaque compartiment hébergeant des classes spécialisées. Les racines regroupent des groupes typiques de symbiotes racinaires (notamment Agaricomycetes et Leotiomycetes), tandis que les feuilles sont associées à des classes fongiques foliaires (Dothideomycetes, Sordariomycetes), reflétant la diversité des niches écologiques et des rôles fonctionnels au sein du microbiote des plantes épiphytes tropicales.
+
+\paragraph{Ordination et PERMANOVA}
+
+
+
+L’ordination NMDS (figure~\ref{fig:nmds}) met en évidence une structuration nette des communautés fongiques selon les principaux facteurs étudiés. Les échantillons se regroupent distinctement en fonction du site (projet LOT1, LOT2, LOT3), de l’organe (racine, feuille jeune, feuille vieille) et de la position (épiphyte/endophyte). On observe que les communautés associées aux racines forment des groupes séparés de celles des feuilles, tandis que les compartiments épiphytes et endophytes présentent également des différences marquées. Cette structuration spatiale et fonctionnelle est confirmée par la faible valeur de stress du NMDS, indiquant une représentation fidèle des distances écologiques entre échantillons.
+
+L’analyse PERMANOVA (tableau~\ref{tab:permanova}) confirme statistiquement l’effet significatif de chacun de ces facteurs sur la composition des communautés fongiques. Le site d’échantillonnage (projet) explique la plus grande part de variance (\(R^2 = 0.0899\), \(p = 0.001\)), suivi par l’organe (\(R^2 = 0.0386\)), la position (\(R^2 = 0.0137\)) et la famille de plante hôte (\(R^2 = 0.0334\)). Tous ces effets sont hautement significatifs (\(p < 0.001\)), ce qui souligne l’importance de la géographie, du microhabitat et de l’identité de l’hôte dans la structuration des assemblages fongiques.
+
+Les comparaisons par paires réalisées avec \texttt{pairwise.adonis} (tableau~\ref{tab:permanova_pairwise}) montrent que la majorité des groupes de microhabitats et de sites diffèrent significativement les uns des autres après correction pour les tests multiples. Les valeurs de \(R^2\) pour ces comparaisons varient, mais restent généralement élevées, traduisant des différences substantielles de composition entre les groupes. Même les comparaisons entre compartiments similaires mais issus de sites différents révèlent des différences significatives, ce qui met en évidence l’influence conjointe des facteurs locaux et du microhabitat.
+
+En résumé, ces analyses démontrent que la composition des communautés fongiques associées aux plantes épiphytes est fortement structurée par le site, l’organe, la position (épiphyte/endophyte) et la famille de plante hôte. Les différences observées sont robustes et statistiquement significatives, attestant de la spécialisation écologique des assemblages fongiques en réponse à la diversité des niches offertes par les plantes épiphytes tropicales.
+
+\begin{figure}[h!]
     \centering
     \includegraphics[width=1\textwidth]{Figures/NMDS.png}
     \caption{Ordination NMDS des communautés fongiques associées aux plantes épiphytes.}
     \label{fig:nmds}
 \end{figure}
 
-\begin{table}[H]
-    \centering
-    \caption{Résultats des analyses de structure des communautés fongiques par NMDS et PERMANOVA selon les panels présentés en figure \ref{fig:nmds}.}
-    \label{tab:permanova_nmds}
-    \vspace{0.5cm}
 
+
+\begin{table}[h!]
+    \centering
+    \caption{Résultats de l'analyse PERMANOVA (adonis2) sur la composition des communautés fongiques.}
+    \label{tab:permanova}
     \renewcommand{\arraystretch}{1.2}
-    \setlength{\tabcolsep}{8pt}
-    \resizebox{\textwidth}{!}{%
-    \begin{tabular}{llllllllll}
+    \setlength{\tabcolsep}{10pt}
+    {\small
+    \begin{tabular}{lcccccc}
         \hline
-        \textbf{Panel} & \textbf{Analyse} & \textbf{Effet testé} & \textbf{Échantillons} & \textbf{Df} & \textbf{R\textsuperscript{2}} & \textbf{F} & \textbf{p-value} & \textbf{Significativité} & \textbf{Stress NMDS} \\
+        \textbf{Facteur} & \textbf{Df} & \textbf{$R^2$} & \textbf{F} & \textbf{p-valeur} & \textbf{p-valeur (formatée)} & \textbf{Signif.} \\
         \hline
-        A & Structure globale (Projet) & Projet & 1075 & 2 & 0.108 & 69.483 & 0.001 & ** & 0.136 \\
-        B & LOT1 -- Organe             & Organe & 402  & 2 & 0.079 & 17.802 & 0.001 & ** & 0.150 \\
-        C & LOT2 -- Organe             & Organe & 267  & 2 & 0.085 & 12.716 & 0.001 & ** & 0.148 \\
-        D & LOT3 -- Organe             & Organe & 406  & 2 & 0.086 & 19.752 & 0.001 & ** & 0.149 \\
+        Projet        & 2  & 0.0899 & 59.304 & 0.001 & 0.001 & ** \\
+        Organe        & 2  & 0.0386 & 25.476 & 0.001 & 0.001 & ** \\
+        Position      & 1  & 0.0137 & 18.055 & 0.001 & 0.001 & ** \\
+        Famille plante & 14 & 0.0334 & 3.147  & 0.001 & 0.001 & ** \\
         \hline
-        \end{tabular}%
+    \end{tabular}
     }
 \end{table}
 
+\begin{table}[H]
+    \centering
+    \caption{Comparaisons par paires des communautés fongiques entre microhabitats et sites (PERMANOVA pairwise).}
+    \label{tab:permanova_pairwise}
+    \renewcommand{\arraystretch}{1.1}
+    \setlength{\tabcolsep}{4pt}
+    {\footnotesize
+    \begin{tabular}{lccccccc}
+        \hline
+        \textbf{Paires} & \textbf{SumsOfSqs} & \textbf{F} & \textbf{$R^2$} & \textbf{p-valeur} & \textbf{p ajustée} & \textbf{Signif.} \\
+        \hline
+        LOT1\_root\_epiphyte vs LOT2\_root\_endophyte & 11.07 & 36.03 & 0.220 & 0.001 & 0.001 & ** \\
+        LOT1\_root\_epiphyte vs LOT2\_old\_leaf\_endophyte & 10.92 & 35.42 & 0.214 & 0.001 & 0.001 & ** \\
+        LOT1\_root\_epiphyte vs LOT2\_root\_epiphyte & 9.94 & 32.11 & 0.206 & 0.001 & 0.001 & ** \\
+        LOT1\_young\_leaf\_epiphyte vs LOT2\_root\_endophyte & 10.43 & 32.15 & 0.205 & 0.001 & 0.001 & ** \\
+        LOT1\_root\_epiphyte vs LOT3\_old\_leaf\_endophyte & 9.97 & 32.27 & 0.204 & 0.001 & 0.001 & ** \\
+        LOT1\_old\_leaf\_epiphyte vs LOT2\_root\_endophyte & 10.29 & 31.59 & 0.203 & 0.001 & 0.001 & ** \\
+        LOT1\_root\_epiphyte vs LOT3\_old\_leaf\_epiphyte & 9.48 & 31.89 & 0.202 & 0.001 & 0.001 & ** \\
+        LOT2\_root\_endophyte vs LOT3\_young\_leaf\_epiphyte & 10.87 & 33.46 & 0.194 & 0.001 & 0.001 & ** \\
+        LOT2\_root\_endophyte vs LOT3\_old\_leaf\_epiphyte & 10.43 & 31.68 & 0.191 & 0.001 & 0.001 & ** \\
+        LOT1\_root\_epiphyte vs LOT3\_young\_leaf\_epiphyte & 9.06 & 30.85 & 0.191 & 0.001 & 0.001 & ** \\
+        \vdots & & & & & & \\
+        LOT3\_old\_leaf\_endophyte vs LOT3\_young\_leaf\_endophyte & 0.80 & 2.26 & 0.018 & 0.001 & 0.001 & ** \\
+        \hline
+    \end{tabular}
+    }
+    \begin{flushleft}
+    \footnotesize{Note : seules les 10 premières et la dernière comparaison sont affichées ici pour la lisibilité. Le tableau complet est disponible en annexe. Toutes les comparaisons sont significatives après correction (p-ajustée $<$ 0.05).}
+    \end{flushleft}
+\end{table}
 
-\subsection{Spécialisation des niches fongiques}
 
 
+\paragraph{Spécialisation des niches fongiques}
+
+
+
+
+
+L’examen des valeurs de l’indice de Levins (figure \ref{fig:niches_levins}) met en lumière une grande diversité d’amplitudes de niche parmi les OTUs dominants. Beaucoup de taxons affichent des scores faibles à intermédiaires, ce qui traduit une répartition inégale entre les différents microhabitats et suggère une certaine spécialisation. À l’opposé, quelques OTUs se distinguent par des valeurs nettement plus élevées, caractéristiques d’un comportement généraliste et d’une présence plus équilibrée dans plusieurs compartiments de la plante.
+
+Les OTUs dominants retrouvés dans les racines illustrent particulièrement bien ce phénomène de spécialisation. Plusieurs d’entre eux semblent presque exclusivement associés à ce microhabitat, confirmant ainsi que les racines abritent un ensemble original de champignons adaptés à des conditions spécifiques. Ce constat fait écho aux résultats précédents, qui montraient déjà une richesse élevée et une composition singulière dans ce compartiment.
+
+Du côté des feuilles, qu’elles soient jeunes ou vieilles, les OTUs dominants présentent le plus souvent des amplitudes de niche intermédiaires. Cela laisse penser que ces deux types de tissus partagent une partie de leur cortège fongique, sans pour autant être identiques. Les conditions écologiques des feuilles, bien que proches, permettent à certains taxons de s’installer dans les deux compartiments, tandis que d’autres restent plus fidèles à un stade foliaire particulier.
+
+En somme, l’analyse de l’indice de Levins met en évidence une organisation non aléatoire des communautés fongiques au sein de la plante hôte. On observe une coexistence de spécialistes, principalement cantonnés à un microhabitat, et de généralistes capables d’occuper plusieurs compartiments. Ce schéma confirme le rôle central du microhabitat comme filtre écologique dans l’assemblage des communautés fongiques associées aux plantes épiphytes.
 
 \begin{figure}[H]
         \centering
@@ -365,8 +486,6 @@ Dans l’ensemble, ces observations rejoignent les résultats des diagrammes UpS
         \caption{Indice de Levins pour les OTUs les plus abondants dans chaque microhabitat.}
         \label{fig:niches_levins}
 \end{figure}
-
-
 
 \begin{table}[H]
     \centering
@@ -396,15 +515,311 @@ Dans l’ensemble, ces observations rejoignent les résultats des diagrammes UpS
 \section{Discussion}
 
 
+Cette étude éclaire sur la structuration des communautés fongiques associées aux plantes épiphytes vasculaires tropicales, en s’appuyant sur un échantillonnage multi-sites et multi-microhabitats dans les Andes péruviennes. Nos résultats confirment que la diversité et la composition des assemblages fongiques sont fortement structurées par le microhabitat (organe et position épiphyte/endophyte), mais aussi par le site géographique et, dans une moindre mesure, par la famille de plante hôte.
 
 
-\singlespacing
-\newpage
-\listoffigures
-\listoftables
+L’un des résultats majeurs est la forte différenciation des communautés fongiques entre racines et feuilles, ainsi qu’entre compartiments épiphytes et endophytes. Les racines hébergent une diversité alpha particulièrement élevée, avec de nombreux OTUs exclusifs, traduisant une spécialisation écologique marquée. Ce compartiment apparaît comme un réservoir de taxons adaptés à des conditions spécifiques, probablement liées à la disponibilité en eau, aux interactions avec d’autres microorganismes et à la nature des tissus racinaires. Les feuilles, quant à elles, présentent des communautés plus homogènes entre jeunes et vieilles feuilles, mais restent dominées par des groupes fongiques typiques des tissus aériens.
+
+L’analyse de l’indice de Levins confirme la coexistence de spécialistes, cantonnés à un microhabitat, et de généralistes capables d’occuper plusieurs compartiments. Ce patron de spécialisation niche est cohérent avec les contraintes écologiques imposées par la vie épiphyte, où chaque organe offre des conditions microclimatiques et nutritionnelles distinctes. Nos résultats rejoignent ainsi les observations faites sur d’autres systèmes tropicaux, où la compartimentation des niches favorise la coexistence d’une grande diversité de champignons \citep{arnold_are_2000, hyde2013families}.
+
+
+Il aurait été particulièrement intéressant de réaliser des mesures environnementales fines (température, humidité, lumière, etc.) pour mieux expliquer les différences observées entre sites. L’intégration de ces variables abiotiques aurait permis d’identifier plus précisément les facteurs responsables de la structuration des communautés fongiques et d’établir des liens directs entre conditions locales et assemblages microbiens.
+
+La famille de plante hôte explique une part significative, mais plus modeste, de la variance dans la composition fongique. Ce résultat suggère que l’identité de l’hôte agit comme un filtre supplémentaire, mais que les contraintes du microhabitat et du site priment dans la structuration des communautés. La base de données FungalTraits à ete utilisée pour caractériser les fonctions écologiques des OTUs, mais la correspondance avec les données était trop faible pour obtenir des résultats exploitables. L’absence de données sur les traits fonctionnels des plantes limite également la portée de cette analyse, et il serait pertinent d’intégrer ces variables dans de futurs travaux pour mieux comprendre les mécanismes de filtrage écologique.
+
+
+Plusieurs limites doivent être soulignées. L’échantillonnage n’a pas été optimisé spécifiquement pour l’étude des communautés fongiques, ce qui peut introduire des biais de représentativité. De plus, l’approche basée sur le métabarcoding ITS ne permet pas de distinguer les fonctions écologiques précises des OTUs détectés (symbiotes, pathogènes, saprotrophes). Enfin, l’absence de données fonctionnelles sur les plantes hôtes et les conditions microclimatiques fines restreint l’interprétation des patrons observés.
+
+Malgré ces limites, cette étude met en évidence la complexité et la structuration fine des communautés fongiques associées aux plantes épiphytes tropicales. Elle souligne le rôle central du microhabitat et des gradients environnementaux dans la diversification fongique, et ouvre la voie à des recherches intégrant davantage de dimensions fonctionnelles et écologiques (traits des hôtes, interactions biotiques, dynamique temporelle). L’exploration de la spécialisation niche et des réseaux d’interactions au sein de ces systèmes tropicaux reste un champ prometteur pour mieux comprendre la biodiversité et le fonctionnement des écosystèmes de canopée.
+
+
 \newpage
 
 \bibliography{BIBLIO_Stage_LOT_CRBE.bib}
 \bibliographystyle{apalike}
+
+\newpage
+\listoffigures
+\listoftables
+
+
+\newpage
+\appendix
+\section{Annexes}
+\begin{table}[H]
+    \centering
+    \caption{Nombre d'individus échantillonnés par famille, genre et espèce de plante hôte.}
+    \renewcommand{\arraystretch}{1.1}
+    \setlength{\tabcolsep}{2pt}
+    \scriptsize
+    \begin{tabular}{llll|llll}
+        \hline
+        \textbf{Famille} & \textbf{Genre} & \textbf{Espèce} & \textbf{n} &
+        \textbf{Famille} & \textbf{Genre} & \textbf{Espèce} & \textbf{n} \\
+        \hline
+        Araceae & Anthurium & Anthurium cf. breviscapum & 11 &
+        Araceae & Anthurium & Anthurium cf. ernestii & 5 \\
+        Araceae & Anthurium & Anthurium ernestii & 6 &
+        Araceae & Anthurium & Anthurium obtusum & 17 \\
+        Araceae & Anthurium & Anthurium ovatifolium & 6 &
+        Araceae & Anthurium & Anthurium scandens & 16 \\
+        Araceae & Anthurium & ernestii & 14 &
+        Araceae & Anthurium & sp & 12 \\
+        Araceae & Anthurium & sp3443 & 6 &
+        Araceae & Anthurium & sp3446 & 6 \\
+        Araceae & Anthurium & sp3450 & 5 &
+        Araceae & Anthurium  & sp & 6 \\
+        Araceae & Guzmania & sp3464 & 6 &
+        Araceae & Monstera & dubia & 6 \\
+        Araceae & Monstera & sp4912 & 4 &
+        Araceae & Philodendron & sp3451 & 5 \\
+        Araceae & Philodendron & sp3463 & 10 &
+        Araceae & Stenospermation & Stenospermation cf. densiovulatum & 5 \\
+        Araceae & Stenospermation & sp3414 & 18 &
+        Araceae & Syngonium & sp3441 & 5 \\
+        Araliaceae & Sciodaphyllum & Sciodaphyllum lancifoliolatum & 6 &
+        Bromeliaceae & Aechmaea & Aechmaea sp1 & 17 \\
+        Bromeliaceae & Aechmea & sp & 6 &
+        Bromeliaceae & Aechmea & sp3433 & 5 \\
+        Bromeliaceae & Bilbergia & sp3480 & 6 &
+        Bromeliaceae & Catopsis & Catopsis sessiliflora & 11 \\
+        Bromeliaceae & Catopsis & sp1 & 2 &
+        Bromeliaceae & Catopsis & sp3449 & 12 \\
+        Bromeliaceae & Guzmania & Guzmania sp2 & 5 &
+        Bromeliaceae & Guzmania & Guzmania sp3 & 4 \\
+        Bromeliaceae & Guzmania & Guzmania sp5 & 12 &
+        Bromeliaceae & Guzmania & Guzmania sp7 & 4 \\
+        Bromeliaceae & Guzmania & Guzmania subglobosa & 10 &
+        Bromeliaceae & Guzmania & sp & 3 \\
+        Bromeliaceae & Guzmania & sp3464 & 6 &
+        Bromeliaceae & Guzmania & sp3470 & 6 \\
+        Bromeliaceae & Guzmania cf. & Guzmania cf. brasiliensis & 43 &
+        Bromeliaceae & Mezobromelia & Mezobromelia sp1 & 6 \\
+        Bromeliaceae & Mezobromelia & Mezobromelia sp2 & 11 &
+        Bromeliaceae & Mezobromelia & Mezobromelia sp3 & 6 \\
+        Bromeliaceae & Pitcairnia & Pitcairnia arcuata & 6 &
+        Bromeliaceae & Racinaea & Racinaea sp1 & 4 \\
+        Bromeliaceae & Racinea & Racinaea spiculosa & 11 &
+        Bromeliaceae & Racinea & Racinea sp1 & 12 \\
+        Bromeliaceae & Racinea & Racinea sp2 & 8 &
+        Bromeliaceae & Racinea & Racinea sp3 & 3 \\
+        Bromeliaceae & Tillandsia & Tillandsia buseri & 5 &
+        Bromeliaceae & Tillandsia & Tillandsia delicatula & 6 \\
+        Bromeliaceae & Tillandsia & Tillandsia sp1 & 4 &
+        Bromeliaceae & Tillandsia & Tillandsia sp2 & 6 \\
+        Bromeliaceae & Tillandsia & Tillandsia sp4 & 12 &
+        Bromeliaceae & Tillandsia & Tillandsia sp7 & 27 \\
+        Bromeliaceae & Tillandsia & Tillandsia sp9 & 4 &
+        Bromeliaceae & Vriesea & sp3448 & 6 \\
+        Bromeliaceae & Vriesea\_Wehauria & sp & 14 &
+        Bromeliaceae & Wehauria & gigantea & 5 \\
+        Bromeliaceae & Wehauria & sp & 26 &
+        Clusiaceae & Clusia & Clusia cf. octandra & 6 \\
+        Clusiaceae & Clusia & Clusia sp.CC1 & 6 &
+        Cyclanthaceae & Asplundia & sp4928 & 6 \\
+        Cyclanthaceae & Sphaeradenia & sp & 6 &
+        Cyclanthaceae & Sphaeradenia & sp3457 & 12 \\
+        Dryopteridaceae & Elaphaglossum & sp4929 & 17 &
+        Dryopteridaceae & Elaphoglossum & Elaphoglossum sp1 & 10 \\
+        Dryopteridaceae & Elaphoglossum & Elaphoglossum sp3 & 8 &
+        Dryopteridaceae & Elaphoglossum & Elaphoglossum sp7 & 3 \\
+        Ericaceae & Demosthenesia & Demosthenesia sp1 & 4 &
+        Ericaceae & Disterigma & Disterigma sp1 & 10 \\
+        Ericaceae & Sphyrospermum & Sphyrospermum buxifolium & 16 &
+        Ericaceae & Sphyrospermum & Sphyrospermum dissimile & 12 \\
+        Ericaceae & Sphyrospermum & Sphyrospermum sp1 & 23 &
+        Gesneriaceae & Paradymonia & sp & 17 \\
+        Lauraceae & Beilschmiedia & Beilschmiedia latifolia & 4 &
+        Melastomataceae & Blakea & Blakea sp.CC1 & 4 \\
+        Melastomataceae & Blakea & Blakea sp.CC2 & 5 &
+        Orchidaceae & Acronia & Acronia sp1 & 11 \\
+        Orchidaceae & Acronia & Acronia sp3 & 4 &
+        Orchidaceae & Acronia & Acronia sp4 & 8 \\
+        Orchidaceae & Barbosella & Barbosella cucullata & 9 &
+        Orchidaceae & Camaridium & Camaridium sp1 & 17 \\
+        Orchidaceae & Camaridium & sp1 & 5 &
+        Orchidaceae & Camaridium & sp2 & 6 \\
+        Orchidaceae & Chritensonella  & uncata & 10 &
+        Orchidaceae & Crocodeilanthe & Crocodeilanthe sp1 & 5 \\
+        Orchidaceae & Elleanthus & Elleanthus sp1 & 12 &
+        Orchidaceae & Elleanthus & Elleanthus sp2 & 10 \\
+        Orchidaceae & Elleanthus & sp4922 & 12 &
+        Orchidaceae & Elleanthus & sp4933 & 18 \\
+        Orchidaceae & Encyclia & sp1 & 6 &
+        Orchidaceae & Jacquiniella & Jacquiniella sp1 & 11 \\
+        Orchidaceae & Maxilaria & Maxilaria notylioglossa & 12 &
+        Orchidaceae & Maxilaria & Maxilaria sp2 & 8 \\
+        Orchidaceae & Maxillaria & Maxillaria sp1 & 6 &
+        Orchidaceae & Maxillaria & Maxillaria sp2 & 12 \\
+        Orchidaceae & Maxillaria & desvauxiana & 16 &
+        Orchidaceae & Myoxanthus & Myoxanthus sp1 & 11 \\
+        Orchidaceae & Ornithidium & Ornithidium sp2 & 24 &
+        Orchidaceae & Pleurothallis & Pleurothallis sp1 & 4 \\
+        Orchidaceae & Prosthechea & sp1 & 39 &
+        Orchidaceae & Sobralia & sp4923 & 5 \\
+        Orchidaceae & Stelis & Stelis sp10 & 9 &
+        Orchidaceae & Stelis & Stelis sp2 & 5 \\
+        Orchidaceae & Stelis & Stelis sp3 & 5 &
+        Orchidaceae & Stelis & Stelis sp4 & 10 \\
+        Orchidaceae & Stelis & sp & 10 &
+        Orchidaceae & Xylobium & sp3436 & 5 \\
+        Orchidaceae & Xylobium & sp3437 & 6 &
+        Piperaceae & Peperomia & Peperomia cf. cachabiana & 6 \\
+        Piperaceae & Peperomia & Peperomia eburnea & 12 &
+        Piperaceae & Peperomia & Peperomia sp2 & 5 \\
+        Polypodiaceae & Pecluma & Pecluma sp1 & 11 &
+        Primulaceae & Cybianthus & Cybianthus magnus & 5 \\
+        Rubiaceae & Notopleura & Notopleura epiphytica & 27 & & & & \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \caption{Comparaisons filtrées des communautés fongiques (Pairwise Adonis) avec indices de corrélation ($R^2$).}
+    \label{tab:permanova_pairwise_final}
+    \renewcommand{\arraystretch}{1.1}
+    \setlength{\tabcolsep}{6pt}
+    \small
+    \begin{tabular}{llll}
+        \hline
+        \textbf{Paires de comparaison} & \textbf{$R^2$} & \textbf{p ajustée} & \textbf{Signif.} \\
+        \hline
+        \rowcolor[gray]{0.9} \multicolumn{4}{l}{\textit{Comparaisons Inter-projets (Même organe \& Même position)}} \\
+        LOT1\_root\_epiphyte vs LOT2\_root\_epiphyte & 0.206 & 0.001 & ** \\
+        LOT1\_root\_epiphyte vs LOT3\_root\_epiphyte & 0.145 & 0.001 & ** \\
+        LOT2\_root\_epiphyte vs LOT3\_root\_epiphyte & 0.118 & 0.001 & ** \\
+        LOT1\_root\_endophyte vs LOT2\_root\_endophyte & 0.165 & 0.001 & ** \\
+        LOT1\_root\_endophyte vs LOT3\_root\_endophyte & 0.111 & 0.001 & ** \\
+        LOT2\_root\_endophyte vs LOT3\_root\_endophyte & 0.118 & 0.001 & ** \\
+        LOT1\_old\_leaf\_epiphyte vs LOT2\_old\_leaf\_epiphyte & 0.190 & 0.001 & ** \\
+        LOT1\_old\_leaf\_epiphyte vs LOT3\_old\_leaf\_epiphyte & 0.170 & 0.001 & ** \\
+        LOT2\_old\_leaf\_epiphyte vs LOT3\_old\_leaf\_epiphyte & 0.175 & 0.001 & ** \\
+        LOT1\_old\_leaf\_endophyte vs LOT2\_old\_leaf\_endophyte & 0.156 & 0.001 & ** \\
+        LOT1\_old\_leaf\_endophyte vs LOT3\_old\_leaf\_endophyte & 0.117 & 0.001 & ** \\
+        LOT2\_old\_leaf\_endophyte vs LOT3\_old\_leaf\_endophyte & 0.162 & 0.001 & ** \\
+        LOT1\_young\_leaf\_epiphyte vs LOT2\_young\_leaf\_epiphyte & 0.190 & 0.001 & ** \\
+        LOT1\_young\_leaf\_epiphyte vs LOT3\_young\_leaf\_epiphyte & 0.157 & 0.001 & ** \\
+        LOT2\_young\_leaf\_epiphyte vs LOT3\_young\_leaf\_epiphyte & 0.181 & 0.001 & ** \\
+        
+        \rowcolor[gray]{0.9} \multicolumn{4}{l}{\textit{Comparaisons Intra-projet (Différents organes ou positions)}} \\
+        LOT1\_root\_endophyte vs LOT1\_root\_epiphyte & 0.063 & 0.001 & ** \\
+        LOT1\_root\_epiphyte vs LOT1\_old\_leaf\_epiphyte & 0.103 & 0.001 & ** \\
+        LOT1\_old\_leaf\_endophyte vs LOT1\_old\_leaf\_epiphyte & 0.057 & 0.001 & ** \\
+        LOT2\_root\_endophyte vs LOT2\_root\_epiphyte & 0.032 & 0.001 & ** \\
+        LOT2\_root\_endophyte vs LOT2\_old\_leaf\_endophyte & 0.129 & 0.001 & ** \\
+        LOT3\_root\_endophyte vs LOT3\_root\_epiphyte & 0.027 & 0.001 & ** \\
+        LOT3\_root\_endophyte vs LOT3\_old\_leaf\_endophyte & 0.110 & 0.001 & ** \\
+        \hline
+    \end{tabular}
+    \begin{flushleft}
+    \footnotesize{Note : Le coefficient $R^2$ indique la part de variance expliquée par le facteur de groupement.}
+    \end{flushleft}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \caption{Comparaisons par paires des communautés fongiques entre familles de plantes hôtes (Pairwise Adonis).}
+    \label{tab:permanova_pairwise_familles}
+    \renewcommand{\arraystretch}{1.1}
+    \setlength{\tabcolsep}{3pt}
+    \scriptsize
+    \begin{tabular}{lccc|lccc}
+        \hline
+        \textbf{Paires} & \textbf{p ajustée} & \textbf{Signif.} & & \textbf{Paires} & \textbf{p ajustée} & \textbf{Signif.} \\
+        \hline
+        Bromeliaceae vs Orchidaceae & 0.0012 & * & & Bromeliaceae vs Araceae & 0.0012 & * \\
+        Bromeliaceae vs Cyclanthaceae & 0.0012 & * & & Bromeliaceae vs Gesneriaceae & 0.0012 & * \\
+        Bromeliaceae vs Dryopteridaceae & 0.0012 & * & & Bromeliaceae vs Polypodiaceae & 0.0012 & * \\
+        Bromeliaceae vs Ericaceae & 0.0012 & * & & Bromeliaceae vs Piperaceae & 0.0012 & * \\
+        Bromeliaceae vs Lauraceae & 0.0012 & * & & Bromeliaceae vs Clusiaceae & 0.0012 & * \\
+        Bromeliaceae vs Rubiaceae & 0.0012 & * & & Bromeliaceae vs Primulaceae & 0.0012 & * \\
+        Bromeliaceae vs Melastomataceae & 0.0012 & * & & Bromeliaceae vs Araliaceae & 0.0012 & * \\
+        Orchidaceae vs Araceae & 0.0012 & * & & Orchidaceae vs Cyclanthaceae & 0.0012 & * \\
+        Orchidaceae vs Gesneriaceae & 0.0012 & * & & Orchidaceae vs Dryopteridaceae & 0.0012 & * \\
+        Orchidaceae vs Polypodiaceae & 0.0012 & * & & Orchidaceae vs Ericaceae & 0.0012 & * \\
+        Orchidaceae vs Piperaceae & 0.0012 & * & & Orchidaceae vs Lauraceae & 0.0012 & * \\
+        Orchidaceae vs Clusiaceae & 0.0012 & * & & Orchidaceae vs Rubiaceae & 0.0012 & * \\
+        Orchidaceae vs Primulaceae & 0.0012 & * & & Orchidaceae vs Melastomataceae & 0.0012 & * \\
+        Orchidaceae vs Araliaceae & 0.0012 & * & & Araceae vs Cyclanthaceae & 0.0012 & * \\
+        Araceae vs Gesneriaceae & 0.0012 & * & & Araceae vs Dryopteridaceae & 0.0012 & * \\
+        Araceae vs Polypodiaceae & 0.0012 & * & & Araceae vs Ericaceae & 0.0012 & * \\
+        Araceae vs Piperaceae & 0.0012 & * & & Araceae vs Lauraceae & 0.0012 & * \\
+        Araceae vs Clusiaceae & 0.0012 & * & & Araceae vs Rubiaceae & 0.0012 & * \\
+        Araceae vs Primulaceae & 0.0012 & * & & Araceae vs Melastomataceae & 0.0012 & * \\
+        Araceae vs Araliaceae & 0.0012 & * & & Cyclanthaceae vs Gesneriaceae & 0.0024 & * \\
+        Cyclanthaceae vs Dryopteridaceae & 0.0012 & * & & Cyclanthaceae vs Polypodiaceae & 0.0012 & * \\
+        Cyclanthaceae vs Ericaceae & 0.0012 & * & & Cyclanthaceae vs Piperaceae & 0.0012 & * \\
+        Cyclanthaceae vs Lauraceae & 0.0012 & * & & Cyclanthaceae vs Clusiaceae & 0.0012 & * \\
+        Cyclanthaceae vs Rubiaceae & 0.0012 & * & & Cyclanthaceae vs Primulaceae & 0.0012 & * \\
+        Cyclanthaceae vs Melastomataceae & 0.0012 & * & & Cyclanthaceae vs Araliaceae & 0.0012 & * \\
+        Gesneriaceae vs Dryopteridaceae & 0.0012 & * & & Gesneriaceae vs Polypodiaceae & 0.0012 & * \\
+        Gesneriaceae vs Ericaceae & 0.0012 & * & & Gesneriaceae vs Piperaceae & 0.0012 & * \\
+        Gesneriaceae vs Lauraceae & 0.0012 & * & & Gesneriaceae vs Clusiaceae & 0.0012 & * \\
+        Gesneriaceae vs Rubiaceae & 0.0012 & * & & Gesneriaceae vs Primulaceae & 0.0012 & * \\
+        Gesneriaceae vs Melastomataceae & 0.0012 & * & & Gesneriaceae vs Araliaceae & 0.0012 & * \\
+        Dryopteridaceae vs Polypodiaceae & 0.0012 & * & & Dryopteridaceae vs Ericaceae & 0.0012 & * \\
+        Dryopteridaceae vs Piperaceae & 0.0012 & * & & Dryopteridaceae vs Lauraceae & 0.0012 & * \\
+        Dryopteridaceae vs Clusiaceae & 0.0012 & * & & Dryopteridaceae vs Rubiaceae & 0.0012 & * \\
+        Dryopteridaceae vs Primulaceae & 0.0012 & * & & Dryopteridaceae vs Melastomataceae & 0.0012 & * \\
+        Dryopteridaceae vs Araliaceae & 0.0012 & * & & Polypodiaceae vs Ericaceae & 0.0012 & * \\
+        Polypodiaceae vs Piperaceae & 0.0012 & * & & Polypodiaceae vs Lauraceae & 0.0012 & * \\
+        Polypodiaceae vs Clusiaceae & 0.0012 & * & & Polypodiaceae vs Rubiaceae & 0.0012 & * \\
+        Polypodiaceae vs Primulaceae & 0.0012 & * & & Polypodiaceae vs Melastomataceae & 0.0012 & * \\
+        Polypodiaceae vs Araliaceae & 0.0012 & * & & Ericaceae vs Piperaceae & 0.0012 & * \\
+        Ericaceae vs Lauraceae & 0.0012 & * & & Ericaceae vs Clusiaceae & 0.0012 & * \\
+        Ericaceae vs Rubiaceae & 0.0012 & * & & Ericaceae vs Primulaceae & 0.0101 & . \\
+        Ericaceae vs Melastomataceae & 0.0012 & * & & Ericaceae vs Araliaceae & 0.0012 & * \\
+        Piperaceae vs Lauraceae & 0.0012 & * & & Piperaceae vs Clusiaceae & 0.0012 & * \\
+        Piperaceae vs Rubiaceae & 0.0024 & * & & Piperaceae vs Primulaceae & 0.0193 & . \\
+        Piperaceae vs Melastomataceae & 0.0069 & * & & Piperaceae vs Araliaceae & 0.0090 & * \\
+        Lauraceae vs Clusiaceae & 0.0012 & * & & Lauraceae vs Rubiaceae & 0.0012 & * \\
+        Lauraceae vs Primulaceae & 0.0109 & . & & Lauraceae vs Melastomataceae & 0.0024 & * \\
+        Lauraceae vs Araliaceae & 0.0047 & * & & Clusiaceae vs Rubiaceae & 0.0193 & . \\
+        Clusiaceae vs Primulaceae & 0.0626 &  & & Clusiaceae vs Melastomataceae & 0.0109 & . \\
+        Clusiaceae vs Araliaceae & 0.0343 & . & & Rubiaceae vs Primulaceae & 0.0408 & . \\
+        Rubiaceae vs Melastomataceae & 0.0273 & . & & Rubiaceae vs Araliaceae & 0.0360 & . \\
+        Primulaceae vs Melastomataceae & 0.0233 & . & & Primulaceae vs Araliaceae & 0.25 &  \\
+        Melastomataceae vs Araliaceae & 0.0090 & * & & & & \\
+        \hline
+    \end{tabular}
+    \begin{flushleft}
+    \scriptsize
+    \textbf{Note :} $*$ p-ajustée $<$ 0.05, $.$ p-ajustée $<$ 0.1, vide = non significatif.
+    \end{flushleft}
+\end{table}
+
+
+
+\begin{table}[H]
+    \centering
+    \caption{Comparaisons par paires des familles de }
+    \label{tab:permanova_pairwise_familles_lots}
+    \renewcommand{\arraystretch}{1.1}
+    \setlength{\tabcolsep}{3pt}
+    \scriptsize
+    \begin{tabular}{lccc}
+        \hline
+        \textbf{Paires} & \textbf{$R^2$} & \textbf{p-ajustée} & \textbf{Signif.} \\
+        \hline
+        Bromeliaceae.LOT1 vs Bromeliaceae.LOT2 & 0.125 & 0.0011 & * \\
+        Bromeliaceae.LOT1 vs Bromeliaceae.LOT3 & 0.096 & 0.0011 & * \\
+        Orchidaceae.LOT1 vs Orchidaceae.LOT2 & 0.133 & 0.0011 & * \\
+        Orchidaceae.LOT1 vs Orchidaceae.LOT3 & 0.102 & 0.0011 & * \\
+        Araceae.LOT1 vs Araceae.LOT3 & 0.082 & 0.0011 & * \\
+        Dryopteridaceae.LOT1 vs Dryopteridaceae.LOT2 & 0.166 & 0.0011 & * \\
+        Orchidaceae.LOT2 vs Orchidaceae.LOT3 & 0.115 & 0.0011 & * \\
+        Bromeliaceae.LOT2 vs Bromeliaceae.LOT3 & 0.097 & 0.0011 & * \\
+        Ericaceae.LOT2 vs Ericaceae.LOT3 & 0.089 & 0.0011 & * \\
+        Piperaceae.LOT2 vs Piperaceae.LOT3 & 0.128 & 0.0021 & * \\
+        \hline
+    \end{tabular}
+    \begin{flushleft}
+    \scriptsize
+    \textbf{Note :} $*$ p-ajustée $<$ 0.05, $.$ p-ajustée $<$ 0.1, vide = non significatif. Les familles présentes sont celles ayant au moins un échantillon dans au moins deux projects
+    \end{flushleft}
+
+\end{table}
+
 
 \end{document}

@@ -1,0 +1,5 @@
+"Variable","Modalities","Df","R2","F","p_value","p_value_fmt","Significance"
+"project","LOT1; LOT2; LOT3",2,0.1141,69.056,0.01,"0.010","*"
+"organ","root; young_leaf; old_leaf",2,0.0413,23.08,0.01,"0.010","*"
+"position","endophyte; epiphyte",1,0.0162,17.709,0.01,"0.010","*"
+"plant_family","Bromeliaceae; Orchidaceae; Araceae; Cyclanthaceae; Gesneriaceae; Dryopteridaceae; Polypodiaceae; Ericaceae; Piperaceae; Lauraceae; Clusiaceae; Rubiaceae; Primulaceae; Melastomataceae; Araliaceae",14,0.0535,4.278,0.01,"0.010","*"

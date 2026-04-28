@@ -40,15 +40,15 @@ Chao, A., Henderson, P.~A., Chiu, C.-H., Moyes, F., Hu, K.-H., Dornelas, M., and
 \newblock Measuring temporal change in alpha diversity: A framework integrating taxonomic, phylogenetic and functional diversity and the inext. 3d standardization.
 \newblock {\em Methods in Ecology and Evolution}, 12(10):1926--1940.
 
-\bibitem[Conway et~al., 2017]{conway2017upsetr}
-Conway, J.~R., Lex, A., and Gehlenborg, N. (2017).
-\newblock Upsetr: an r package for the visualization of intersecting sets and their properties.
-\newblock {\em Bioinformatics}, 33(18):2938--2940.
-
 \bibitem[Dearnaley et~al., 2012]{dearnaley_orchid_2012}
 Dearnaley, J.~D., Martos, F., and Selosse, M.-A. (2012).
 \newblock Orchid mycorrhizas: molecular ecology, physiology, evolution and conservation aspects.
 \newblock {\em Fungal associations}, pages 207--230.
+
+\bibitem[Hyde et~al., 2013]{hyde2013families}
+Hyde, K.~D., Jones, E.~G., Liu, J.-K., Ariyawansa, H., Boehm, E., Boonmee, S., Braun, U., Chomnunti, P., Crous, P.~W., Dai, D.-Q., et~al. (2013).
+\newblock Families of dothideomycetes: In loving memory of majorie phyllis hyde (affectionately known as mum or marj), 29 august 1921--18 january 2013—without mum’s determination, a character passed on to children, this treatise would never have been completed—kd hyde.
+\newblock {\em Fungal diversity}, 63(1):1--313.
 
 \bibitem[Kolde et~al., 2019]{kolde2019pheatmap}
 Kolde, R. et~al. (2019).
@@ -79,6 +79,16 @@ Lex, A., Gehlenborg, N., Strobelt, H., Vuillemot, R., and Pfister, H. (2014).
 Minchin, P.~R. (1987).
 \newblock An evaluation of the relative robustness of techniques for ecological ordination.
 \newblock {\em Vegetatio}, 69(1):89--107.
+
+\bibitem[Petrini, 1991]{petrini1991fungal}
+Petrini, O. (1991).
+\newblock Fungal endophytes of tree leaves.
+\newblock In {\em Microbial ecology of leaves}, pages 179--197. Springer.
+
+\bibitem[Tedersoo et~al., 2014]{tedersoo2014global}
+Tedersoo, L., Bahram, M., P{\~o}lme, S., K{\~o}ljalg, U., Yorou, N.~S., Wijesundera, R., Ruiz, L.~V., Vasco-Palacios, A.~M., Thu, P.~Q., Suija, A., et~al. (2014).
+\newblock Global diversity and geography of soil fungi.
+\newblock {\em science}, 346(6213):1256688.
 
 \bibitem[Vega et~al., 2008]{vega_fungal_2008}
 Vega, F.~E., Posada, F., Aime, M.~C., Pava-Ripoll, M., Infante, F., and Rehner, S.~A. (2008).

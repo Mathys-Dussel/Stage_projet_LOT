@@ -18,6 +18,7 @@ library(tidyr)
 library(scales)
 library(tidyr)
 
+
 ############## courbes raréfactions et extrapolations ##############
 
 
@@ -129,8 +130,6 @@ row.names = FALSE)
 
 
 
-
-
 couleurs_organes <- c("root" = "#8B4513", "old_leaf" = "#2E7D32", "young_leaf" = "#81C784")
 couleurs_projets <- c("LOT1" = "#1F78B4", "LOT2" = "#E31A1C", "LOT3" = "#33A02C")
 
@@ -199,7 +198,35 @@ print(design_final)
 
 
 
+
+
+
+
+
+
+
+
+
 ############## UpSetR ##############
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ps_bin <- transform_sample_counts(ps_rare, function(x) ifelse(x > 0, 1, 0))
 
@@ -376,7 +403,45 @@ p4 <- assemblage_des_upset(taxa_lot3, "Project LOT3")
 (p1 + p2) / (p3 + p4)
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ############## Tableau abondances ##############
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -511,12 +576,6 @@ ht <- Heatmap(
 
 draw(ht, merge_legend = TRUE)
 
-output_dir <- "~/Documents/Etudes/Stage_projet_LOT/CRBE/Analyses/figures"
-dir.create(output_dir, showWarnings = FALSE, recursive = TRUE)
-
-png(file.path(output_dir, "heatmap_orders.png"), width = 7000, height = 10000, res = 800)
-draw(ht, merge_legend = TRUE)
-dev.off()
 
 
 
@@ -528,11 +587,284 @@ dev.off()
 
 
 
-############## Ordinations ##############
 
-ps <- readRDS(
-  "~/Documents/Etudes/Stage_projet_LOT/CRBE/Analyses/donnees/ps_final.rds"
-)
+
+
+
+
+
+
+
+############# Abondances relatives classes #############
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+library(scales)
+
+
+
+ps_rel <- transform_sample_counts(ps, function(x) x / sum(x))
+ps_class <- tax_glom(ps_rel, taxrank = "gbr268_Class", NArm = FALSE)
+df_class <- psmelt(ps_class)
+df_class$organ_position <- interaction(df_class$organ, df_class$position, sep = " - ")
+
+mean_abundances <- df_class %>%
+  group_by(gbr268_Class) %>%
+  summarise(mean_abundance = mean(Abundance, na.rm = TRUE))
+
+low_classes <- mean_abundances$gbr268_Class[mean_abundances$mean_abundance < 0.01]
+
+df_class$Class_grouped <- ifelse(df_class$gbr268_Class %in% low_classes, "Autres", as.character(df_class$gbr268_Class))
+
+
+
+df_plot <- df_class %>%
+  group_by(plant_family, organ_position, Class_grouped) %>%
+  summarise(Abundance = sum(Abundance, na.rm = TRUE), .groups = 'drop')
+
+classes_bio <- setdiff(unique(df_plot$Class_grouped), c("NA", "Autres"))
+
+df_plot$Class_grouped <- factor(df_plot$Class_grouped, 
+                                levels = c("NA", "Autres", classes_bio))
+
+ggplot(df_plot, aes(x = plant_family, y = Abundance, fill = Class_grouped)) +
+  geom_col(position = "fill", color = NA) + 
+  facet_wrap(~ organ_position, scales = "free_x", ncol = 3) +
+  theme_bw() +
+  labs(
+    title = "Abondances relatives des classes fongiques",
+    x = "Famille de plante", 
+    y = "Abondance relative", 
+    fill = "Classe fongique"
+  ) +
+  theme(
+    legend.position = "bottom", 
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  ) +
+  scale_fill_manual(
+    values = c(
+      "NA" = "#707070",      
+      "Autres" = "#D3D3D3",  
+      setNames(
+        hue_pal()(length(classes_bio)),
+        classes_bio
+      )
+    )
+  )
+
+
+
+
+
+
+
+
+
+
+
+
+  ###################### Analyse des classes les plus abondantes et différences entre groupes ######################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  df_class$leaf_group <- ifelse(df_class$organ == "root", "root", "leaf")
+
+  top_classes <- df_class %>%
+    group_by(leaf_group, gbr268_Class) %>%
+    summarise(mean_abundance = mean(Abundance, na.rm = TRUE), .groups = "drop") %>%
+    filter(!is.na(gbr268_Class)) %>%
+    group_by(leaf_group) %>%
+    slice_max(order_by = mean_abundance, n = 2) %>%
+    arrange(leaf_group, desc(mean_abundance))
+
+  print(top_classes)
+
+  df_class$leaf_group <- ifelse(df_class$organ == "root", "root", "leaf")
+
+  top_classes_by_group <- df_class %>%
+    group_by(leaf_group, position, gbr268_Class) %>%
+    summarise(mean_abundance = mean(Abundance, na.rm = TRUE), .groups = "drop") %>%
+    filter(!is.na(gbr268_Class)) %>%
+    group_by(leaf_group, position) %>%
+    slice_max(order_by = mean_abundance, n = 2) %>%
+    arrange(leaf_group, position, desc(mean_abundance))
+
+  print(top_classes_by_group)
+
+
+  top_classes_leaves <- df_class %>%
+    filter(organ %in% c("old_leaf", "young_leaf")) %>%
+    group_by(organ, gbr268_Class) %>%
+    summarise(mean_abundance = mean(Abundance, na.rm = TRUE), .groups = "drop") %>%
+    filter(!is.na(gbr268_Class)) %>%
+    group_by(organ) %>%
+    slice_max(order_by = mean_abundance, n = 2) %>%
+    arrange(organ, desc(mean_abundance))
+
+  print(top_classes_leaves)
+
+
+  library(dplyr)
+
+  df_leaves <- df_class %>%
+    filter(organ %in% c("young_leaf", "old_leaf")) %>%
+    filter(!is.na(gbr268_Class))
+
+  diff_classes <- df_leaves %>%
+    group_by(gbr268_Class, organ) %>%
+    summarise(mean_abundance = mean(Abundance, na.rm = TRUE), .groups = "drop") %>%
+    pivot_wider(names_from = organ, values_from = mean_abundance, values_fill = 0) %>%
+    mutate(diff = young_leaf - old_leaf) %>%
+    arrange(desc(abs(diff)))
+
+  print(diff_classes)
+
+
+
+  library(dplyr)
+
+  df_leaves <- df_class %>%
+    filter(organ %in% c("young_leaf", "old_leaf")) %>%
+    filter(!is.na(gbr268_Class))
+
+  diff_classes_position <- df_leaves %>%
+    group_by(gbr268_Class, position) %>%
+    summarise(mean_abundance = mean(Abundance, na.rm = TRUE), .groups = "drop") %>%
+    pivot_wider(names_from = position, values_from = mean_abundance, values_fill = 0) %>%
+    mutate(diff = endophyte - epiphyte) %>%
+    arrange(desc(abs(diff)))
+
+  print(diff_classes_position)
+
+
+
+
+  library(dplyr)
+
+  df_roots <- df_class %>%
+    filter(organ == "root") %>%
+    filter(!is.na(gbr268_Class))
+
+  diff_classes_position_roots <- df_roots %>%
+    group_by(gbr268_Class, position) %>%
+    summarise(mean_abundance = mean(Abundance, na.rm = TRUE), .groups = "drop") %>%
+    tidyr::pivot_wider(names_from = position, values_from = mean_abundance, values_fill = 0) %>%
+    mutate(diff = endophyte - epiphyte) %>%
+    arrange(desc(abs(diff)))
+
+  print(diff_classes_position_roots)
+
+  df_class$leaf_group <- ifelse(df_class$organ == "root", "root", "leaf")
+
+  diff_classes_root_leaf <- df_class %>%
+    filter(!is.na(gbr268_Class)) %>%
+    group_by(gbr268_Class, leaf_group) %>%
+    summarise(mean_abundance = mean(Abundance, na.rm = TRUE), .groups = "drop") %>%
+    tidyr::pivot_wider(names_from = leaf_group, values_from = mean_abundance, values_fill = 0) %>%
+    mutate(diff = root - leaf) %>%
+    arrange(desc(abs(diff)))
+
+
+  print(top_classes)
+  print(top_classes_by_group)
+  print(top_classes_leaves)
+  print(diff_classes)
+  print(diff_classes_position)
+  print(diff_classes_position_roots)
+  print(diff_classes_root_leaf)
+
+
+  abund_by_family <- df_class %>%
+    group_by(plant_family, gbr268_Class) %>%
+    summarise(mean_abundance = mean(Abundance, na.rm = TRUE), .groups = "drop") %>%
+    filter(!is.na(gbr268_Class))
+
+  library(pheatmap)
+  mat_family_class <- abund_by_family %>%
+    tidyr::pivot_wider(names_from = plant_family, values_from = mean_abundance, values_fill = 0) %>%
+    as.data.frame()
+  rownames(mat_family_class) <- mat_family_class$gbr268_Class
+  mat_family_class$gbr268_Class <- NULL
+  pheatmap(as.matrix(mat_family_class), 
+           cluster_rows = TRUE, cluster_cols = TRUE, 
+           main = "Abondance moyenne des classes fongiques par famille de plante")
+
+  kruskal_results <- abund_by_family %>%
+    group_by(gbr268_Class) %>%
+    summarise(
+      p.value = kruskal.test(mean_abundance ~ plant_family)$p.value,
+      .groups = "drop"
+    ) %>%
+    mutate(p.adj = p.adjust(p.value, method = "BH")) %>%
+    arrange(p.adj)
+
+  print(kruskal_results)
+
+  signif_classes <- kruskal_results %>% filter(p.adj < 0.05)
+  print(signif_classes)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# %% [Ordinations] 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 library(vegan)
 
@@ -736,6 +1068,34 @@ sig_code <- function(x) {
   )
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+# %% [Pairwise adonis et tableau de synthèse pour publication] 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 extract_main_effect <- function(adonis_obj, term, panel, figure_title, nmds_obj, ps_obj) {
   adf <- as.data.frame(adonis_obj)
   adf$Term <- rownames(adf)
@@ -807,7 +1167,134 @@ write.csv(
   row.names = FALSE
 )
 
+
+perm_global <- adonis2(
+  bray_dist ~ project + organ + position + plant_family,
+  data = metadata,
+  by = "margin",
+  permutations = 999
+)
+
+
+
+tab_perm_global <- data.frame(
+  Facteur = rownames(perm_global)[1:4],
+  Df = perm_global$Df[1:4],
+  R2 = round(perm_global$R2[1:4], 4),
+  F = round(perm_global$F[1:4], 3),
+  p_value = perm_global$`Pr(>F)`[1:4]
+)
+
+tab_perm_global$p_value_fmt <- ifelse(
+  is.na(tab_perm_global$p_value),
+  NA_character_,
+  ifelse(tab_perm_global$p_value < 0.001, "<0.001", formatC(tab_perm_global$p_value, format = "f", digits = 3))
+)
+
+tab_perm_global$Significance <- dplyr::case_when(
+  is.na(tab_perm_global$p_value) ~ "",
+  tab_perm_global$p_value < 0.001 ~ "***",
+  tab_perm_global$p_value < 0.01 ~ "**",
+  tab_perm_global$p_value < 0.05 ~ "*",
+  TRUE ~ "ns"
+)
+
+print(tab_perm_global)
+
+write.csv(
+  tab_perm_global,
+  "~/Documents/Etudes/Stage_projet_LOT/CRBE/Analyses/donnees/Tableau_resume_perm_global_publication.csv",
+  row.names = FALSE
+)
+
+
+
+
+
+
+
+
+
+
+
+
+library(pairwiseAdonis)
+
+# %% [Comparaisons filtrées des communautés fongiques (Pairwise Adonis)]
+
+metadata$proj_org_pos <- interaction(metadata$project, metadata$organ, metadata$position, sep = "_", drop = TRUE)
+mask <- metadata$proj_org_pos %in% names(which(table(metadata$proj_org_pos) >= 3))
+pw_projorgpos <- pairwise.adonis(
+  as.dist(as.matrix(bray_dist)[mask, mask]),
+  metadata$proj_org_pos[mask],
+  p.adjust.m = "fdr"
+)
+pw_projorgpos <- pw_projorgpos[order(pw_projorgpos$R2, decreasing = TRUE), ]
+
+
+
+
+# %% [Comparaisons par paires des communautés fongiques entre familles de plantes hôtes (Pairwise Adonis)]
+
+pw_plant_family <- pairwise.adonis(bray_dist, metadata$plant_family, p.adjust.m = "fdr")
+print(pw_plant_family)
+
+
+
+# %% [Comparaisons par paires des communautés fongiques entre familles de plantes hôtes au sein de chaque projet (Pairwise Adonis)]
+
+metadata$family_project <- interaction(metadata$plant_family, metadata$project, drop = TRUE)
+fam_proj <- metadata %>%
+  count(plant_family, project) %>%
+  count(plant_family) %>%
+  filter(n >= 2) %>%
+  pull(plant_family)
+meta_fp <- metadata %>% filter(plant_family %in% fam_proj)
+
+bray_fp <- as.dist(as.matrix(bray_dist)[rownames(meta_fp), rownames(meta_fp)])
+meta_fp$family_project <- interaction(meta_fp$plant_family, meta_fp$project, drop = TRUE)
+pw_family_project_all <- pairwise.adonis(
+  bray_fp,
+  meta_fp$family_project,
+  p.adjust.m = "fdr"
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ########### Niches de Levins ###########
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 library(dplyr)
@@ -917,3 +1404,87 @@ p <- ggplot(final_df, aes(x = organ, y = Levins_Mean, fill = organ)) +
   )
 
 print(p)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+############################### Autres #########################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+##### Nombre de plantes par famille et par projet
+meta <- data.frame(sample_data(ps))
+cols_taxo <- c("plant_family")
+
+if (nrow(meta) > 0) {
+  meta$plant_id <- sub("^.{6}([0-9]{4}).*$", "\\1", as.character(meta$LOT_sampleID))
+} else {
+  stop("Le data.frame 'meta' est vide. Vérifiez que l'objet 'ps' contient des données.")
+}
+
+df_plantes <- meta %>%
+  group_by(across(all_of(cols_taxo))) %>%
+  summarise(n_plantes = n_distinct(plant_id), .groups = "drop")
+
+df_plantes_lot <- meta %>%
+  group_by(across(all_of(cols_taxo)), project) %>%
+  summarise(n_plantes = n_distinct(plant_id), .groups = "drop") %>%
+  tidyr::pivot_wider(
+    names_from = project,
+    values_from = n_plantes,
+    values_fill = 0,
+    names_prefix = "n_plantes_"
+  )
+
+df_plantes_lot$total <- rowSums(df_plantes_lot[grep("^n_plantes_", names(df_plantes_lot))])
+df_plantes_final <- df_plantes_lot
+
+
+df_nb_plantes_par_famille_projet <- meta %>%
+  group_by(plant_family, project) %>%
+  summarise(nb_plantes_uniques = n_distinct(plant_id), .groups = "drop")
+
+print(df_nb_plantes_par_famille_projet, n = Inf)
+
+for (lot in c("LOT1", "LOT2", "LOT3")) {
+  colname <- paste0("n_plantes_", lot)
+  if (!colname %in% names(df_plantes_lot)) {
+    df_plantes_lot[[colname]] <- 0
+  }
+}
+
+cols_final <- c(cols_taxo, paste0("n_plantes_LOT", 1:3), "total")
+df_tab_final <- df_plantes_lot[, cols_final, drop = FALSE]
+
+df_tab_final[is.na(df_tab_final)] <- 0
+
+print(df_tab_final, n = Inf)
+

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2026.1.27)  28 APR 2026 14:44
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2026.1.27)  28 APR 2026 10:45
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -307,23 +307,8 @@ Package: natbib 2010/09/13 8.31b (PWD, AO)
 \bibsep=\skip56
 LaTeX Info: Redefining \cite on input line 694.
 \c@NAT@ctr=\count307
-) (/usr/local/texlive/2025/texmf-dist/tex/latex/colortbl/colortbl.sty
-Package: colortbl 2024/07/06 v1.0i Color table columns (DPC)
- (/usr/local/texlive/2025/texmf-dist/tex/latex/tools/array.sty
-Package: array 2024/10/17 v2.6g Tabular extension package (FMi)
-\col@sep=\dimen177
-\ar@mcellbox=\box56
-\extrarowheight=\dimen178
-\NC@list=\toks29
-\extratabsurround=\skip57
-\backup@length=\skip58
-\ar@cellbox=\box57
 )
-\everycr=\toks30
-\minrowclearance=\skip59
-\rownum=\count308
-)
-Package hyperref Info: Option `colorlinks' set `true' on input line 22.
+Package hyperref Info: Option `colorlinks' set `true' on input line 21.
  (/usr/local/texlive/2025/texmf-dist/tex/latex/lato/lato.sty
 Package: lato 2019/06/20 Style file for Lato.
  (/usr/local/texlive/2025/texmf-dist/tex/latex/fontaxes/fontaxes.sty
@@ -345,45 +330,45 @@ Package: ifxetex 2019/10/25 v0.7 ifxetex legacy package. Use iftex instead.
 ) (/usr/local/texlive/2025/texmf-dist/tex/latex/xkeyval/xkeyval.sty
 Package: xkeyval 2022/06/16 v2.9 package option processing (HA)
  (/usr/local/texlive/2025/texmf-dist/tex/generic/xkeyval/xkeyval.tex (/usr/local/texlive/2025/texmf-dist/tex/generic/xkeyval/xkvutils.tex
-\XKV@toks=\toks31
-\XKV@tempa@toks=\toks32
+\XKV@toks=\toks29
+\XKV@tempa@toks=\toks30
 )
-\XKV@depth=\count309
+\XKV@depth=\count308
 File: xkeyval.tex 2014/12/03 v2.7a key=value parser (HA)
 ))) (/usr/local/texlive/2025/texmf-dist/tex/latex/setspace/setspace.sty
 Package: setspace 2022/12/04 v6.7b set line spacing
 ) (/usr/local/texlive/2025/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2024-05-08 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count310
-\l__pdf_internal_box=\box58
+\l__color_backend_stack_int=\count309
+\l__pdf_internal_box=\box56
 ) (./DUSSEL-Mathys-RapportM1-2026.aux)
 \openout1 = `DUSSEL-Mathys-RapportM1-2026.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 31.
-LaTeX Font Info:    ... okay on input line 31.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 31.
-LaTeX Font Info:    ... okay on input line 31.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 31.
-LaTeX Font Info:    ... okay on input line 31.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 31.
-LaTeX Font Info:    ... okay on input line 31.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 31.
-LaTeX Font Info:    ... okay on input line 31.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 31.
-LaTeX Font Info:    ... okay on input line 31.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 31.
-LaTeX Font Info:    ... okay on input line 31.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 31.
-LaTeX Font Info:    ... okay on input line 31.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 31.
-LaTeX Font Info:    ... okay on input line 31.
-LaTeX Info: Redefining \degres on input line 31.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 30.
+LaTeX Font Info:    ... okay on input line 30.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 30.
+LaTeX Font Info:    ... okay on input line 30.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 30.
+LaTeX Font Info:    ... okay on input line 30.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 30.
+LaTeX Font Info:    ... okay on input line 30.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 30.
+LaTeX Font Info:    ... okay on input line 30.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 30.
+LaTeX Font Info:    ... okay on input line 30.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 30.
+LaTeX Font Info:    ... okay on input line 30.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 30.
+LaTeX Font Info:    ... okay on input line 30.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 30.
+LaTeX Font Info:    ... okay on input line 30.
+LaTeX Info: Redefining \degres on input line 30.
 
 
 Package french.ldf Warning: Please load the "natbib" package
-(french.ldf)                BEFORE babel/french; reported on input line 31.
+(french.ldf)                BEFORE babel/french; reported on input line 30.
 
-LaTeX Info: Redefining \up on input line 31.
+LaTeX Info: Redefining \up on input line 30.
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
 *geometry* verbose mode - [ preamble ] result:
@@ -420,64 +405,64 @@ LaTeX Info: Redefining \up on input line 31.
 
 (/usr/local/texlive/2025/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count311
-\scratchdimen=\dimen179
-\scratchbox=\box59
-\nofMPsegments=\count312
-\nofMParguments=\count313
-\everyMPshowfont=\toks33
-\MPscratchCnt=\count314
-\MPscratchDim=\dimen180
-\MPnumerator=\count315
-\makeMPintoPDFobject=\count316
-\everyMPtoPDFconversion=\toks34
+\scratchcounter=\count310
+\scratchdimen=\dimen177
+\scratchbox=\box57
+\nofMPsegments=\count311
+\nofMParguments=\count312
+\everyMPshowfont=\toks31
+\MPscratchCnt=\count313
+\MPscratchDim=\dimen178
+\MPnumerator=\count314
+\makeMPintoPDFobject=\count315
+\everyMPtoPDFconversion=\toks32
 ) (/usr/local/texlive/2025/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
  (/usr/local/texlive/2025/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
-Package hyperref Info: Link coloring ON on input line 31.
+Package hyperref Info: Link coloring ON on input line 30.
  (./DUSSEL-Mathys-RapportM1-2026.out) (./DUSSEL-Mathys-RapportM1-2026.out)
 \@outlinefile=\write3
 \openout3 = `DUSSEL-Mathys-RapportM1-2026.out'.
 
-\c@mv@tabular=\count317
-\c@mv@boldtabular=\count318
+\c@mv@tabular=\count316
+\c@mv@boldtabular=\count317
 
 
 LaTeX Font Warning: Font shape `T1/cmss/m/sc' in size <12> not available
-(Font)              Font shape `T1/cmr/m/sc' tried instead on input line 61.
+(Font)              Font shape `T1/cmr/m/sc' tried instead on input line 60.
 
 
 LaTeX Font Warning: Font shape `T1/cmss/m/sc' in size <17.28> not available
-(Font)              Font shape `T1/cmr/m/sc' tried instead on input line 61.
+(Font)              Font shape `T1/cmr/m/sc' tried instead on input line 60.
 
 
 LaTeX Font Warning: Font shape `T1/cmss/m/sc' in size <14.4> not available
-(Font)              Font shape `T1/cmr/m/sc' tried instead on input line 78.
+(Font)              Font shape `T1/cmr/m/sc' tried instead on input line 77.
 
 <Figures/branche_chargée.jpeg, id=60, 2717.15125pt x 1418.29875pt>
 File: Figures/branche_chargée.jpeg Graphic file (type jpg)
 <use Figures/branche_chargée.jpeg>
-Package pdftex.def Info: Figures/branche_chargée.jpeg  used on input line 90.
+Package pdftex.def Info: Figures/branche_chargée.jpeg  used on input line 89.
 (pdftex.def)             Requested size: 314.40001pt x 164.10725pt.
 
 
 <Figures/logo-UT.png, id=61, 1563.8425pt x 501.875pt>
 File: Figures/logo-UT.png Graphic file (type png)
 <use Figures/logo-UT.png>
-Package pdftex.def Info: Figures/logo-UT.png  used on input line 101.
+Package pdftex.def Info: Figures/logo-UT.png  used on input line 100.
 (pdftex.def)             Requested size: 116.65646pt x 37.43222pt.
 <Figures/Logo-CRBE.png, id=62, 597.6729pt x 282.3348pt>
 File: Figures/Logo-CRBE.png Graphic file (type png)
 <use Figures/Logo-CRBE.png>
-Package pdftex.def Info: Figures/Logo-CRBE.png  used on input line 101.
+Package pdftex.def Info: Figures/Logo-CRBE.png  used on input line 100.
 (pdftex.def)             Requested size: 113.81102pt x 53.76048pt.
 <Figures/LOT.png, id=64, 120.45pt x 120.45pt>
 File: Figures/LOT.png Graphic file (type png)
 <use Figures/LOT.png>
-Package pdftex.def Info: Figures/LOT.png  used on input line 101.
+Package pdftex.def Info: Figures/LOT.png  used on input line 100.
 (pdftex.def)             Requested size: 39.83368pt x 39.83316pt.
 [1
 
@@ -487,7 +472,7 @@ Package pdftex.def Info: Figures/LOT.png  used on input line 101.
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.112 \newpage
+l.111 \newpage
                [1]
 
 [2] (./DUSSEL-Mathys-RapportM1-2026.toc)
@@ -502,26 +487,26 @@ l.112 \newpage
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.133 \newpage
+l.132 \newpage
                [1]
 
 
 pdfTeX warning (ext4): destination with the same identifier (name{page.2}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.153 
+l.152 
        [2]
 
 
 pdfTeX warning (ext4): destination with the same identifier (name{page.3}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.189 C
-       ette diversité d’espèces et de familles permet d’explorer comme... [3]
+l.182 
+       [3]
 <Figures/sampling_protocol.png, id=141, 305.14pt x 519.12865pt>
 File: Figures/sampling_protocol.png Graphic file (type png)
 <use Figures/sampling_protocol.png>
-Package pdftex.def Info: Figures/sampling_protocol.png  used on input line 199.
+Package pdftex.def Info: Figures/sampling_protocol.png  used on input line 191.
 (pdftex.def)             Requested size: 145.11053pt x 246.88176pt.
 
 
@@ -533,7 +518,7 @@ Package pdftex.def Info: Figures/sampling_protocol.png  used on input line 199.
 <Figures/rarefaction_alpha_div.png, id=207, 1438.37375pt x 1032.85875pt>
 File: Figures/rarefaction_alpha_div.png Graphic file (type png)
 <use Figures/rarefaction_alpha_div.png>
-Package pdftex.def Info: Figures/rarefaction_alpha_div.png  used on input line 292.
+Package pdftex.def Info: Figures/rarefaction_alpha_div.png  used on input line 284.
 (pdftex.def)             Requested size: 483.69687pt x 347.32185pt.
 
 
@@ -543,47 +528,41 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [7]
 
-[8 <./Figures/rarefaction_alpha_div.png>]
-<Figures/upset_plots.png, id=226, 1438.37375pt x 1032.85875pt>
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+<Figures/upset_plots.png, id=221, 1438.37375pt x 1032.85875pt>
 File: Figures/upset_plots.png Graphic file (type png)
 <use Figures/upset_plots.png>
-Package pdftex.def Info: Figures/upset_plots.png  used on input line 344.
+Package pdftex.def Info: Figures/upset_plots.png  used on input line 336.
 (pdftex.def)             Requested size: 469.18654pt x 336.9044pt.
 
 
-LaTeX Warning: `h' float specifier changed to `ht'.
+[8 <./Figures/rarefaction_alpha_div.png>]
 
-<Figures/heatmap_orders.png, id=228, 7026.25pt x 10037.5pt>
+[9 <./Figures/upset_plots.png>]
+<Figures/heatmap_orders.png, id=238, 7026.25pt x 10037.5pt>
 File: Figures/heatmap_orders.png Graphic file (type png)
 <use Figures/heatmap_orders.png>
-Package pdftex.def Info: Figures/heatmap_orders.png  used on input line 362.
+Package pdftex.def Info: Figures/heatmap_orders.png  used on input line 356.
 (pdftex.def)             Requested size: 241.84843pt x 345.37517pt.
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-<Figures/abondances_relatives.png, id=229, 1438.37375pt x 1032.85875pt>
+<Figures/abondances_relatives.png, id=239, 1438.37375pt x 1032.85875pt>
 File: Figures/abondances_relatives.png Graphic file (type png)
 <use Figures/abondances_relatives.png>
-Package pdftex.def Info: Figures/abondances_relatives.png  used on input line 373.
+Package pdftex.def Info: Figures/abondances_relatives.png  used on input line 367.
 (pdftex.def)             Requested size: 435.32422pt x 312.58652pt.
+
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 
 
-[9]
+[10 <./Figures/heatmap_orders.png>]
 
-[10 <./Figures/upset_plots.png>]
-
-LaTeX Warning: Text page 11 contains only floats.
-
-
-
-[11 <./Figures/heatmap_orders.png> <./Figures/abondances_relatives.png>]
+[11 <./Figures/abondances_relatives.png>]
 <Figures/NMDS.png, id=269, 1438.37375pt x 1032.85875pt>
 File: Figures/NMDS.png Graphic file (type png)
 <use Figures/NMDS.png>
-Package pdftex.def Info: Figures/NMDS.png  used on input line 409.
+Package pdftex.def Info: Figures/NMDS.png  used on input line 403.
 (pdftex.def)             Requested size: 483.69687pt x 347.32185pt.
 
 
@@ -593,7 +572,7 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 
-Overfull \hbox (39.61679pt too wide) in paragraph at lines 443--462
+Overfull \hbox (39.6169pt too wide) in paragraph at lines 437--456
  [][] 
  []
 
@@ -608,12 +587,12 @@ Overfull \vbox (45.15976pt too high) has occurred while \output is active []
 <Figures/niches_levins.png, id=289, 1194.4625pt x 545.03625pt>
 File: Figures/niches_levins.png Graphic file (type png)
 <use Figures/niches_levins.png>
-Package pdftex.def Info: Figures/niches_levins.png  used on input line 485.
+Package pdftex.def Info: Figures/niches_levins.png  used on input line 479.
 (pdftex.def)             Requested size: 483.69687pt x 220.71352pt.
 
 
 [14 <./Figures/niches_levins.png>]
-Overfull \hbox (16.47675pt too wide) in paragraph at lines 518--519
+Overfull \hbox (16.47675pt too wide) in paragraph at lines 512--513
 \T1/cmss/m/n/12 blages fon-giques sont for-te-ment struc-tu-r�es par le mi-cro-ha-bi-tat (or-gane et po-si-tion �pi-phyte/endophyte),
  []
 
@@ -636,7 +615,12 @@ Overfull \hbox (16.47675pt too wide) in paragraph at lines 518--519
 
 
 [19]
-Overfull \hbox (43.25735pt too wide) in paragraph at lines 555--675
+Overfull \hbox (42.85748pt too wide) in paragraph at lines 549--669
+ [][] 
+ []
+
+
+Overfull \hbox (2.19821pt too wide) in paragraph at lines 678--758
  [][] 
  []
 
@@ -645,30 +629,87 @@ Overfull \hbox (43.25735pt too wide) in paragraph at lines 555--675
 [20]
 
 [21]
+Overfull \hbox (115.04965pt too wide) in paragraph at lines 839--931
+[][] 
+ []
 
-[22]
 
-[23] (./DUSSEL-Mathys-RapportM1-2026.aux)
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:933: LaTeX Error: \begin{table} on input line 838 ended by \end{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.933 \end{document}
+                    
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+(./DUSSEL-Mathys-RapportM1-2026.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
-Package rerunfilecheck Info: File `DUSSEL-Mathys-RapportM1-2026.out' has not changed.
-(rerunfilecheck)             Checksum: A4BA1AC3E29A6D62163EDADC3FD79783;2250.
- ) 
-Here is how much of TeX's memory you used:
- 13749 strings out of 473190
- 220752 string characters out of 5715800
- 681509 words of memory out of 5000000
- 36709 multiletter control sequences out of 15000+600000
- 580177 words of font info for 76 fonts, out of 8000000 for 9000
- 1141 hyphenation exceptions out of 8191
- 75i,12n,79p,1425b,616s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfcc1200.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfcc1440.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfcc1728.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfsi1095.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfsi1200.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfsi1440.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfss0800.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfss1000.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfss1095.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfss1200.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfss1440.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfsx0800.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfsx1000.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfsx1095.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfsx1200.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfsx1440.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfsx1728.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfsx2488.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sftt1200.pfb>
-Output written on DUSSEL-Mathys-RapportM1-2026.pdf (27 pages, 10996401 bytes).
-PDF statistics:
- 526 PDF objects out of 1000 (max. 8388607)
- 410 compressed objects within 5 object streams
- 89 named destinations out of 1000 (max. 500000)
- 168 words of extra memory for PDF output out of 10000 (max. 10000000)
 
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+
+Package rerunfilecheck Warning: File `DUSSEL-Mathys-RapportM1-2026.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `DUSSEL-Mathys-RapportM1-2026.out':
+(rerunfilecheck)             Before: A4BA1AC3E29A6D62163EDADC3FD79783;2250
+(rerunfilecheck)             After:  <no file>.
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:933: You can't use `\end' in internal vertical mode.
+\enddocument ...cument/end}\deadcycles \z@ \@@end 
+                                                  
+l.933 \end{document}
+                    
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:933: LaTeX Error: \begin{table} on input line 838 ended by \end{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.933 \end{document}
+                    
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:933: Missing } inserted.
+<inserted text> 
+                }
+l.933 \end{document}
+                    
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+)
+! Emergency stop.
+<*> ...Academique/DUSSEL-Mathys-RapportM1-2026.tex
+                                                  
+*** (job aborted, no legal \end found)
+
+ 
+Here is how much of TeX's memory you used:
+ 13583 strings out of 473190
+ 218294 string characters out of 5715800
+ 698922 words of memory out of 5000000
+ 36555 multiletter control sequences out of 15000+600000
+ 580884 words of font info for 77 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 75i,11n,79p,1425b,616s stack positions out of 10000i,1000n,20000p,200000b,200000s
+!  ==> Fatal error occurred, no output PDF file produced!

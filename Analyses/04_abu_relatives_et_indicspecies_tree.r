@@ -24,13 +24,6 @@ ps_class_filtered <- filter_taxa(ps_class, function(x) mean(x) > 0.02, TRUE)
 df_class <- psmelt(ps_class_filtered)
 df_class$organ_position <- interaction(df_class$organ, df_class$position, sep = " - ")
 
-ggplot(df_class, aes(x = Sample, y = Abundance, fill = gbr268_Class)) +
-    geom_bar(stat = "identity", position = "fill", color = NA) +
-    facet_wrap(~ organ_position, scales = "free_x", ncol = 3) +
-    theme_bw() +
-    labs(title = "Abondances relatives des principales classes fongiques (> 2%) par zone",
-         x = "Échantillons ", y = "Abondance relative", fill = "Classe fongique") +
-    theme(legend.position = "bottom", axis.text.x = element_blank(), axis.ticks.x = element_blank())
 
 ggplot(df_class, aes(x = plant_family, y = Abundance, fill = gbr268_Class)) +
     geom_bar(stat = "identity", position = "fill", color = NA) +
@@ -41,13 +34,6 @@ ggplot(df_class, aes(x = plant_family, y = Abundance, fill = gbr268_Class)) +
     theme(legend.position = "bottom", axis.text.x = element_text(angle = 45, hjust = 1))
 
 
-ggplot(df_class, aes(x = project, y = Abundance, fill = gbr268_Class)) +
-    geom_bar(stat = "identity", position = "fill", color = NA) +
-    facet_wrap(~ organ_position, scales = "free_x", ncol = 3) +
-    theme_bw() +
-    labs(title = "Abondances relatives des principales classes fongiques (> 2%) par zone",
-         x = "Projet", y = "Abondance relative", fill = "Classe fongique") +
-    theme(legend.position = "bottom", axis.text.x = element_blank(), axis.ticks.x = element_blank())
 
 
 

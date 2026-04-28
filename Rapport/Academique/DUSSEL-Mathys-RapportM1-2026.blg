@@ -4,45 +4,45 @@ The top-level auxiliary file: DUSSEL-Mathys-RapportM1-2026.aux
 The style file: apalike.bst
 Database file #1: BIBLIO_Stage_LOT_CRBE.bib
 Warning--there's a number but no series in levins1968evolution
-You've used 18 entries,
+You've used 20 entries,
             1935 wiz_defined-function locations,
-            594 strings with 7204 characters,
-and the built_in function-call counts, 7679 in all, are:
-= -- 743
-> -- 353
-< -- 12
-+ -- 128
-- -- 122
-* -- 692
-:= -- 1345
-add.period$ -- 55
-call.type$ -- 18
-change.case$ -- 146
-chr.to.int$ -- 18
-cite$ -- 19
-duplicate$ -- 261
-empty$ -- 514
-format.name$ -- 147
-if$ -- 1472
+            605 strings with 7964 characters,
+and the built_in function-call counts, 9045 in all, are:
+= -- 865
+> -- 458
+< -- 14
++ -- 168
+- -- 162
+* -- 820
+:= -- 1582
+add.period$ -- 62
+call.type$ -- 20
+change.case$ -- 174
+chr.to.int$ -- 20
+cite$ -- 21
+duplicate$ -- 302
+empty$ -- 584
+format.name$ -- 189
+if$ -- 1738
 int.to.chr$ -- 1
 int.to.str$ -- 0
-missing$ -- 21
-newline$ -- 93
-num.names$ -- 54
-pop$ -- 118
+missing$ -- 23
+newline$ -- 103
+num.names$ -- 60
+pop$ -- 146
 preamble$ -- 1
-purify$ -- 149
+purify$ -- 177
 quote$ -- 0
-skip$ -- 201
+skip$ -- 235
 stack$ -- 0
-substring$ -- 565
-swap$ -- 28
-text.length$ -- 2
+substring$ -- 630
+swap$ -- 39
+text.length$ -- 3
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 102
+type$ -- 114
 warning$ -- 1
-while$ -- 64
+while$ -- 72
 width$ -- 0
-write$ -- 234
+write$ -- 261
 (There was 1 warning)
