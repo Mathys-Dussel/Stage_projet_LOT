@@ -20,10 +20,15 @@ Benjamini, Y. and Hochberg, Y. (1995).
 \newblock Controlling the false discovery rate: a practical and powerful approach to multiple testing.
 \newblock {\em Journal of the Royal statistical society: series B (Methodological)}, 57(1):289--300.
 
-\bibitem[Bermudes and Benzing, 1989]{bermudes_fungi_1989}
-Bermudes, D. and Benzing, D.~H. (1989).
-\newblock Fungi in neotropical epiphyte roots.
-\newblock {\em Biosystems}, 23(1):65--73.
+\bibitem[Benzing, 2008]{benzing2008vascular}
+Benzing, D.~H. (2008).
+\newblock {\em Vascular epiphytes: general biology and related biota}.
+\newblock Cambridge University Press.
+
+\bibitem[Boyer et~al., 2016]{boyer2016obitools}
+Boyer, F., Mercier, C., Bonin, A., Le~Bras, Y., Taberlet, P., and Coissac, E. (2016).
+\newblock obitools: A unix-inspired software package for dna metabarcoding.
+\newblock {\em Molecular ecology resources}, 16(1):176--182.
 
 \bibitem[Bray and Curtis, 1957]{bray1957ordination}
 Bray, J.~R. and Curtis, J.~T. (1957).
@@ -40,10 +45,10 @@ Chao, A., Henderson, P.~A., Chiu, C.-H., Moyes, F., Hu, K.-H., Dornelas, M., and
 \newblock Measuring temporal change in alpha diversity: A framework integrating taxonomic, phylogenetic and functional diversity and the inext. 3d standardization.
 \newblock {\em Methods in Ecology and Evolution}, 12(10):1926--1940.
 
-\bibitem[Dearnaley et~al., 2012]{dearnaley_orchid_2012}
-Dearnaley, J.~D., Martos, F., and Selosse, M.-A. (2012).
-\newblock Orchid mycorrhizas: molecular ecology, physiology, evolution and conservation aspects.
-\newblock {\em Fungal associations}, pages 207--230.
+\bibitem[Finlay, 2008]{finlay2008ecological}
+Finlay, R.~D. (2008).
+\newblock Ecological aspects of mycorrhizal symbiosis: with special emphasis on the functional diversity of interactions involving the extraradical mycelium.
+\newblock {\em Journal of experimental botany}, 59(5):1115--1126.
 
 \bibitem[Hyde et~al., 2013]{hyde2013families}
 Hyde, K.~D., Jones, E.~G., Liu, J.-K., Ariyawansa, H., Boehm, E., Boonmee, S., Braun, U., Chomnunti, P., Crous, P.~W., Dai, D.-Q., et~al. (2013).
@@ -65,6 +70,16 @@ Leponce, M., Basset, Y., Aristiz{\'a}bal-Botero, {\'A}., Ba{\"\i}ben, N., Barbut
 \newblock Unveiling the above-ground eukaryotic diversity supported by individual large old trees: the “life on trees” integrative protocol.
 \newblock {\em Frontiers in Forests and Global Change}, 7:1425492.
 
+\bibitem[Leroy et~al., 2021]{leroy2021taxonomic}
+Leroy, C., Maes, A.~Q., Louisanna, E., Schimann, H., and S{\'e}jalon-Delmas, N. (2021).
+\newblock Taxonomic, phylogenetic and functional diversity of root-associated fungi in bromeliads: effects of host identity, life forms and nutritional modes.
+\newblock {\em New Phytologist}, 231(3):1195--1209.
+
+\bibitem[Leroy et~al., 2019]{leroy2019significant}
+Leroy, C., Maes, A.~Q., Louisanna, E., and S{\'e}jalon-Delmas, N. (2019).
+\newblock How significant are endophytic fungi in bromeliad seeds and seedlings? effects on germination, survival and performance of two epiphytic plant species.
+\newblock {\em Fungal Ecology}, 39:296--306.
+
 \bibitem[Levins, 1968]{levins1968evolution}
 Levins, R. (1968).
 \newblock {\em Evolution in changing environments: some theoretical explorations}.
@@ -75,25 +90,90 @@ Lex, A., Gehlenborg, N., Strobelt, H., Vuillemot, R., and Pfister, H. (2014).
 \newblock Upset: visualization of intersecting sets.
 \newblock {\em IEEE transactions on visualization and computer graphics}, 20(12):1983--1992.
 
+\bibitem[Martos et~al., 2009]{martos2009independent}
+Martos, F., Dulormne, M., Pailler, T., Bonfante, P., Faccio, A., Fournel, J., Dubois, M.-P., and Selosse, M.-A. (2009).
+\newblock Independent recruitment of saprotrophic fungi as mycorrhizal partners by tropical achlorophyllous orchids.
+\newblock {\em New Phytologist}, 184(3):668--681.
+
+\bibitem[Mercier et~al., 2013]{mercier2013sumatra}
+Mercier, C., Boyer, F., Bonin, A., and Coissac, E. (2013).
+\newblock Sumatra and sumaclust: fast and exact comparison and clustering of sequences.
+\newblock In {\em Programs and Abstracts of the SeqBio 2013 workshop. Abstract}, pages 27--29. Citeseer.
+
 \bibitem[Minchin, 1987]{minchin1987evaluation}
 Minchin, P.~R. (1987).
 \newblock An evaluation of the relative robustness of techniques for ecological ordination.
 \newblock {\em Vegetatio}, 69(1):89--107.
+
+\bibitem[M{\"o}lder et~al., 2025]{molder2025sustainable}
+M{\"o}lder, F., Jablonski, K.~P., Letcher, B., Hall, M.~B., van Dyken, P.~C., Tomkins-Tinch, C.~H., Sochat, V., Forster, J., Vieira, F.~G., Meesters, C., et~al. (2025).
+\newblock Sustainable data analysis with snakemake.
+\newblock {\em F1000Research}, 10:33.
+
+\bibitem[Op~De~Beeck et~al., 2014]{op2014comparison}
+Op~De~Beeck, M., Lievens, B., Busschaert, P., Declerck, S., Vangronsveld, J., and Colpaert, J.~V. (2014).
+\newblock Comparison and validation of some its primer pairs useful for fungal metabarcoding studies.
+\newblock {\em PloS one}, 9(6):e97629.
 
 \bibitem[Petrini, 1991]{petrini1991fungal}
 Petrini, O. (1991).
 \newblock Fungal endophytes of tree leaves.
 \newblock In {\em Microbial ecology of leaves}, pages 179--197. Springer.
 
+\bibitem[Rodriguez et~al., 2009]{rodriguez2009fungal}
+Rodriguez, R.~J., White~Jr, J., Arnold, A.~E., and Redman, a. R.~a. (2009).
+\newblock Fungal endophytes: diversity and functional roles.
+\newblock {\em New phytologist}, 182(2):314--330.
+
+\bibitem[Sahu et~al., 2022]{sahu2022surface}
+Sahu, P.~K., Tilgam, J., Mishra, S., Hamid, S., Gupta, A., K, J., Verma, S.~K., and Kharwar, R.~N. (2022).
+\newblock Surface sterilization for isolation of endophytes: Ensuring what (not) to grow.
+\newblock {\em Journal of Basic Microbiology}, 62(6):647--668.
+
+\bibitem[Sasse et~al., 2018]{sasse2018feed}
+Sasse, J., Martinoia, E., and Northen, T. (2018).
+\newblock Feed your friends: do plant exudates shape the root microbiome?
+\newblock {\em Trends in plant science}, 23(1):25--41.
+
+\bibitem[Schnell et~al., 2015]{schnell2015tag}
+Schnell, I.~B., Bohmann, K., and Gilbert, M. T.~P. (2015).
+\newblock Tag jumps illuminated--reducing sequence-to-sample misidentifications in metabarcoding studies.
+\newblock {\em Molecular ecology resources}, 15(6):1289--1303.
+
 \bibitem[Tedersoo et~al., 2014]{tedersoo2014global}
 Tedersoo, L., Bahram, M., P{\~o}lme, S., K{\~o}ljalg, U., Yorou, N.~S., Wijesundera, R., Ruiz, L.~V., Vasco-Palacios, A.~M., Thu, P.~Q., Suija, A., et~al. (2014).
 \newblock Global diversity and geography of soil fungi.
 \newblock {\em science}, 346(6213):1256688.
 
+\bibitem[Turenne et~al., 1999]{turenne1999rapid}
+Turenne, C.~Y., Sanche, S.~E., Hoban, D.~J., Karlowsky, J.~A., and Kabani, A.~M. (1999).
+\newblock Rapid identification of fungi by using the its2 genetic region and an automated fluorescent capillary electrophoresis system.
+\newblock {\em Journal of clinical microbiology}, 37(6):1846--1851.
+
+\bibitem[Vandenkoornhuyse et~al., 2015]{vandenkoornhuyse2015importance}
+Vandenkoornhuyse, P., Quaiser, A., Duhamel, M., Le~Van, A., and Dufresne, A. (2015).
+\newblock The importance of the microbiome of the plant holobiont.
+\newblock {\em New Phytologist}, 206(4):1196--1206.
+
 \bibitem[Vega et~al., 2008]{vega_fungal_2008}
 Vega, F.~E., Posada, F., Aime, M.~C., Pava-Ripoll, M., Infante, F., and Rehner, S.~A. (2008).
 \newblock Fungal endophytes in coffee plants from colombia, hawai'i, and puerto rico.
 \newblock {\em Fungal Diversity}, 31:122.
+
+\bibitem[Vorholt, 2012]{vorholt2012microbial}
+Vorholt, J.~A. (2012).
+\newblock Microbial life in the phyllosphere.
+\newblock {\em Nature reviews microbiology}, 10(12):828--840.
+
+\bibitem[Vr{\aa}lstad et~al., 2002]{vraalstad2002molecular}
+Vr{\aa}lstad, T., Myhre, E., and Schumacher, T. (2002).
+\newblock Molecular diversity and phylogenetic affinities of symbiotic root-associated ascomycetes of the helotiales in burnt and metal polluted habitats.
+\newblock {\em New Phytologist}, 155(1):131--148.
+
+\bibitem[Zinger et~al., 2021]{zinger2021metabar}
+Zinger, L., Lionnet, C., Benoiston, A.-S., Donald, J., Mercier, C., and Boyer, F. (2021).
+\newblock metabar: An r package for the evaluation and improvement of dna metabarcoding data quality.
+\newblock {\em Methods in Ecology and Evolution}, 12(4):586--592.
 
 \bibitem[Zotz, 2016]{zotz_plants_2016}
 Zotz, G. (2016).

@@ -422,11 +422,10 @@ p4 <- assemblage_des_upset(taxa_lot3, "Project LOT3")
 
 
 
-############## Tableau abondances ##############
 
 
 
-
+# %% [Tableau abondances]
 
 
 
@@ -454,7 +453,7 @@ library(matrixStats)
 
 ps_filtrés <- filter_taxa(
   ps,
-  function(x) sum(x > 0) >= ceiling(0.01 * length(x)),
+  function(x) sum(x > 0) >= ceiling(0.02 * length(x)),
   TRUE
 )
 
@@ -508,27 +507,49 @@ row_meta <- df_agg %>%
   filter(!is.na(gbr268_Order)) %>%
   arrange(match(gbr268_Order, rownames(mat_scaled)))
 
-ann_colors <- list(
-  Project = c("LOT1" = "#7FB3D5", "LOT2" = "#D98880", "LOT3" = "#BDC3C7"),
-  Organ = c(
-    "root" = "#A93226",
-    "old_leaf" = "#27AD60",
-    "young_leaf" = "#A2D9CE"
-  ),
-  Position = c("endophyte" = "#FFDAB5", "epiphyte" = "#C0D461")
+
+phylum_cols <- c(
+  "Ascomycota"      = "#1B9E77",
+  "Basidiomycota"   = "#D95F02",
+  "Mucoromycota"    = "#7570B3",
+  "Chytridiomycota" = "#E7298A",
+  "Zoopagomycota"   = "#66A61E"
 )
 
-col_ha <- HeatmapAnnotation(
-  Project = col_meta$project,
-  Organ = col_meta$organ,
-  Position = col_meta$position,
-  col = ann_colors,
-  annotation_name_side = "right"
+classes_fixes <- c(
+  "Agaricomycetes" = "red", 
+  "Dothideomycetes" = "orange",
+  "Eurotiomycetes"  = "#7BAB29",
+  "Lecanomycetes"   = "green",
+  "Leotiomycetes"  = "lightblue",
+  "Sordariomycetes" = "blue",
+  "Tremellomycetes" = "purple"
+)
+
+toutes_classes <- unique(na.omit(row_meta$gbr268_Class))
+classes_restantes <- setdiff(toutes_classes, names(classes_fixes))
+
+couleurs_degrade <- colorRampPalette(c("lightgrey", "black"))(length(classes_restantes))
+names(couleurs_degrade) <- classes_restantes
+
+class_cols_final <- c(classes_fixes, couleurs_degrade)
+
+phylum_cols["NA"] <- "grey"
+class_cols_final["NA"] <- "grey"
+
+ann_colors <- list(
+  Project  = c("LOT1" = "#7FB3D5", "LOT2" = "#D98880", "LOT3" = "#BDC3C7"),
+  Organ    = c("root" = "#A93226", "old_leaf" = "#27AD60", "young_leaf" = "#A2D9CE"),
+  Position = c("endophyte" = "#FFDAB5", "epiphyte" = "#C0D461"),
+  
+  Phylum   = phylum_cols,
+  Class    = class_cols_final
 )
 
 row_ha <- rowAnnotation(
   Phylum = row_meta$gbr268_Phylum,
-  Class = row_meta$gbr268_Class,
+  Class  = row_meta$gbr268_Class,
+  col    = ann_colors,
   annotation_name_side = "top"
 )
 
@@ -575,8 +596,6 @@ ht <- Heatmap(
 
 
 draw(ht, merge_legend = TRUE)
-
-
 
 
 
@@ -1050,122 +1069,10 @@ p4 <- p4 + scale_color_manual(values = organ_colors)
 (p1 | p2) / (p3 | p4)
 
 
-fmt_p <- function(x) {
-  ifelse(
-    is.na(x),
-    NA_character_,
-    ifelse(x < 0.001, "<0.001", formatC(x, format = "f", digits = 3))
-  )
-}
-
-sig_code <- function(x) {
-  dplyr::case_when(
-    is.na(x) ~ "",
-    x < 0.001 ~ "***",
-    x < 0.01 ~ "**",
-    x < 0.05 ~ "*",
-    TRUE ~ "ns"
-  )
-}
 
 
 
 
-
-
-
-
-
-
-
-
-
-# %% [Pairwise adonis et tableau de synthèse pour publication] 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-extract_main_effect <- function(adonis_obj, term, panel, figure_title, nmds_obj, ps_obj) {
-  adf <- as.data.frame(adonis_obj)
-  adf$Term <- rownames(adf)
-
-  if (!term %in% adf$Term) {
-    return(
-      data.frame(
-        Panel = panel,
-        Figure = figure_title,
-        Effect = term,
-        Samples = phyloseq::nsamples(ps_obj),
-        Df = NA,
-        R2 = NA,
-        F = NA,
-        p_value = NA_character_,
-        Significance = "",
-        NMDS_stress = round(nmds_obj$stress, 3),
-        stringsAsFactors = FALSE
-      )
-    )
-  }
-
-  row_i <- adf[adf$Term == term, , drop = FALSE]
-  p_raw <- row_i[["Pr(>F)"]]
-
-  data.frame(
-    Panel = panel,
-    Figure = figure_title,
-    Effect = term,
-    Samples = phyloseq::nsamples(ps_obj),
-    Df = row_i$Df,
-    R2 = round(row_i$R2, 3),
-    F = round(row_i$F, 3),
-    p_value = fmt_p(p_raw),
-    Significance = sig_code(p_raw),
-    NMDS_stress = round(nmds_obj$stress, 3),
-    stringsAsFactors = FALSE
-  )
-}
-
-tableau_ordination_publication <- dplyr::bind_rows(
-  extract_main_effect(
-    perm_global, "project",
-    "A", "Structure globale (Projet)",
-    nmds_global, ps_hel
-  ),
-  extract_main_effect(
-    perm_lot01, "organ",
-    "B", "LOT1 - Organe",
-    nmds_lot01, ps_lot01
-  ),
-  extract_main_effect(
-    perm_lot02, "organ",
-    "C", "LOT2 - Organe",
-    nmds_lot02, ps_lot02
-  ),
-  extract_main_effect(
-    perm_lot03, "organ",
-    "D", "LOT3 - Organe",
-    nmds_lot03, ps_lot03
-  )
-)
-
-print(tableau_ordination_publication)
-
-write.csv(
-  tableau_ordination_publication,
-  "~/Documents/Etudes/Stage_projet_LOT/CRBE/Analyses/donnees/Tableau_resume_ordinations_publication.csv",
-  row.names = FALSE
-)
 
 
 perm_global <- adonis2(
@@ -1201,11 +1108,23 @@ tab_perm_global$Significance <- dplyr::case_when(
 
 print(tab_perm_global)
 
-write.csv(
-  tab_perm_global,
-  "~/Documents/Etudes/Stage_projet_LOT/CRBE/Analyses/donnees/Tableau_resume_perm_global_publication.csv",
-  row.names = FALSE
-)
+
+
+
+
+
+
+
+
+# %% [Pairwise adonis et tableau de synthèse pour publication] 
+
+
+
+
+
+
+
+
 
 
 
@@ -1438,11 +1357,9 @@ print(p)
 
 
 
-
-
-##### Nombre de plantes par famille et par projet
+##### Nombre de plantes par famille, genre, espèce et par projet
 meta <- data.frame(sample_data(ps))
-cols_taxo <- c("plant_family")
+cols_taxo <- c("plant_family", "plant_genus", "plant_species")
 
 if (nrow(meta) > 0) {
   meta$plant_id <- sub("^.{6}([0-9]{4}).*$", "\\1", as.character(meta$LOT_sampleID))
@@ -1467,9 +1384,8 @@ df_plantes_lot <- meta %>%
 df_plantes_lot$total <- rowSums(df_plantes_lot[grep("^n_plantes_", names(df_plantes_lot))])
 df_plantes_final <- df_plantes_lot
 
-
 df_nb_plantes_par_famille_projet <- meta %>%
-  group_by(plant_family, project) %>%
+  group_by(plant_family, plant_genus, plant_species, project) %>%
   summarise(nb_plantes_uniques = n_distinct(plant_id), .groups = "drop")
 
 print(df_nb_plantes_par_famille_projet, n = Inf)
@@ -1488,3 +1404,24 @@ df_tab_final[is.na(df_tab_final)] <- 0
 
 print(df_tab_final, n = Inf)
 
+
+
+
+
+
+tax <- as.data.frame(tax_table(ps))
+tax$OTU <- rownames(tax)
+
+df_nb_especes <- tax %>%
+  group_by(
+    Famille = gbr268_Family,
+    Genre = gbr268_Genus,
+    Espece = gbr268_Species
+  ) %>%
+  summarise(nb_OTUs = n(), .groups = "drop")
+
+df_nb_especes_total <- df_nb_especes %>%
+  group_by(Famille, Genre, Espece) %>%
+  summarise(Total = sum(nb_OTUs), .groups = "drop")
+
+print(df_nb_especes_total, n = Inf)

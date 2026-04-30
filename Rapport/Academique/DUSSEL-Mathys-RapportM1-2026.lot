@@ -1,10 +1,9 @@
 \babel@toc {french}{}\relax 
-\contentsline {table}{\numberline {1}{\ignorespaces Nombre d'individus échantillonnés par famille de plante hôte et par site (\textit {n} = nombre total). \small La table de taxonomie complète (Famille, Genre, Espèce) est disponible en annexe.}}{3}{table.1}%
-\contentsline {table}{\numberline {2}{\ignorespaces Diversité alpha des communautés fongiques selon la catégorie et l'assemblage.}}{9}{table.2}%
-\contentsline {table}{\numberline {3}{\ignorespaces Résultats de l'analyse PERMANOVA (adonis2) sur la composition des communautés fongiques.}}{13}{table.3}%
-\contentsline {table}{\numberline {4}{\ignorespaces Comparaisons par paires des communautés fongiques entre microhabitats et sites (PERMANOVA pairwise).}}{13}{table.4}%
-\contentsline {table}{\numberline {5}{\ignorespaces Comparaisons multiples de l'indice de Levins moyen (\textit {Levins\_Mean}) entre microhabitats pour chaque projet (test de Wilcoxon, p-values ajustées).}}{15}{table.5}%
-\contentsline {table}{\numberline {6}{\ignorespaces Nombre d'individus échantillonnés par famille, genre et espèce de plante hôte.}}{20}{table.6}%
-\contentsline {table}{\numberline {7}{\ignorespaces Comparaisons filtrées des communautés fongiques (Pairwise Adonis) avec indices de corrélation ($R^2$).}}{21}{table.7}%
-\contentsline {table}{\numberline {8}{\ignorespaces Comparaisons par paires des communautés fongiques entre familles de plantes hôtes (Pairwise Adonis).}}{22}{table.8}%
-\contentsline {table}{\numberline {9}{\ignorespaces Comparaisons par paires des familles de }}{23}{table.9}%
+\contentsline {table}{\numberline {1}{\ignorespaces Nombre d'individus échantillonnés par famille de plante hôte et par site (\textit {n} = nombre total).}}{4}{table.1}%
+\contentsline {table}{\numberline {2}{\ignorespaces Diversité alpha des communautés fongiques selon la catégorie et l'assemblage.}}{10}{table.2}%
+\contentsline {table}{\numberline {3}{\ignorespaces Résultats de l'analyse PERMANOVA (adonis2) sur la composition des communautés fongiques.}}{11}{table.3}%
+\contentsline {table}{\numberline {4}{\ignorespaces Comparaisons multiples de l'indice de Levins moyen (\textit {Levins\_Mean}) entre microhabitats pour chaque projet (test de Wilcoxon, p-values ajustées).}}{15}{table.4}%
+\contentsline {table}{\numberline {5}{\ignorespaces Nombre d'individus échantillonnés par famille, genre et espèce de plante hôte, et par site.}}{23}{table.5}%
+\contentsline {table}{\numberline {6}{\ignorespaces Comparaisons filtrées des communautés fongiques (Pairwise Adonis) avec indices de corrélation ($R^2$).}}{25}{table.6}%
+\contentsline {table}{\numberline {7}{\ignorespaces Comparaisons par paires des communautés fongiques entre familles de plantes hôtes (Pairwise Adonis).}}{26}{table.7}%
+\contentsline {table}{\numberline {8}{\ignorespaces Comparaisons par paires des combinaisons famille de plante hôte - projet.}}{27}{table.8}%
