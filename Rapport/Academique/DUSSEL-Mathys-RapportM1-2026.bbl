@@ -45,15 +45,25 @@ Chao, A., Henderson, P.~A., Chiu, C.-H., Moyes, F., Hu, K.-H., Dornelas, M., and
 \newblock Measuring temporal change in alpha diversity: A framework integrating taxonomic, phylogenetic and functional diversity and the inext. 3d standardization.
 \newblock {\em Methods in Ecology and Evolution}, 12(10):1926--1940.
 
+\bibitem[Colwell and Futuyma, 1971]{colwell1971measurement}
+Colwell, R.~K. and Futuyma, D.~J. (1971).
+\newblock On the measurement of niche breadth and overlap.
+\newblock {\em Ecology}, 52(4):567--576.
+
+\bibitem[Dearnaley, 2007]{dearnaley2007}
+Dearnaley, J. D.~W. (2007).
+\newblock Further advances in orchid mycorrhizal research.
+\newblock {\em Mycorrhiza}, 17(6):475--486.
+
 \bibitem[Finlay, 2008]{finlay2008ecological}
 Finlay, R.~D. (2008).
 \newblock Ecological aspects of mycorrhizal symbiosis: with special emphasis on the functional diversity of interactions involving the extraradical mycelium.
 \newblock {\em Journal of experimental botany}, 59(5):1115--1126.
 
-\bibitem[Hyde et~al., 2013]{hyde2013families}
-Hyde, K.~D., Jones, E.~G., Liu, J.-K., Ariyawansa, H., Boehm, E., Boonmee, S., Braun, U., Chomnunti, P., Crous, P.~W., Dai, D.-Q., et~al. (2013).
-\newblock Families of dothideomycetes: In loving memory of majorie phyllis hyde (affectionately known as mum or marj), 29 august 1921--18 january 2013—without mum’s determination, a character passed on to children, this treatise would never have been completed—kd hyde.
-\newblock {\em Fungal diversity}, 63(1):1--313.
+\bibitem[Hurlbert, 1978]{hurlbert1978measurement}
+Hurlbert, S.~H. (1978).
+\newblock The measurement of niche overlap and some relatives.
+\newblock {\em Ecology}, 59(1):67--77.
 
 \bibitem[Kolde et~al., 2019]{kolde2019pheatmap}
 Kolde, R. et~al. (2019).
@@ -90,6 +100,11 @@ Lex, A., Gehlenborg, N., Strobelt, H., Vuillemot, R., and Pfister, H. (2014).
 \newblock Upset: visualization of intersecting sets.
 \newblock {\em IEEE transactions on visualization and computer graphics}, 20(12):1983--1992.
 
+\bibitem[Martinson et~al., 2010]{martinson2010}
+Martinson, G.~O., Damascos, M.~A., Knohl, A., Corr{\^e}a, A., Hildebrandt, A., Loescher, H.~W., et~al. (2010).
+\newblock Microbial diversity in suspended soils and leaf litter of a tropical montane forest.
+\newblock {\em FEMS Microbiology Ecology}, 73(1):127--139.
+
 \bibitem[Martos et~al., 2009]{martos2009independent}
 Martos, F., Dulormne, M., Pailler, T., Bonfante, P., Faccio, A., Fournel, J., Dubois, M.-P., and Selosse, M.-A. (2009).
 \newblock Independent recruitment of saprotrophic fungi as mycorrhizal partners by tropical achlorophyllous orchids.
@@ -99,6 +114,11 @@ Martos, F., Dulormne, M., Pailler, T., Bonfante, P., Faccio, A., Fournel, J., Du
 Mercier, C., Boyer, F., Bonin, A., and Coissac, E. (2013).
 \newblock Sumatra and sumaclust: fast and exact comparison and clustering of sequences.
 \newblock In {\em Programs and Abstracts of the SeqBio 2013 workshop. Abstract}, pages 27--29. Citeseer.
+
+\bibitem[Miadlikowska et~al., 2006]{miadlikowska2006new}
+Miadlikowska, J., Kauff, F., Hofstetter, V., Fraker, E., Grube, M., Hafellner, J., Reeb, V., Hodkinson, B.~P., Kukwa, M., Luucking, R., et~al. (2006).
+\newblock New insights into classification and evolution of the lecanoromycetes (pezizomycotina, ascomycota) from phylogenetic analyses of three ribosomal rna-and two protein-coding genes.
+\newblock {\em Mycologia}, 98(6):1088--1103.
 
 \bibitem[Minchin, 1987]{minchin1987evaluation}
 Minchin, P.~R. (1987).
@@ -110,15 +130,15 @@ M{\"o}lder, F., Jablonski, K.~P., Letcher, B., Hall, M.~B., van Dyken, P.~C., To
 \newblock Sustainable data analysis with snakemake.
 \newblock {\em F1000Research}, 10:33.
 
+\bibitem[Nadkarni, 1981]{nadkarni1981}
+Nadkarni, N.~M. (1981).
+\newblock Canopy anthems: Suspended soils in neotropical rain forests.
+\newblock {\em Science}, 214(4524):1023--1024.
+
 \bibitem[Op~De~Beeck et~al., 2014]{op2014comparison}
 Op~De~Beeck, M., Lievens, B., Busschaert, P., Declerck, S., Vangronsveld, J., and Colpaert, J.~V. (2014).
 \newblock Comparison and validation of some its primer pairs useful for fungal metabarcoding studies.
 \newblock {\em PloS one}, 9(6):e97629.
-
-\bibitem[Petrini, 1991]{petrini1991fungal}
-Petrini, O. (1991).
-\newblock Fungal endophytes of tree leaves.
-\newblock In {\em Microbial ecology of leaves}, pages 179--197. Springer.
 
 \bibitem[Rodriguez et~al., 2009]{rodriguez2009fungal}
 Rodriguez, R.~J., White~Jr, J., Arnold, A.~E., and Redman, a. R.~a. (2009).
@@ -145,6 +165,11 @@ Tedersoo, L., Bahram, M., P{\~o}lme, S., K{\~o}ljalg, U., Yorou, N.~S., Wijesund
 \newblock Global diversity and geography of soil fungi.
 \newblock {\em science}, 346(6213):1256688.
 
+\bibitem[Tkaczuk and Majchrowska-Safaryan, 2023]{Tkaczuk_colony}
+Tkaczuk, C. and Majchrowska-Safaryan, A. (2023).
+\newblock Temperature requirements for the colony growth and conidial germination of selected isolates of entomopathogenic fungi of the cordyceps and paecilomyces genera.
+\newblock {\em Agriculture}, 13:1989.
+
 \bibitem[Turenne et~al., 1999]{turenne1999rapid}
 Turenne, C.~Y., Sanche, S.~E., Hoban, D.~J., Karlowsky, J.~A., and Kabani, A.~M. (1999).
 \newblock Rapid identification of fungi by using the its2 genetic region and an automated fluorescent capillary electrophoresis system.
@@ -169,6 +194,11 @@ Vorholt, J.~A. (2012).
 Vr{\aa}lstad, T., Myhre, E., and Schumacher, T. (2002).
 \newblock Molecular diversity and phylogenetic affinities of symbiotic root-associated ascomycetes of the helotiales in burnt and metal polluted habitats.
 \newblock {\em New Phytologist}, 155(1):131--148.
+
+\bibitem[Wang et~al., 2015]{Wang_psyc}
+Wang, M., Jiang, X., wu, W., Hao, Y., Su, Y., Cai, L., Xiang, M., and Liu, X. (2015).
+\newblock Psychrophilic fungi from the world's roof.
+\newblock {\em Persoonia}, 34:100--112.
 
 \bibitem[Zinger et~al., 2021]{zinger2021metabar}
 Zinger, L., Lionnet, C., Benoiston, A.-S., Donald, J., Mercier, C., and Boyer, F. (2021).

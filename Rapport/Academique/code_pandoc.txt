@@ -1,0 +1,1 @@
+pandoc DUSSEL-Mathys-RapportM1-2026.tex -o DUSSEL-Mathys-RapportM1-2026.docx --citeproc 

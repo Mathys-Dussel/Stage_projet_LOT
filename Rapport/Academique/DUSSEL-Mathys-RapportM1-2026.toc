@@ -1,30 +1,30 @@
 \babel@toc {french}{}\relax 
 \contentsline {section}{\numberline {1}Résumé}{1}{section.1}%
-\contentsline {section}{\numberline {2}Abstract}{1}{section.2}%
-\contentsline {section}{\numberline {3}Introduction}{2}{section.3}%
-\contentsline {section}{\numberline {4}Matériels et méthodes}{3}{section.4}%
-\contentsline {subsection}{\numberline {4.1}Sites d'étude et plantes échantillonnées}{3}{subsection.4.1}%
-\contentsline {subsection}{\numberline {4.2}Echantillonnage fongiques et bioinformatique}{5}{subsection.4.2}%
-\contentsline {subsection}{\numberline {4.3}Analyse des données}{6}{subsection.4.3}%
-\contentsline {subsubsection}{\numberline {4.3.1}Analyses de la diversité alpha}{6}{subsubsection.4.3.1}%
+\contentsline {section}{\numberline {2}Introduction}{2}{section.2}%
+\contentsline {section}{\numberline {3}Matériels et méthodes}{3}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Sites d'étude et plantes échantillonnées}{3}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Echantillonnage fongiques et bioinformatique}{5}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Analyse des données}{6}{subsection.3.3}%
+\contentsline {subsubsection}{\numberline {3.3.1}Analyses de la diversité alpha}{6}{subsubsection.3.3.1}%
 \contentsline {paragraph}{Courbes de raréfaction}{6}{section*.4}%
 \contentsline {paragraph}{Partage des OTUs }{6}{section*.5}%
-\contentsline {paragraph}{Partage des OTUs}{6}{section*.6}%
-\contentsline {subsubsection}{\numberline {4.3.2}Analyses de la diversité bêta}{7}{subsubsection.4.3.2}%
-\contentsline {paragraph}{Tableau de chaleur et abondances relatives}{7}{section*.7}%
-\contentsline {paragraph}{Ordinations}{7}{section*.8}%
-\contentsline {paragraph}{Spécialisation des niches fongiques}{7}{section*.9}%
-\contentsline {section}{\numberline {5}Résultats}{8}{section.5}%
-\contentsline {subsection}{\numberline {5.1}Structure générale et diversité des communautés fongiques }{8}{subsection.5.1}%
-\contentsline {paragraph}{Courbes de raréfactions/extrapolations}{8}{figure.2}%
-\contentsline {paragraph}{Partage des OTUs}{10}{figure.3}%
-\contentsline {subsection}{\numberline {5.2}Assemblages des communautés fongiques}{10}{subsection.5.2}%
-\contentsline {paragraph}{Ordination et PERMANOVA}{10}{section*.12}%
-\contentsline {paragraph}{Assemblages taxonomique des communautés fongiques}{12}{section*.13}%
-\contentsline {paragraph}{Spécialisation des niches fongiques}{14}{section*.14}%
-\contentsline {section}{\numberline {6}Discussion}{15}{section.6}%
-\contentsline {section}{Références}{18}{section.6}%
+\contentsline {subsubsection}{\numberline {3.3.2}Analyses de la diversité bêta}{7}{subsubsection.3.3.2}%
+\contentsline {paragraph}{Tableau de chaleur et abondances relatives}{7}{section*.6}%
+\contentsline {paragraph}{Ordinations}{7}{section*.7}%
+\contentsline {paragraph}{Spécialisation des niches fongiques}{7}{section*.8}%
+\contentsline {section}{\numberline {4}Résultats}{8}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Structure générale et diversité des communautés fongiques }{8}{subsection.4.1}%
+\contentsline {paragraph}{Courbes de raréfactions/extrapolations}{8}{section*.9}%
+\contentsline {paragraph}{Partage des OTUs}{10}{section*.10}%
+\contentsline {subsection}{\numberline {4.2}Assemblages des communautés fongiques}{11}{subsection.4.2}%
+\contentsline {paragraph}{Ordination et PERMANOVA}{11}{section*.11}%
+\contentsline {paragraph}{Assemblages taxonomique des communautés fongiques}{12}{section*.12}%
+\contentsline {paragraph}{Spécialisation des niches fongiques}{15}{section*.13}%
+\contentsline {section}{\numberline {5}Discussion}{16}{section.5}%
+\contentsline {section}{Références}{18}{section.5}%
 \contentsline {section}{\numberline {A}Annexes}{22}{appendix.A}%
-\contentsline {subsection}{\numberline {A.1}Protocole d’échantillonnage}{22}{subsection.A.1}%
+\contentsline {subsection}{\numberline {A.1}Détails des procédures expérimentales}{22}{subsection.A.1}%
+\contentsline {paragraph}{Protocole d’échantillonnage}{22}{section*.17}%
+\contentsline {paragraph}{Extraction ADN et séquençage}{22}{section*.18}%
 \contentsline {subsection}{\numberline {A.2}Tableau taxonomique des plantes échantillonnées}{23}{subsection.A.2}%
 \contentsline {subsection}{\numberline {A.3}Résultats des comparaisons multiples de la composition des communautés fongiques (Pairwise Adonis) avec indices de corrélation ($R^2$).}{25}{subsection.A.3}%

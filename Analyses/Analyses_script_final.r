@@ -175,9 +175,9 @@ plot_final_premium <- function(res_obj, title_label, palette_couleurs) {
          title = title_label)
 }
 
-p_epi_final  <- plot_final_premium(res_epi, "A. Communautés Epiphytes", couleurs_organes)
-p_endo_final <- plot_final_premium(res_endo, "B. Communautés Endophytes", couleurs_organes)
-p_proj_final <- plot_final_premium(res_proj, "C. Communautés Projets", couleurs_projets)
+p_epi_final  <- plot_final_premium(res_epi, "A. Communautés épiphytes par organes", couleurs_organes)
+p_endo_final <- plot_final_premium(res_endo, "B. Communautés endophytes par organes", couleurs_organes)
+p_proj_final <- plot_final_premium(res_proj, "C. Communautés par sites", couleurs_projets)
 
 design_final <- (p_epi_final / p_endo_final / p_proj_final) + 
   plot_layout(guides = 'collect') & 
@@ -191,6 +191,12 @@ print(design_final)
 
 
 
+png(
+  filename = "~/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/Figures/inext_hd.png",
+  width = 5000, height = 3000, res = 300
+)
+plot(design_final, merge_legend = TRUE)
+dev.off()
 
 
 
@@ -396,14 +402,50 @@ taxa_lot3 <- split(rownames(meta_lot3), meta_lot3$category) |>
   })
 
 p1 <- assemblage_des_upset(taxa_all, "Global")
-p2 <- assemblage_des_upset(taxa_lot1, "Project LOT1")
-p3 <- assemblage_des_upset(taxa_lot2, "Project LOT2")
-p4 <- assemblage_des_upset(taxa_lot3, "Project LOT3")
+p2 <- assemblage_des_upset(taxa_lot1, "Site LOT1")
+p3 <- assemblage_des_upset(taxa_lot2, "Site LOT2")
+p4 <- assemblage_des_upset(taxa_lot3, "Site LOT3")
 
 (p1 + p2) / (p3 + p4)
 
+upset_plot= (p1 + p2) / (p3 + p4)
 
 
+png(
+  filename = "~/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/Figures/upset_hd.png",
+  width = 5000, height = 3000, res = 300
+)
+plot(upset_plot, merge_legend = TRUE)
+dev.off()
+
+
+png(
+  filename = "~/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/Figures/figs_upset/upset_1.png",
+  width = 5000, height = 3000, res = 300
+)
+plot(p1, merge_legend = TRUE)
+dev.off()
+
+png(
+  filename = "~/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/Figures/figs_upset/upset_2.png",
+  width = 5000, height = 3000, res = 300
+)
+plot(p2, merge_legend = TRUE)
+dev.off()
+
+png(
+  filename = "~/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/Figures/figs_upset/upset_3.png",
+  width = 5000, height = 3000, res = 300
+)
+plot(p3, merge_legend = TRUE)
+dev.off()
+
+png(
+  filename = "~/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/Figures/figs_upset/upset_4.png",
+  width = 5000, height = 3000, res = 300
+)
+plot(p4, merge_legend = TRUE)
+dev.off()
 
 
 
@@ -596,6 +638,12 @@ ht <- Heatmap(
 
 
 draw(ht, merge_legend = TRUE)
+png(
+  filename = "~/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/Figures/heatmap_orders.png",
+  width = 2423, height = 5000, res = 300
+)
+draw(ht, merge_legend = TRUE)
+dev.off()
 
 
 
@@ -909,8 +957,7 @@ p1 <- plot_ordination(ps_hel, nmds_global, color = "project", shape = "organ") +
     geom = "polygon"
   ) +
   labs(
-    title = "A. Structure Globale (Projet)",
-    subtitle = paste0("R2 Project: ", round(perm_global$R2[1], 3))
+    title = "A. Structure Globale (Sites)",
   ) +
   theme_bw()
 
@@ -943,12 +990,6 @@ p2 = plot_ordination(
   stat_ellipse(aes(group = organ)) +
   labs(
     title = "B. LOT1 - Organe",
-    subtitle = paste0(
-      "R2 = ",
-      round(perm_lot01["organ", "R2"], 3),
-      ", p = ",
-      perm_lot01["organ", "Pr(>F)"]
-    )
   ) +
   theme_bw()
 
@@ -993,12 +1034,6 @@ p3 = plot_ordination(
   stat_ellipse(aes(group = organ)) +
   labs(
     title = "C. LOT2 - Organe",
-    subtitle = paste0(
-      "R2 = ",
-      round(perm_lot02["organ", "R2"], 3),
-      ", p = ",
-      perm_lot02["organ", "Pr(>F)"]
-    )
   ) +
   theme_bw()
 
@@ -1027,12 +1062,6 @@ p4 = plot_ordination(
   stat_ellipse(aes(group = organ)) +
   labs(
     title = "D. LOT3 - Organe",
-    subtitle = paste0(
-      "R2 = ",
-      round(perm_lot03["organ", "R2"], 3),
-      ", p = ",
-      perm_lot03["organ", "Pr(>F)"]
-    )
   ) +
   theme_bw()
 
@@ -1066,8 +1095,16 @@ p2 <- p2 + scale_color_manual(values = organ_colors)
 p3 <- p3 + scale_color_manual(values = organ_colors)
 p4 <- p4 + scale_color_manual(values = organ_colors)
 
-(p1 | p2) / (p3 | p4)
+plot_ordi=(p1 | p2) / (p3 | p4)
 
+ggsave(
+  filename = "~/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/Figures/ordination_global.png",
+  plot = plot_ordi,
+  width = 18,
+  height = 12,
+  units = "in",
+  dpi = 300
+)
 
 
 
@@ -1225,12 +1262,12 @@ library(rstatix)
 library(spaa)
 
 
-ps_merged <- merge_samples(ps, "organ")
+ps_abondants <- filter_taxa(ps, function(x) sum(x > 0) >= ceiling(0.01 * length(x)), TRUE)
+ps_merged <- merge_samples(ps_abondants, "organ")
 otu_merged <- as.matrix(otu_table(ps_merged))
 if (taxa_are_rows(ps_merged)) {
   otu_merged <- t(otu_merged)
 }
-
 
 levins_raw <- niche.width(otu_merged, method = "levins")
 niche_scores <- (as.numeric(levins_raw) - 1) / (3 - 1)
@@ -1308,7 +1345,6 @@ p <- ggplot(final_df, aes(x = organ, y = Levins_Mean, fill = organ)) +
   scale_fill_manual(values = c("root" = "#914e27", "young_leaf" = "#83d483", "old_leaf" = "#1d5d1d")) +
   scale_color_manual(values = c("root" = "#914e27", "young_leaf" = "#83d483", "old_leaf" = "#1d5d1d")) +
   labs(
-    title = "Niche fongique par projet et organe",
     x = "Sites",
     y = "Indice de Levins Moyen"
   ) +
@@ -1327,7 +1363,12 @@ print(p)
 
 
 
-
+png(
+  filename = "~/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/Figures/levins.png",
+  width = 5000, height = 3000, res = 300
+)
+plot(p, merge_legend = TRUE)
+dev.off()
 
 
 

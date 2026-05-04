@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2026.1.27)  25 APR 2026 16:51
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2026.1.27)  4 MAY 2026 13:21
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -307,8 +307,23 @@ Package: natbib 2010/09/13 8.31b (PWD, AO)
 \bibsep=\skip56
 LaTeX Info: Redefining \cite on input line 694.
 \c@NAT@ctr=\count307
+) (/usr/local/texlive/2025/texmf-dist/tex/latex/colortbl/colortbl.sty
+Package: colortbl 2024/07/06 v1.0i Color table columns (DPC)
+ (/usr/local/texlive/2025/texmf-dist/tex/latex/tools/array.sty
+Package: array 2024/10/17 v2.6g Tabular extension package (FMi)
+\col@sep=\dimen177
+\ar@mcellbox=\box56
+\extrarowheight=\dimen178
+\NC@list=\toks29
+\extratabsurround=\skip57
+\backup@length=\skip58
+\ar@cellbox=\box57
 )
-Package hyperref Info: Option `colorlinks' set `true' on input line 21.
+\everycr=\toks30
+\minrowclearance=\skip59
+\rownum=\count308
+)
+Package hyperref Info: Option `colorlinks' set `true' on input line 22.
  (/usr/local/texlive/2025/texmf-dist/tex/latex/lato/lato.sty
 Package: lato 2019/06/20 Style file for Lato.
  (/usr/local/texlive/2025/texmf-dist/tex/latex/fontaxes/fontaxes.sty
@@ -330,49 +345,45 @@ Package: ifxetex 2019/10/25 v0.7 ifxetex legacy package. Use iftex instead.
 ) (/usr/local/texlive/2025/texmf-dist/tex/latex/xkeyval/xkeyval.sty
 Package: xkeyval 2022/06/16 v2.9 package option processing (HA)
  (/usr/local/texlive/2025/texmf-dist/tex/generic/xkeyval/xkeyval.tex (/usr/local/texlive/2025/texmf-dist/tex/generic/xkeyval/xkvutils.tex
-\XKV@toks=\toks29
-\XKV@tempa@toks=\toks30
+\XKV@toks=\toks31
+\XKV@tempa@toks=\toks32
 )
-\XKV@depth=\count308
+\XKV@depth=\count309
 File: xkeyval.tex 2014/12/03 v2.7a key=value parser (HA)
 ))) (/usr/local/texlive/2025/texmf-dist/tex/latex/setspace/setspace.sty
 Package: setspace 2022/12/04 v6.7b set line spacing
 ) (/usr/local/texlive/2025/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2024-05-08 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count309
-\l__pdf_internal_box=\box56
-) (./DUSSEL-Mathys-RapportM1-2026.aux
-
-LaTeX Warning: Label `tab:permanova_nmds' multiply defined.
-
+\l__color_backend_stack_int=\count310
+\l__pdf_internal_box=\box58
 )
+No file DUSSEL-Mathys-RapportM1-2026.aux.
 \openout1 = `DUSSEL-Mathys-RapportM1-2026.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Info: Redefining \degres on input line 30.
-
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
+LaTeX Info: Redefining \degres on input line 31.
 
 Package french.ldf Warning: Please load the "natbib" package
-(french.ldf)                BEFORE babel/french; reported on input line 30.
+(french.ldf)                BEFORE babel/french; reported on input line 31.
 
-LaTeX Info: Redefining \up on input line 30.
+LaTeX Info: Redefining \up on input line 31.
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
 *geometry* verbose mode - [ preamble ] result:
@@ -409,72 +420,77 @@ LaTeX Info: Redefining \up on input line 30.
 
 (/usr/local/texlive/2025/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count310
-\scratchdimen=\dimen177
-\scratchbox=\box57
-\nofMPsegments=\count311
-\nofMParguments=\count312
-\everyMPshowfont=\toks31
-\MPscratchCnt=\count313
-\MPscratchDim=\dimen178
-\MPnumerator=\count314
-\makeMPintoPDFobject=\count315
-\everyMPtoPDFconversion=\toks32
+\scratchcounter=\count311
+\scratchdimen=\dimen179
+\scratchbox=\box59
+\nofMPsegments=\count312
+\nofMParguments=\count313
+\everyMPshowfont=\toks33
+\MPscratchCnt=\count314
+\MPscratchDim=\dimen180
+\MPnumerator=\count315
+\makeMPintoPDFobject=\count316
+\everyMPtoPDFconversion=\toks34
 ) (/usr/local/texlive/2025/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
  (/usr/local/texlive/2025/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
-Package hyperref Info: Link coloring ON on input line 30.
- (./DUSSEL-Mathys-RapportM1-2026.out) (./DUSSEL-Mathys-RapportM1-2026.out)
+Package hyperref Info: Link coloring ON on input line 31.
 \@outlinefile=\write3
 \openout3 = `DUSSEL-Mathys-RapportM1-2026.out'.
 
-\c@mv@tabular=\count316
-\c@mv@boldtabular=\count317
+\c@mv@tabular=\count317
+\c@mv@boldtabular=\count318
 
 
 LaTeX Font Warning: Font shape `T1/cmss/m/sc' in size <12> not available
-(Font)              Font shape `T1/cmr/m/sc' tried instead on input line 60.
+(Font)              Font shape `T1/cmr/m/sc' tried instead on input line 61.
 
 
 LaTeX Font Warning: Font shape `T1/cmss/m/sc' in size <17.28> not available
-(Font)              Font shape `T1/cmr/m/sc' tried instead on input line 60.
+(Font)              Font shape `T1/cmr/m/sc' tried instead on input line 61.
 
 
 LaTeX Font Warning: Font shape `T1/cmss/m/sc' in size <14.4> not available
-(Font)              Font shape `T1/cmr/m/sc' tried instead on input line 77.
+(Font)              Font shape `T1/cmr/m/sc' tried instead on input line 78.
 
-<Figures/branche_chargée.jpeg, id=64, 2717.15125pt x 1418.29875pt>
+<Figures/branche_chargée.jpeg, id=4, 2717.15125pt x 1418.29875pt>
 File: Figures/branche_chargée.jpeg Graphic file (type jpg)
 <use Figures/branche_chargée.jpeg>
-Package pdftex.def Info: Figures/branche_chargée.jpeg  used on input line 89.
+Package pdftex.def Info: Figures/branche_chargée.jpeg  used on input line 90.
 (pdftex.def)             Requested size: 314.40001pt x 164.10725pt.
 
 
-<Figures/logo-UT.png, id=65, 1563.8425pt x 501.875pt>
+<Figures/logo-UT.png, id=5, 1563.8425pt x 501.875pt>
 File: Figures/logo-UT.png Graphic file (type png)
 <use Figures/logo-UT.png>
-Package pdftex.def Info: Figures/logo-UT.png  used on input line 100.
+Package pdftex.def Info: Figures/logo-UT.png  used on input line 101.
 (pdftex.def)             Requested size: 116.65646pt x 37.43222pt.
-<Figures/LOT.png, id=66, 120.45pt x 120.45pt>
+<Figures/Logo-CRBE.png, id=6, 597.6729pt x 282.3348pt>
+File: Figures/Logo-CRBE.png Graphic file (type png)
+<use Figures/Logo-CRBE.png>
+Package pdftex.def Info: Figures/Logo-CRBE.png  used on input line 101.
+(pdftex.def)             Requested size: 113.81102pt x 53.76048pt.
+<Figures/LOT.png, id=8, 120.45pt x 120.45pt>
 File: Figures/LOT.png Graphic file (type png)
 <use Figures/LOT.png>
-Package pdftex.def Info: Figures/LOT.png  used on input line 100.
+Package pdftex.def Info: Figures/LOT.png  used on input line 101.
 (pdftex.def)             Requested size: 39.83368pt x 39.83316pt.
 [1
 
-{/usr/local/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc} <./Figures/logo-UT.png (PNG copy)> <./Figures/LOT.png (PNG copy)> <./Figures/branche_chargée.jpeg>]
+{/usr/local/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc} <./Figures/logo-UT.png (PNG copy)> <./Figures/Logo-CRBE.png> <./Figures/LOT.png (PNG copy)> <./Figures/branche_chargée.jpeg>]
 
 
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.111 \newpage
+l.112 \newpage
                [1]
 
-[2] (./DUSSEL-Mathys-RapportM1-2026.toc)
+[2]
+No file DUSSEL-Mathys-RapportM1-2026.toc.
 \tf@toc=\write4
 \openout4 = `DUSSEL-Mathys-RapportM1-2026.toc'.
 
@@ -486,128 +502,943 @@ l.111 \newpage
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.132 \newpage
+l.143 \newpage
                [1]
+
+Package natbib Warning: Citation `finlay2008ecological' on page 2 undefined on input line 147.
+
+
+Package natbib Warning: Citation `vandenkoornhuyse2015importance' on page 2 undefined on input line 149.
+
+
+Package natbib Warning: Citation `zotz_plants_2016' on page 2 undefined on input line 149.
+
+
+Package natbib Warning: Citation `sasse2018feed' on page 2 undefined on input line 149.
+
+
+Package natbib Warning: Citation `rodriguez2009fungal' on page 2 undefined on input line 149.
+
+
+Package natbib Warning: Citation `zotz_plants_2016' on page 2 undefined on input line 151.
+
+
+Package natbib Warning: Citation `benzing2008vascular' on page 2 undefined on input line 151.
+
+
+Package natbib Warning: Citation `vega_fungal_2008' on page 2 undefined on input line 153.
+
+
+Package natbib Warning: Citation `martos2009independent' on page 2 undefined on input line 153.
+
+
+Package natbib Warning: Citation `leroy2019significant' on page 2 undefined on input line 153.
+
+
+Package natbib Warning: Citation `leroy2021taxonomic' on page 2 undefined on input line 153.
+
+
 
 
 pdfTeX warning (ext4): destination with the same identifier (name{page.2}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.156 
+l.158 
        [2]
-<Figures/sampling_protocol.png, id=134, 305.14pt x 519.12865pt>
-File: Figures/sampling_protocol.png Graphic file (type png)
-<use Figures/sampling_protocol.png>
-Package pdftex.def Info: Figures/sampling_protocol.png  used on input line 174.
-(pdftex.def)             Requested size: 203.1518pt x 345.62811pt.
+
+LaTeX Warning: Reference `tab:epiphytes' on page 3 undefined on input line 166.
+
+
+LaTeX Warning: Reference `tab:plant_families' on page 3 undefined on input line 174.
+
+
+LaTeX Warning: Reference `tab:plant_families' on page 3 undefined on input line 174.
+
 
 
 
 pdfTeX warning (ext4): destination with the same identifier (name{page.3}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.183 
+l.202 
        [3]
 
-[4 <./Figures/sampling_protocol.png>]
+LaTeX Warning: Reference `tab:plant_families' on page 4 undefined on input line 203.
 
-[5]
-<Figures/rarefaction_alpha_div.png, id=201, 1438.37375pt x 1032.85875pt>
-File: Figures/rarefaction_alpha_div.png Graphic file (type png)
-<use Figures/rarefaction_alpha_div.png>
-Package pdftex.def Info: Figures/rarefaction_alpha_div.png  used on input line 259.
-(pdftex.def)             Requested size: 483.69687pt x 347.32185pt.
+<Figures/echantillonnage.png, id=56, 1762.08313pt x 475.7775pt>
+File: Figures/echantillonnage.png Graphic file (type png)
+<use Figures/echantillonnage.png>
+Package pdftex.def Info: Figures/echantillonnage.png  used on input line 214.
+(pdftex.def)             Requested size: 483.69687pt x 130.60327pt.
+
+Package natbib Warning: Citation `leponce2024unveiling' on page 4 undefined on input line 223.
 
 
-LaTeX Warning: `!h' float specifier changed to `!ht'.
+Package natbib Warning: Citation `leponce2024unveiling' on page 4 undefined on input line 223.
+
+
+
+[4]
+
+LaTeX Warning: Reference `fig:ma_figure' on page 5 undefined on input line 227.
+
+
+Package natbib Warning: Citation `leponce2024unveiling' on page 5 undefined on input line 227.
+
+
+LaTeX Warning: Reference `fig:ma_figure' on page 5 undefined on input line 227.
+
+
+Package natbib Warning: Citation `turenne1999rapid' on page 5 undefined on input line 227.
+
+
+Package natbib Warning: Citation `op2014comparison' on page 5 undefined on input line 227.
+
+
+LaTeX Warning: Reference `fig:ma_figure' on page 5 undefined on input line 227.
+
+
+Package natbib Warning: Citation `boyer2016obitools' on page 5 undefined on input line 230.
+
+
+Package natbib Warning: Citation `mercier2013sumatra' on page 5 undefined on input line 230.
+
+
+Package natbib Warning: Citation `molder2025sustainable' on page 5 undefined on input line 230.
+
+
+Package natbib Warning: Citation `zinger2021metabar' on page 5 undefined on input line 230.
+
+
+Package natbib Warning: Citation `schnell2015tag' on page 5 undefined on input line 230.
+
+
+Package natbib Warning: Citation `zinger2021metabar' on page 5 undefined on input line 230.
+
+
+Package natbib Warning: Citation `chao2014rarefaction' on page 5 undefined on input line 240.
+
+
+
+[5 <./Figures/echantillonnage.png>]
+
+Package natbib Warning: Citation `chao2021measuring' on page 6 undefined on input line 242.
+
+
+Package natbib Warning: Citation `lex2014upset' on page 6 undefined on input line 254.
+
+
+Package natbib Warning: Citation `altman1991practical' on page 6 undefined on input line 265.
+
+
+Package natbib Warning: Citation `kolde2019pheatmap' on page 6 undefined on input line 265.
 
 
 
 [6]
 
-[7 <./Figures/rarefaction_alpha_div.png>]
-<Figures/upset_plots.png, id=224, 1438.37375pt x 1032.85875pt>
-File: Figures/upset_plots.png Graphic file (type png)
-<use Figures/upset_plots.png>
-Package pdftex.def Info: Figures/upset_plots.png  used on input line 313.
-(pdftex.def)             Requested size: 469.18654pt x 336.9044pt.
+Package natbib Warning: Citation `bray1957ordination' on page 7 undefined on input line 270.
 
 
-LaTeX Warning: `h' float specifier changed to `ht'.
+Package natbib Warning: Citation `kruskal1964nonmetric' on page 7 undefined on input line 270.
+
+
+Package natbib Warning: Citation `minchin1987evaluation' on page 7 undefined on input line 270.
+
+
+Package natbib Warning: Citation `kruskal1964nonmetric' on page 7 undefined on input line 270.
+
+
+Package natbib Warning: Citation `anderson2001new' on page 7 undefined on input line 270.
+
+
+Package natbib Warning: Citation `levins1968evolution' on page 7 undefined on input line 275.
+
+
+Package natbib Warning: Citation `hurlbert1978measurement' on page 7 undefined on input line 280.
+
+
+Package natbib Warning: Citation `colwell1971measurement' on page 7 undefined on input line 280.
+
+
+
+[7]
+
+Package natbib Warning: Citation `benjamini1995controlling' on page 8 undefined on input line 284.
+
+
+LaTeX Warning: Reference `fig:inext' on page 8 undefined on input line 297.
+
+
+LaTeX Warning: Reference `tab:diversite_alpha' on page 8 undefined on input line 299.
 
 
 
 [8]
-<Figures/heatmap_orders.png, id=233, 7026.25pt x 10037.5pt>
+<Figures/inext_hd.png, id=106, 5018.75pt x 3011.25pt>
+File: Figures/inext_hd.png Graphic file (type png)
+<use Figures/inext_hd.png>
+Package pdftex.def Info: Figures/inext_hd.png  used on input line 306.
+(pdftex.def)             Requested size: 483.69687pt x 290.20703pt.
+
+
+[9 <./Figures/inext_hd.png>]
+
+LaTeX Warning: Reference `fig:upset' on page 10 undefined on input line 351.
+
+
+LaTeX Warning: Reference `fig:upset' on page 10 undefined on input line 351.
+
+
+LaTeX Warning: Reference `fig:upset' on page 10 undefined on input line 351.
+
+<Figures/upset_hd.png, id=114, 1393.70688pt x 998.73125pt>
+File: Figures/upset_hd.png Graphic file (type png)
+<use Figures/upset_hd.png>
+Package pdftex.def Info: Figures/upset_hd.png  used on input line 359.
+(pdftex.def)             Requested size: 469.18654pt x 336.21146pt.
+
+
+[10]
+
+LaTeX Warning: Reference `fig:nmds' on page 11 undefined on input line 371.
+
+
+LaTeX Warning: Reference `tab:permanova' on page 11 undefined on input line 371.
+
+
+LaTeX Warning: Reference `tab:permanova_pairwise_final' on page 11 undefined on input line 371.
+
+
+LaTeX Warning: Reference `tab:permanova_pairwise_familles' on page 11 undefined on input line 374.
+
+
+LaTeX Warning: Reference `tab:permanova_pairwise_familles_lots' on page 11 undefined on input line 374.
+
+
+
+[11 <./Figures/upset_hd.png>]
+<Figures/ordination_global.png, id=128, 1300.86pt x 867.24pt>
+File: Figures/ordination_global.png Graphic file (type png)
+<use Figures/ordination_global.png>
+Package pdftex.def Info: Figures/ordination_global.png  used on input line 379.
+(pdftex.def)             Requested size: 483.69687pt x 322.46175pt.
+
+
+LaTeX Warning: Reference `fig:abondances' on page 12 undefined on input line 410.
+
+
+
+[12 <./Figures/ordination_global.png>]
+
+LaTeX Warning: Reference `fig:abondances_rel' on page 13 undefined on input line 414.
+
+<Figures/heatmap_orders.png, id=137, 2432.08624pt x 5018.75pt>
 File: Figures/heatmap_orders.png Graphic file (type png)
 <use Figures/heatmap_orders.png>
-Package pdftex.def Info: Figures/heatmap_orders.png  used on input line 328.
-(pdftex.def)             Requested size: 241.84843pt x 345.37517pt.
+Package pdftex.def Info: Figures/heatmap_orders.png  used on input line 430.
+(pdftex.def)             Requested size: 217.66211pt x 449.14088pt.
 
 
-[9 <./Figures/upset_plots.png>]
-<Figures/abondances_relatives.png, id=240, 1438.37375pt x 1032.85875pt>
+[13]
+<Figures/abondances_relatives.png, id=142, 1438.37375pt x 1032.85875pt>
 File: Figures/abondances_relatives.png Graphic file (type png)
 <use Figures/abondances_relatives.png>
-Package pdftex.def Info: Figures/abondances_relatives.png  used on input line 339.
-(pdftex.def)             Requested size: 435.32422pt x 312.58652pt.
+Package pdftex.def Info: Figures/abondances_relatives.png  used on input line 444.
+(pdftex.def)             Requested size: 338.58632pt x 243.1316pt.
 
 
-[10 <./Figures/heatmap_orders.png> <./Figures/abondances_relatives.png>]
-<Figures/NMDS.png, id=250, 1438.37375pt x 1032.85875pt>
-File: Figures/NMDS.png Graphic file (type png)
-<use Figures/NMDS.png>
-Package pdftex.def Info: Figures/NMDS.png  used on input line 356.
-(pdftex.def)             Requested size: 483.69687pt x 347.32185pt.
+[14 <./Figures/heatmap_orders.png> <./Figures/abondances_relatives.png>]
+<Figures/levins.png, id=151, 5018.75pt x 3011.25pt>
+File: Figures/levins.png Graphic file (type png)
+<use Figures/levins.png>
+Package pdftex.def Info: Figures/levins.png  used on input line 468.
+(pdftex.def)             Requested size: 483.69687pt x 290.20703pt.
 
 
-[11]
-<Figures/niches_levins.png, id=257, 1194.4625pt x 545.03625pt>
-File: Figures/niches_levins.png Graphic file (type png)
-<use Figures/niches_levins.png>
-Package pdftex.def Info: Figures/niches_levins.png  used on input line 390.
-(pdftex.def)             Requested size: 483.69687pt x 220.71352pt.
+[15 <./Figures/levins.png>]
+
+Package natbib Warning: Citation `vraalstad2002molecular' on page 16 undefined on input line 508.
 
 
-[12 <./Figures/NMDS.png>]
+Package natbib Warning: Citation `arnold_are_2000' on page 16 undefined on input line 508.
 
-[13 <./Figures/niches_levins.png>] (./DUSSEL-Mathys-RapportM1-2026.lof)
+
+Package natbib Warning: Citation `tedersoo2014global' on page 16 undefined on input line 508.
+
+
+Package natbib Warning: Citation `vorholt2012microbial' on page 16 undefined on input line 508.
+
+
+Package natbib Warning: Citation `miadlikowska2006new' on page 16 undefined on input line 509.
+
+
+
+[16]
+
+Package natbib Warning: Citation `nadkarni1981' on page 17 undefined on input line 513.
+
+
+Package natbib Warning: Citation `martinson2010' on page 17 undefined on input line 513.
+
+
+Package natbib Warning: Citation `dearnaley2007' on page 17 undefined on input line 513.
+
+
+Package natbib Warning: Citation `zotz_plants_2016' on page 17 undefined on input line 513.
+
+
+Package natbib Warning: Citation `Wang_psyc' on page 17 undefined on input line 515.
+
+
+Package natbib Warning: Citation `Tkaczuk_colony' on page 17 undefined on input line 515.
+
+
+
+[17]
+
+[18] (./DUSSEL-Mathys-RapportM1-2026.bbl)
+No file DUSSEL-Mathys-RapportM1-2026.lof.
 \tf@lof=\write5
 \openout5 = `DUSSEL-Mathys-RapportM1-2026.lof'.
 
- (./DUSSEL-Mathys-RapportM1-2026.lot)
+No file DUSSEL-Mathys-RapportM1-2026.lot.
 \tf@lot=\write6
 \openout6 = `DUSSEL-Mathys-RapportM1-2026.lot'.
 
 
 
-[14] (./DUSSEL-Mathys-RapportM1-2026.bbl)
+[19]
 
-[15] (./DUSSEL-Mathys-RapportM1-2026.aux)
- ***********
-LaTeX2e <2024-11-01> patch level 2
-L3 programming layer <2025-01-18>
- ***********
+Package natbib Warning: Citation `sahu2022surface' on page 20 undefined on input line 549.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:552: Undefined control sequence.
+l.552 Pour réaliser l'extraction d'ADN, \qty
+                                             {50}{\mg} de chaque échantillo...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:552: Undefined control sequence.
+l.552 ...éaliser l'extraction d'ADN, \qty{50}{\mg
+                                                  } de chaque échantillon o...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:552: Undefined control sequence.
+l.552 ...oyés avec des billes stériles (\qtylist
+                                                  {2;4}{\mm}) à l'aide d'un...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:552: Undefined control sequence.
+l.552 ...c des billes stériles (\qtylist{2;4}{\mm
+                                                  }) à l'aide d'un broyeur ...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:552: Undefined control sequence.
+l.552 ...royeur (Tissue Lyser II RETSCH) dans \qty
+                                                  {1400}{\micro\l} de tampon...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:552: Undefined control sequence.
+l.552 ...e Lyser II RETSCH) dans \qty{1400}{\micro
+                                                  \l} de tampon d'extraction...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:552: Undefined control sequence.
+l.552 ...00}{\micro\l} de tampon d'extraction (\SI
+                                                  {100}{mM} Trisma base, \SI...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:552: Undefined control sequence.
+l.552 ...extraction (\SI{100}{mM} Trisma base, \SI
+                                                  {1.4}{M} \ce{NaCl}, \SI{20...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:552: Undefined control sequence.
+l.552 ...\SI{100}{mM} Trisma base, \SI{1.4}{M} \ce
+                                                  {NaCl}, \SI{20}{mM} \ce{ED...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:552: Undefined control sequence.
+l.552 ...} Trisma base, \SI{1.4}{M} \ce{NaCl}, \SI
+                                                  {20}{mM} \ce{EDTA} \ce{Na2...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:552: Undefined control sequence.
+l.552 ...e, \SI{1.4}{M} \ce{NaCl}, \SI{20}{mM} \ce
+                                                  {EDTA} \ce{Na2/H2O}, 2\,\%...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:552: Undefined control sequence.
+l.552 ...}{M} \ce{NaCl}, \SI{20}{mM} \ce{EDTA} \ce
+                                                  {Na2/H2O}, 2\,\% CTAB, 2\,...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:552: Undefined control sequence.
+l.552 ...\% CTAB, 2\,\% PolyVinyl Pyrrolidone, \SI
+                                                  {0.1}{\%} d'acide ascorbiq...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:552: Undefined control sequence.
+l.552 ...rbique et $\beta$-mercaptoéthanol ; \qty
+                                                  {60}{\degreeCelsius}).
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:552: Undefined control sequence.
+l.552 ...ercaptoéthanol ; \qty{60}{\degreeCelsius
+                                                  }).
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:554: Undefined control sequence.
+l.554 ...bes ont été mis à incuber pendant \qty
+                                                  {30}{\minute} à \qty{60}{...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:554: Undefined control sequence.
+l.554 ...� mis à incuber pendant \qty{30}{\minute
+                                                  } à \qty{60}{\degreeCelsi...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:554: Undefined control sequence.
+l.554 ...incuber pendant \qty{30}{\minute} à \qty
+                                                  {60}{\degreeCelsius} dans ...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:554: Undefined control sequence.
+l.554 ...y{30}{\minute} à \qty{60}{\degreeCelsius
+                                                  } dans un agitateur (New B...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:554: Undefined control sequence.
+l.554 ...ation a été effectuée en ajoutant \qty
+                                                  {600}{\micro\l} de Dichlor...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:554: Undefined control sequence.
+l.554 ...� effectuée en ajoutant \qty{600}{\micro
+                                                  \l} de Dichlorométhane / ...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:554: Undefined control sequence.
+l.554 ...ue (25:24:1) avant centrifugation à \qty
+                                                  {9600}{rpm} pendant \qty{3...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:554: Undefined control sequence.
+l.554 ...ifugation à \qty{9600}{rpm} pendant \qty
+                                                  {30}{\minute} à \qty{20}{...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:554: Undefined control sequence.
+l.554 ... \qty{9600}{rpm} pendant \qty{30}{\minute
+                                                  } à \qty{20}{\degreeCelsi...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:554: Undefined control sequence.
+l.554 ...0}{rpm} pendant \qty{30}{\minute} à \qty
+                                                  {20}{\degreeCelsius} (Sigm...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:554: Undefined control sequence.
+l.554 ...y{30}{\minute} à \qty{20}{\degreeCelsius
+                                                  } (Sigma 4-16KS, Sigma, Al...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:554: Undefined control sequence.
+l.554 ... dans de nouveaux tubes Eppendorf de \qty
+                                                  {2}{\ml} pour une seconde ...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:554: Undefined control sequence.
+l.554 ...e nouveaux tubes Eppendorf de \qty{2}{\ml
+                                                  } pour une seconde déprot...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:554: Undefined control sequence.
+l.554 ... une seconde déprotéinisation avec \qty
+                                                  {500}{\micro\l} de Chlorof...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:554: Undefined control sequence.
+l.554 ... déprotéinisation avec \qty{500}{\micro
+                                                  \l} de Chloroforme / Alcoo...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:556: Undefined control sequence.
+l.556 ...nsféré dans des tubes Eppendorf de \qty
+                                                  {2}{\ml}. Les acides nucl�...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:556: Undefined control sequence.
+l.556 ...� dans des tubes Eppendorf de \qty{2}{\ml
+                                                  }. Les acides nucléiques ...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:556: Undefined control sequence.
+l.556 ...nt été précipités par l'ajout de \qty
+                                                  {120}{\micro\l} d'acétate...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:556: Undefined control sequence.
+l.556 ...�cipités par l'ajout de \qty{120}{\micro
+                                                  \l} d'acétate de sodium e...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:556: Undefined control sequence.
+l.556 ...0}{\micro\l} d'acétate de sodium et \qty
+                                                  {1}{\ml} d'isopropanol fro...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:556: Undefined control sequence.
+l.556 ...ro\l} d'acétate de sodium et \qty{1}{\ml
+                                                  } d'isopropanol froid (\qt...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:556: Undefined control sequence.
+l.556 ...et \qty{1}{\ml} d'isopropanol froid (\qty
+                                                  {-20}{\degreeCelsius}). Le...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:556: Undefined control sequence.
+l.556 ...opropanol froid (\qty{-20}{\degreeCelsius
+                                                  }). Les tubes ont été co...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:556: Undefined control sequence.
+l.556 ...). Les tubes ont été conservés à \qty
+                                                  {-20}{\degreeCelsius} pend...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:556: Undefined control sequence.
+l.556 ...é conservés à \qty{-20}{\degreeCelsius
+                                                  } pendant \qty{12}{\hour},...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:556: Undefined control sequence.
+l.556 ...à \qty{-20}{\degreeCelsius} pendant \qty
+                                                  {12}{\hour}, puis centrifu...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:556: Undefined control sequence.
+l.556 ...0}{\degreeCelsius} pendant \qty{12}{\hour
+                                                  }, puis centrifugés à \q...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:556: Undefined control sequence.
+l.556 ...qty{12}{\hour}, puis centrifugés à \qty
+                                                  {4}{\degreeCelsius} pendan...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:556: Undefined control sequence.
+l.556 ...is centrifugés à \qty{4}{\degreeCelsius
+                                                  } pendant \qty{30}{\minute...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:556: Undefined control sequence.
+l.556 ...s à \qty{4}{\degreeCelsius} pendant \qty
+                                                  {30}{\minute} à \qty{9600...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:556: Undefined control sequence.
+l.556 ...{\degreeCelsius} pendant \qty{30}{\minute
+                                                  } à \qty{9600}{rpm}. Apr�...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:556: Undefined control sequence.
+l.556 ...elsius} pendant \qty{30}{\minute} à \qty
+                                                  {9600}{rpm}. Après élimi...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:556: Undefined control sequence.
+l.556 ...ernier lavage a été effectué avec \qty
+                                                  {1}{\ml} d'éthanol à \SI...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:556: Undefined control sequence.
+l.556 ...lavage a été effectué avec \qty{1}{\ml
+                                                  } d'éthanol à \SI{70}{\%...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:556: Undefined control sequence.
+l.556 ...ctué avec \qty{1}{\ml} d'éthanol à \SI
+                                                  {70}{\%} froid (\qty{-20}{...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:556: Undefined control sequence.
+l.556 ...ml} d'éthanol à \SI{70}{\%} froid (\qty
+                                                  {-20}{\degreeCelsius}) sui...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:556: Undefined control sequence.
+l.556 ...I{70}{\%} froid (\qty{-20}{\degreeCelsius
+                                                  }) suivi d'une centrifugat...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:556: Undefined control sequence.
+l.556 ...sius}) suivi d'une centrifugation à \qty
+                                                  {4}{\degreeCelsius} pendan...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:556: Undefined control sequence.
+l.556 ... centrifugation à \qty{4}{\degreeCelsius
+                                                  } pendant \qty{20}{\minute...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:556: Undefined control sequence.
+l.556 ...n à \qty{4}{\degreeCelsius} pendant \qty
+                                                  {20}{\minute} à \qty{9600...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:556: Undefined control sequence.
+l.556 ...{\degreeCelsius} pendant \qty{20}{\minute
+                                                  } à \qty{9600}{rpm}. Enfi...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:556: Undefined control sequence.
+l.556 ...elsius} pendant \qty{20}{\minute} à \qty
+                                                  {9600}{rpm}. Enfin, l'éth...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:556: Undefined control sequence.
+l.556 ...ADN a été remis en suspension dans \qty
+                                                  {100}{\micro\l} de tampon ...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:556: Undefined control sequence.
+l.556 ...remis en suspension dans \qty{100}{\micro
+                                                  \l} de tampon TE (\SI{1.0}...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:556: Undefined control sequence.
+l.556 ...ans \qty{100}{\micro\l} de tampon TE (\SI
+                                                  {1.0}{M} Tris-HCl et \SI{0...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:556: Undefined control sequence.
+l.556 ...de tampon TE (\SI{1.0}{M} Tris-HCl et \SI
+                                                  {0.1}{M} \ce{EDTA}) et con...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:556: Undefined control sequence.
+l.556 ... (\SI{1.0}{M} Tris-HCl et \SI{0.1}{M} \ce
+                                                  {EDTA}) et conservé à \q...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:556: Undefined control sequence.
+l.556 ...I{0.1}{M} \ce{EDTA}) et conservé à \qty
+                                                  {-20}{\degreeCelsius}.
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:556: Undefined control sequence.
+l.556 ... et conservé à \qty{-20}{\degreeCelsius
+                                                  }.
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
 
 
-LaTeX Warning: There were multiply-defined labels.
 
-Package rerunfilecheck Info: File `DUSSEL-Mathys-RapportM1-2026.out' has not changed.
-(rerunfilecheck)             Checksum: 5D1342D380140FF77048EBF84B681D74;2667.
- ) 
+[20{/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}]
+
+[21]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 703.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `superscript' on input line 703.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 703.
+
+
+
+[22]
+
+[23]
+
+[24]
+
+Package natbib Warning: There were undefined citations.
+
+
+
+[25]
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:853: I can't find file `DUSSEL-Mathys-RapportM1-2026.aux'.
+\enddocument ...keatletter \@@input \jobname .aux 
+                                                  \fi \UseOneTimeHook {enddo...
+l.853 \end{document}
+                    
+(Press Enter to retry, or Control-D to exit)
+Please type another input file name
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:853: Emergency stop.
+\enddocument ...keatletter \@@input \jobname .aux 
+                                                  \fi \UseOneTimeHook {enddo...
+l.853 \end{document}
+                    
+*** (job aborted, file error in nonstop mode)
+
+ 
 Here is how much of TeX's memory you used:
- 13543 strings out of 473190
- 217608 string characters out of 5715800
- 644821 words of memory out of 5000000
- 36532 multiletter control sequences out of 15000+600000
- 576662 words of font info for 69 fonts, out of 8000000 for 9000
+ 13646 strings out of 473190
+ 217856 string characters out of 5715800
+ 695115 words of memory out of 5000000
+ 36633 multiletter control sequences out of 15000+600000
+ 581657 words of font info for 81 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,13n,79p,1160b,563s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfcc1200.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfcc1440.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfcc1728.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfsi1200.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfsi1440.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfss0800.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfss1000.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfss1200.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfss1440.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfsx0800.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfsx1000.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfsx1200.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfsx1440.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfsx1728.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfsx2488.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sftt1200.pfb>
-Output written on DUSSEL-Mathys-RapportM1-2026.pdf (19 pages, 10697662 bytes).
-PDF statistics:
- 439 PDF objects out of 1000 (max. 8388607)
- 341 compressed objects within 4 object streams
- 70 named destinations out of 1000 (max. 500000)
- 171 words of extra memory for PDF output out of 10000 (max. 10000000)
-
+ 75i,11n,79p,2249b,563s stack positions out of 10000i,1000n,20000p,200000b,200000s
+/Users/mathys/Documents/Etudes/Stage_projet_LOT/CRBE/Rapport/Academique/DUSSEL-Mathys-RapportM1-2026.tex:853:  ==> Fatal error occurred, no output PDF file produced!
