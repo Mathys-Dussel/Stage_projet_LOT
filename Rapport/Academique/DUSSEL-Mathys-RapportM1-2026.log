@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2026.1.27)  4 MAY 2026 14:02
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2026.1.27)  5 MAY 2026 16:57
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -609,7 +609,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.2}) has b
 l.170 C
        ette étude s’inscrit dans le projet Life on Trees (LOT, \url{https... [2]
 
-LaTeX Warning: Reference `tab:epiphytes' on page 3 undefined on input line 180.
+LaTeX Warning: Reference `tab:epiphytes' on page 3 undefined on input line 181.
 
 
 
@@ -617,12 +617,12 @@ LaTeX Warning: Reference `tab:epiphytes' on page 3 undefined on input line 180.
 pdfTeX warning (ext4): destination with the same identifier (name{page.3}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.216 
+l.217 
        [3]
 <Figures/echantillonnage.png, id=175, 1762.08313pt x 475.7775pt>
 File: Figures/echantillonnage.png Graphic file (type png)
 <use Figures/echantillonnage.png>
-Package pdftex.def Info: Figures/echantillonnage.png  used on input line 228.
+Package pdftex.def Info: Figures/echantillonnage.png  used on input line 227.
 (pdftex.def)             Requested size: 483.69687pt x 130.60327pt.
 
 
@@ -638,7 +638,7 @@ Package pdftex.def Info: Figures/echantillonnage.png  used on input line 228.
 <Figures/inext_hd.png, id=297, 5018.75pt x 3011.25pt>
 File: Figures/inext_hd.png Graphic file (type png)
 <use Figures/inext_hd.png>
-Package pdftex.def Info: Figures/inext_hd.png  used on input line 320.
+Package pdftex.def Info: Figures/inext_hd.png  used on input line 319.
 (pdftex.def)             Requested size: 483.69687pt x 290.20703pt.
 
 
@@ -646,17 +646,17 @@ Package pdftex.def Info: Figures/inext_hd.png  used on input line 320.
 <Figures/upset_hd.png, id=307, 1393.70688pt x 998.73125pt>
 File: Figures/upset_hd.png Graphic file (type png)
 <use Figures/upset_hd.png>
-Package pdftex.def Info: Figures/upset_hd.png  used on input line 373.
+Package pdftex.def Info: Figures/upset_hd.png  used on input line 372.
 (pdftex.def)             Requested size: 469.18654pt x 336.21146pt.
 
 
 [10]
 
 [11 <./Figures/upset_hd.png>]
-<Figures/ordination_global.png, id=331, 1300.86pt x 867.24pt>
+<Figures/ordination_global.png, id=329, 1300.86pt x 867.24pt>
 File: Figures/ordination_global.png Graphic file (type png)
 <use Figures/ordination_global.png>
-Package pdftex.def Info: Figures/ordination_global.png  used on input line 393.
+Package pdftex.def Info: Figures/ordination_global.png  used on input line 396.
 (pdftex.def)             Requested size: 483.69687pt x 322.46175pt.
 
 
@@ -664,11 +664,11 @@ Package pdftex.def Info: Figures/ordination_global.png  used on input line 393.
 <Figures/heatmap_orders.png, id=342, 2432.08624pt x 5018.75pt>
 File: Figures/heatmap_orders.png Graphic file (type png)
 <use Figures/heatmap_orders.png>
-Package pdftex.def Info: Figures/heatmap_orders.png  used on input line 444.
+Package pdftex.def Info: Figures/heatmap_orders.png  used on input line 450.
 (pdftex.def)             Requested size: 217.66211pt x 449.14088pt.
 
-Underfull \hbox (badness 2790) in paragraph at lines 450--450
-\T1/cmss/m/n/12 mi-cro-ha-bi-tat. \T1/cmss/m/n/8 Le den-dro-gramme re-
+Underfull \hbox (badness 1881) in paragraph at lines 457--457
+[]\T1/cmss/m/n/8 Carte de cha-leur (heat-map) re-pr�-sen-tant
  []
 
 
@@ -677,15 +677,20 @@ Underfull \hbox (badness 2790) in paragraph at lines 450--450
 <Figures/abondances_relatives.png, id=348, 1438.37375pt x 1032.85875pt>
 File: Figures/abondances_relatives.png Graphic file (type png)
 <use Figures/abondances_relatives.png>
-Package pdftex.def Info: Figures/abondances_relatives.png  used on input line 460.
+Package pdftex.def Info: Figures/abondances_relatives.png  used on input line 467.
 (pdftex.def)             Requested size: 338.58632pt x 243.1316pt.
+
+Underfull \hbox (badness 1112) in paragraph at lines 474--476
+\T1/cmss/m/n/8 et par po-si-tion (en-do-phytes en
+ []
+
 
 
 [14 <./Figures/heatmap_orders.png> <./Figures/abondances_relatives.png>]
 <Figures/levins.png, id=355, 5018.75pt x 3011.25pt>
 File: Figures/levins.png Graphic file (type png)
 <use Figures/levins.png>
-Package pdftex.def Info: Figures/levins.png  used on input line 484.
+Package pdftex.def Info: Figures/levins.png  used on input line 494.
 (pdftex.def)             Requested size: 483.69687pt x 290.20703pt.
 
 
@@ -697,9 +702,11 @@ Package pdftex.def Info: Figures/levins.png  used on input line 484.
 
 [18]
 
-[19])
+[19]
 
-[20] (./DUSSEL-Mathys-RapportM1-2026.lof)
+[20])
+
+[21] (./DUSSEL-Mathys-RapportM1-2026.lof)
 \tf@lof=\write5
 \openout5 = `DUSSEL-Mathys-RapportM1-2026.lof'.
 
@@ -709,32 +716,32 @@ Package pdftex.def Info: Figures/levins.png  used on input line 484.
 
 
 
-[21]
+[22]
 
-[22{/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}]
-
-[23]
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 719.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `superscript' on input line 719.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 719.
-
-
+[23{/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}]
 
 [24]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 732.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `superscript' on input line 732.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 732.
+
+
 
 [25]
 
 [26]
 
-[27] (./DUSSEL-Mathys-RapportM1-2026.aux)
+[27]
+
+[28] (./DUSSEL-Mathys-RapportM1-2026.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
@@ -747,18 +754,18 @@ Package rerunfilecheck Info: File `DUSSEL-Mathys-RapportM1-2026.out' has not cha
 (rerunfilecheck)             Checksum: 35582BC917C8D3D4E550890F8C0268B6;3892.
  ) 
 Here is how much of TeX's memory you used:
- 19063 strings out of 473190
- 373600 string characters out of 5715800
- 828693 words of memory out of 5000000
- 41951 multiletter control sequences out of 15000+600000
+ 19080 strings out of 473190
+ 374039 string characters out of 5715800
+ 828851 words of memory out of 5000000
+ 41963 multiletter control sequences out of 15000+600000
  583916 words of font info for 85 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,11n,79p,2249b,1283s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,11n,79p,2249b,1313s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfcc1200.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfcc1440.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfcc1728.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfsi1000.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfsi1095.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfsi1200.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfsi1440.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfss0800.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfss1000.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfss1095.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfss1200.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfss1440.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfsx0800.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfsx1000.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfsx1095.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfsx1200.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfsx1440.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfsx1728.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfsx2488.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sftt1200.pfb>
-Output written on DUSSEL-Mathys-RapportM1-2026.pdf (31 pages, 12697273 bytes).
+Output written on DUSSEL-Mathys-RapportM1-2026.pdf (32 pages, 12702189 bytes).
 PDF statistics:
- 651 PDF objects out of 1000 (max. 8388607)
- 528 compressed objects within 6 object streams
- 119 named destinations out of 1000 (max. 500000)
+ 670 PDF objects out of 1000 (max. 8388607)
+ 546 compressed objects within 6 object streams
+ 124 named destinations out of 1000 (max. 500000)
  192 words of extra memory for PDF output out of 10000 (max. 10000000)
 

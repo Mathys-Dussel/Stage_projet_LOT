@@ -35,6 +35,11 @@ Bray, J.~R. and Curtis, J.~T. (1957).
 \newblock An ordination of the upland forest communities of southern wisconsin.
 \newblock {\em Ecological monographs}, 27(4):326--349.
 
+\bibitem[Broeckling et~al., 2008]{broeckling2008root}
+Broeckling, C.~D., Broz, A.~K., Bergelson, J., Manter, D.~K., and Vivanco, J.~M. (2008).
+\newblock Root exudates regulate soil fungal community composition and diversity.
+\newblock {\em Applied and environmental microbiology}, 74(3):738--744.
+
 \bibitem[Chao et~al., 2014]{chao2014rarefaction}
 Chao, A., Gotelli, N.~J., Hsieh, T., Sander, E.~L., Ma, K., Colwell, R.~K., and Ellison, A.~M. (2014).
 \newblock Rarefaction and extrapolation with hill numbers: a framework for sampling and estimation in species diversity studies.
@@ -60,10 +65,20 @@ Finlay, R.~D. (2008).
 \newblock Ecological aspects of mycorrhizal symbiosis: with special emphasis on the functional diversity of interactions involving the extraradical mycelium.
 \newblock {\em Journal of experimental botany}, 59(5):1115--1126.
 
+\bibitem[Glassman et~al., 2018]{glassman2018decomposition}
+Glassman, S.~I., Weihe, C., Li, J., Albright, M.~B., Looby, C.~I., Martiny, A.~C., Treseder, K.~K., Allison, S.~D., and Martiny, J.~B. (2018).
+\newblock Decomposition responses to climate depend on microbial community composition.
+\newblock {\em Proceedings of the National Academy of Sciences}, 115(47):11994--11999.
+
 \bibitem[Hurlbert, 1978]{hurlbert1978measurement}
 Hurlbert, S.~H. (1978).
 \newblock The measurement of niche overlap and some relatives.
 \newblock {\em Ecology}, 59(1):67--77.
+
+\bibitem[Kembel and Mueller, 2014]{kembel2014plant}
+Kembel, S.~W. and Mueller, R.~C. (2014).
+\newblock Plant traits and taxonomy drive host associations in tropical phyllosphere fungal communities.
+\newblock {\em Botany}, 92(4):303--311.
 
 \bibitem[Kolde et~al., 2019]{kolde2019pheatmap}
 Kolde, R. et~al. (2019).
@@ -140,8 +155,13 @@ Op~De~Beeck, M., Lievens, B., Busschaert, P., Declerck, S., Vangronsveld, J., an
 \newblock Comparison and validation of some its primer pairs useful for fungal metabarcoding studies.
 \newblock {\em PloS one}, 9(6):e97629.
 
-\bibitem[Rodriguez et~al., 2009]{rodriguez2009fungal}
-Rodriguez, R.~J., White~Jr, J., Arnold, A.~E., and Redman, a. R.~a. (2009).
+\bibitem[Rodriguez et~al., 2009a]{rodriguez2009fungal}
+Rodriguez, R.~J., White~Jr, J., Arnold, A.~E., and Redman, a. R.~a. (2009a).
+\newblock Fungal endophytes: diversity and functional roles.
+\newblock {\em New phytologist}, 182(2):314--330.
+
+\bibitem[Rodriguez et~al., 2009b]{rodriguez_fungal_2009}
+Rodriguez, R.~J., White~Jr, J.~F., Arnold, A.~E., and Redman, R.~S. (2009b).
 \newblock Fungal endophytes: diversity and functional roles.
 \newblock {\em New phytologist}, 182(2):314--330.
 

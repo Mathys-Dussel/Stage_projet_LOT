@@ -114,7 +114,7 @@
 \section*{Avant-propos}
 Ce travail de stage d’initiation à la recherche s'inscrit dans le cadre du projet international « Life on Trees » (LOT), dont l'objectif est d'étudier la biodiversité des canopées tropicales. Les données utilisées dans ce rapport sont issues de campagnes d'échantillonnage réalisées préalablement au Pérou et en Colombie par les membres du projet. Par conséquent, je n'ai pas participé à la collecte des spécimens sur le terrain, ni aux étapes de laboratoire incluant l'extraction de l'ADN et le séquençage à haut débit. Le traitement bioinformatique primaire, permettant de transformer les séquences brutes en données exploitables, avait également été effectué avant mon arrivée au laboratoire.  
 
-Mon implication personnelle a débuté précisément à l'étape de l'analyse de données sous l'environnement R. Le point de départ de mon travail a été l'exploitation d'un objet « Phyloseq » contenant l'ensemble des données déjà structurées. À partir de cette base, j'ai réalisé l'intégralité des analyses de diversité présentées dans ce mémoire, incluant le filtrage des données, le calcul des indices de diversité alpha et bêta, ainsi que l'étude de la spécialisation des niches fongiques par les indices de Levins. J'ai également pris en charge l'interprétation biologique de ces résultats au regard de la littérature scientifique actuelle.
+Mon implication personnelle a débuté précisément à l'étape de l'analyse de données sous R. Le point de départ de mon travail a été l'exploitation et le tri d'un objet « Phyloseq » contenant l'ensemble des données déjà structurées. À partir de cette base, j'ai réalisé l'intégralité des analyses de diversité présentées dans ce mémoire, incluant le filtrage des données, le calcul des indices de diversité alpha et bêta, ainsi que l'étude de la spécialisation des niches fongiques par les indices de Levins. J'ai également pris en charge l'interprétation biologique de ces résultats au regard de la littérature scientifique actuelle.
 
 Concernant les outils numériques, la majorité de mes scripts d'analyse a été développée en adaptant des codes existants mis à disposition sur les plateformes d'aide à l'utilisation des packages (vignettes, forums spécialisés). Les parties spécifiques à mes hypothèses de recherche ont, quant à elles, été écrites de novo. J'ai par ailleurs sollicité l'intelligence artificielle de manière ciblée pour déboguer mes scripts efficacement et limiter la perte de temps sur des erreurs de syntaxe complexes. Néanmoins, la réflexion scientifique, le choix des tests statistiques et la rédaction finale du manuscrit restent le fruit d'un travail personnel validé par ma tutrice de stage.
 
@@ -126,7 +126,7 @@ Je tiens tout d’abord à remercier chaleureusement ma tutrice de stage, Célin
 
 Je remercie également Régis Céréghino de m'avoir orienté vers ce stage et de m'avoir permis de réintégrer le projet Life on Trees. 
 
-Enfin, je remercie tout particulièrement ma copine et ma mère pour leur soutien et pour avoir pris le temps de relire mon travail.
+Enfin, je remercie tout particulièrement ma mère et ma conjointe pour leur soutien et pour avoir pris le temps de relire mon travail.
 \newpage
 
 
@@ -138,14 +138,14 @@ Enfin, je remercie tout particulièrement ma copine et ma mère pour leur soutie
 \setcounter{page}{1}
 \section{Résumé}
 
-Cette étude explore la composition et la structuration des communautés fongiques associées aux plantes épiphytes vasculaires dans trois sites des Andes tropicales (Pérou et Colombie), s'échelonnant de 400 à 2400 mètres d'altitude. En utilisant une approche de métabarcoding (gène ITS2), nous avons caractérisé les mycobiomes de 15 familles de plantes, en distinguant les organes (racines vs feuilles) et la position au sein des tissus (épiphytes vs endophytes).  
+Cette étude explore la composition et la structuration des communautés fongiques associées aux plantes épiphytes vasculaires dans trois sites des Andes tropicales (Pérou et Colombie), s'échelonnant de 400 à 2400 mètres d'altitude. À l'aide d'une approche de métabarcoding (gène ITS2), les mycobiomes de 15 familles de plantes ont été caractérisés, en distinguant les organes (racines vs feuilles) et la position au sein des tissus (épiphytes vs endophytes).  
 
 Les résultats révèlent que le microhabitat est le principal moteur de la diversité fongique. Les racines se distinguent par la diversité alpha la plus élevée et une forte spécialisation, marquée par l'abondance des Agaricomycetes et des Leotiomycetes. À l'inverse, les feuilles (jeunes et vieilles) hébergent des communautés plus homogènes, dominées par les Dothideomycetes et les Sordariomycetes.  
-
 
 Bien que secondaire par rapport à l'organe, le site géographique influence significativement l'assemblage des communautés, reflétant l'impact des gradients environnementaux comme l'altitude : le site de haute altitude (LOT3) favorise les Helotiales, tandis que le site amazonien (LOT1) est dominé par les Hypocreales. L'identité de la plante hôte, bien que significative, joue un rôle plus modeste dans la structuration du mycobiome.  
 
 Cette étude souligne la complexité des interactions entre les champignons et les épiphytes en canopée tropicale et démontre que chaque compartiment de la plante constitue une niche écologique stable et spécialisée, essentielle à la survie de l'hôte dans des environnements contraints en nutriments.  
+
 
 
 \textbf{Mots-clés :} Fongique, Epiphyte, Tropical, Diversité, Assemblage, Communauté.
@@ -167,8 +167,9 @@ Les plantes épiphytes,  qui  représentent une part considérable de la flore d
 Malgré leur importance écologique, les communautés fongiques associées aux plantes épiphytes  restent peu étudiées. Les recherches se sont principalement focalisées sur les plantes terrestres et  notamment celles présentant  un intérêt agronomique \citep{vega_fungal_2008}. Chez les épiphytes, la plupart des études portent sur quelques groupes emblématiques, notamment les Orchidaceae, qui  dépendent des champignons mycorhiziens lors de la germination \citep{martos2009independent}. Les associations fongiques sont également importantes pour la germination et la survie d’Aechmea mertensii (Bromeliaceae, \citep{leroy2019significant}). Cette famille, diversifiée sur le plan écologique, regroupe des espèces aux stratégies adaptatives variées: certaines sont terrestres, d’autres strictement épiphytes, certaines possèdent des réservoirs d’eau et d’autres en sont dépourvues. Ces différences influencent la composition des communautés fongiques associées aux systèmes racinaires \citep{leroy2021taxonomic}. Par ailleurs, les autres lignées de plantes épiphytes vasculaires qui présentent également une grande diversité d’adaptations, soulignent l’importance d’étudier la diversité et la structuration de leurs mycobiomes.
 
 
-Cette étude s’inscrit dans le projet Life on Trees (LOT, \url{https://www.lifeontrees.org}) dont l’objectif est d’inventorier l’ensemble de la diversité des eucaryotes et micro-eucaryotes (animaux, plantes, champignons, protistes) présents à l’échelle d’un arbre. Bien qu’ubiquistes, les micro-organismes restent largement négligés dans les inventaires de biodiversité classiques. Grâce au développement d’outils innovants, tels que l’ADN environnemental et le métabarcoding, il est maintenant possible de caractériser les microorganismes présents. Le projet LOT visait donc à générer des données de référence sur la diversité et l’assemblage des communautés et à mieux comprendre les mécanismes qui les sous-tendent. Dans le cadre de la présente étude, l’objectif a été d’explorer la composition et l’assemblage des communautés fongiques associées aux plantes épiphytes présentes sur trois arbres distincts des Andes tropicales. Plus précisément, nous avons analysé les racines et les feuilles, en distinguant systématiquement les surfaces externes (épiphytes) des tissus internes (endophytes). Nous anticipons que les communautés fongiques varieront significativement entre les trois arbres étudiés, en fonction des groupes taxonomiques d’épiphytes et des organes échantillonnés (racines vs feuilles). De plus, les mycobiomes différeront entre les tissus internes et les surfaces, en raison des conditions environnementales contrastées que ces deux microhabitats offrent. 
-Dans cette étude, les microhabitats correspondent aux différents compartiments de la plante (racines, feuilles jeunes, feuilles vieilles) et à leur position (surface épiphyte ou intérieur endophyte), chacun représentant un environnement écologique distinct pour les communautés fongiques.
+Cette étude s’inscrit dans le projet Life on Trees (LOT, \url{https://www.lifeontrees.org}) dont l’objectif est d’inventorier l’ensemble de la diversité des eucaryotes et micro-eucaryotes (animaux, plantes, champignons, protistes) présents à l’échelle d’un arbre. Bien qu’ubiquistes, les micro-organismes restent largement négligés dans les inventaires de biodiversité classiques. Grâce au développement d’outils innovants, tels que l’ADN environnemental et le métabarcoding, il est maintenant possible de caractériser les microorganismes présents. 
+Le projet LOT visait donc à générer des données de référence sur la diversité et l’assemblage des communautés et à mieux comprendre les mécanismes qui les sous-tendent. Dans le cadre de la présente étude, l’objectif a été d’explorer la composition et l’assemblage des communautés fongiques associées aux plantes épiphytes présentes sur trois arbres distincts des Andes tropicales. Plus précisément, nous avons analysé les racines et les feuilles, en distinguant systématiquement les surfaces externes (épiphytes) des tissus internes (endophytes). Nous anticipons que les communautés fongiques varieront significativement entre les trois arbres étudiés, en fonction des groupes taxonomiques d’épiphytes et des organes échantillonnés (racines vs feuilles). De plus, les mycobiomes différeront entre les tissus internes (endophytes)  et les surfaces (épiphytes), en raison des conditions environnementales contrastées que ces deux microhabitats offrent. 
+Dans cette étude, les microhabitats correspondent aux différents compartiments de la plante (racines, feuilles jeunes, feuilles vieilles) et à leur position (épiphyte ou endophyte), chacun représentant un environnement écologique distinct pour les communautés fongiques.
 
 
 
@@ -177,7 +178,7 @@ Dans cette étude, les microhabitats correspondent aux différents compartiments
 \subsection{Sites d'étude et plantes échantillonnées}
 
 Les trois arbres étudiés dans le projet LOT s’échelonnent le long d’un gradient altitudinal (400, 800 et  2500 m) dans les Andes péruviennes et colombiennes. Cette répartition permet de couvrir une gamme de conditions environnementales, bien que l’effet direct de l’altitude ou des facteurs abiotiques n’ait pas été testé de façon spécifique dans ce travail : Le site LOT1 se situe à environ 400 mètres d’altitude  en Amazonie péruvienne le site LOT2 est à 800 mètres, dans une zone de transition entre forêt tropicale et piémont andin au Pérou, et - le site LOT3 culmine à 2400 mètres, au cœur de la forêt de nuage andine en Colombie, caractérisée par des températures plus fraîches et une humidité persistante. Les arbres sélectionnés pour leur couronne imposante étaient  \textit{Dussia tessmannii} (Fabaceae) pour le site LOT1, \textit{Ficus americana subsp. andicola} (Moraceae) pour le site LOT2 et \textit{Brosimum cf. utile} (Moraceae) pour le site LOT3. 
-Les plantes épiphytes échantillonnées sur ces trois arbres couvrent une large diversité taxonomique, comme l’illustre le tableau \ref{tab:epiphytes}. Elles appartiennent à 15 familles principales, dont les plus représentées sont les Orchidaceae, Bromeliaceae et Araceae. Ces groupes sont caractéristiques des canopées tropicales et jouent un rôle clé dans la structuration de la flore épiphyte.. En couvrant un large spectre de formes végétales, de tailles et de stratégies écologiques, l’échantillonnage offre un aperçu représentatif de la flore épiphyte vasculaire des Andes tropicales.
+Les plantes épiphytes échantillonnées sur ces trois arbres couvrent une large diversité taxonomique, comme l’illustre le tableau \ref{tab:epiphytes}. Elles appartiennent à 15 familles principales, dont les plus représentées sont les Orchidaceae, Bromeliaceae et Araceae. Ces groupes sont caractéristiques des canopées tropicales et jouent un rôle clé dans la structuration de la flore épiphyte. En couvrant un large spectre de formes végétales, de tailles et de stratégies écologiques, l’échantillonnage offre un aperçu représentatif de la flore épiphyte vasculaire des Andes tropicales.
 
 
 \begin{table}[H]
@@ -216,9 +217,7 @@ Les plantes épiphytes échantillonnées sur ces trois arbres couvrent une large
 
 Les plantes épiphytes échantillonnées dans le cadre de cette étude couvrent une large diversité taxonomique, comme l’illustre le Tableau~\ref{tab:plant_families}. Elles appartiennent à quinze familles principales, dont les plus représentées sont les Orchidaceae, Bromeliaceae et Araceae. Ces groupes sont caractéristiques des canopées tropicales et jouent un rôle clé dans la structuration de la flore épiphyte. Les Orchidaceae, avec plus de 350 individus recensés, témoignent de leur importance écologique et de leur diversité remarquable dans ces milieux. Les Bromeliaceae, également très abondantes, sont connues pour leurs adaptations à la vie suspendue, notamment la capacité à stocker l’eau dans leurs rosettes foliaires. Les Araceae, quant à elles, illustrent la variété des stratégies morphologiques adoptées par les épiphytes pour coloniser différents microhabitats de l’arbre hôte.
 
-Cette diversité d’espèces et de familles permet d’explorer comment l’identité phylogénétique des plantes épiphytes pourrait influencer la composition et la diversité des communautés fongiques associées. L’échantillonnage couvre un large spectre de formes de vie, de tailles et de stratégies écologiques. Il offre ainsi un aperçu représentatif de la flore épiphyte vasculaire des Andes péruviennes. Cependant, aucune donnée sur les traits fonctionnels des plantes n’a été récoltée dans cette étude. Il n’a donc pas été possible de tester directement leur effet sur la structuration des communautés fongiques.
-
-Il est important de rappeler que le projet \textit{Life on Trees} n’avait pas pour objectif principal l’étude des communautés fongiques. L’échantillonnage des plantes épiphytes n’a donc pas été conçu pour optimiser spécifiquement l’analyse des communautés fongiques. Par conséquent, la représentativité ou l’exhaustivité des communautés fongiques associées pourrait être limitée par ce protocole. Certains biais d’échantillonnage ne peuvent donc être exclus pour les analyses mycologiques.
+Cette diversité d’espèces et de familles permet d’explorer comment l’identité phylogénétique des plantes épiphytes pourrait influencer la composition et la diversité des communautés fongiques associées. L’échantillonnage couvre un large spectre de formes de vie, de tailles et de stratégies écologiques. Il offre ainsi un aperçu représentatif de la flore épiphyte vasculaire des Andes tropicales. 
 
 \subsection{Echantillonnage fongiques et bioinformatique}
 
@@ -352,7 +351,7 @@ Les écarts entre sites restent moins prononcés que ceux observés entre organe
                 \hline
             \end{tabular}%
             }}
-\caption{Diversité alpha des communautés fongiques selon la catégorie et l'assemblage.}
+\caption{Indices de diversité alpha des communautés fongiques par compartiment végétal et par site.}
             \label{tab:diversite_alpha}
 
     \end{table}
@@ -371,7 +370,11 @@ Enfin, l’analyse selon la position (épiphyte/endophyte) montre que chaque com
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.97\textwidth]{Figures/upset_hd.png}
-    \caption{Analyse des intersections d'OTUs entre les différents compartiments et sites (diagrammes UpSet).}
+    \caption[Analyse du partage et de l’exclusivité des OTUs fongiques par microhabitat.]{Analyse du partage et de l’exclusivité des OTUs fongiques par microhabitat.
+
+    \scriptsize
+    Diagrammes UpSet illustrant les intersections d’OTUs entre les différents compartiments et sites d'étude. (A) Analyse globale incluant toutes les combinaisons de sites, organes et positions. (B, C, D) Répartition spécifique pour les sites LOT1, LOT2 et LOT3. Les barres verticales représentent le nombre d'OTUs partagés ou exclusifs à chaque intersection, tandis que les barres horizontales à gauche indiquent la richesse totale (Set Size) de chaque compartiment. Les points reliés par des traits noirs identifient les microhabitats mis en relation.
+    }
     \label{fig:upset}
 \end{figure}
 
@@ -391,7 +394,10 @@ Enfin, la famille de plante hôte explique une part significative mais plus mode
 \begin{figure}[h!]
     \centering
     \includegraphics[width=1\textwidth]{Figures/ordination_global.png}
-    \caption{Ordination NMDS des communautés fongiques selon les sites et les organes.}
+    \caption[Analyses de la diversité bêta des communautés fongiques par ordination NMDS.]{Analyses de la diversité bêta des communautés fongiques par ordination NMDS.
+
+    \scriptsize
+    Projections NMDS basées sur des distances de Bray-Curtis illustrant la dissimilarité de composition entre les échantillons. (A) Structure globale montrant un regroupement net par site d'étude (LOT 1, 2 et 3). (B, C, D) Visualisation par site mettant en évidence la séparation des communautés selon l’organe (racines vs feuilles) et la position (épiphytes vs endophytes). Les ellipses représentent les intervalles de confiance à 95 \%.}
     \label{fig:nmds}
 \end{figure}
 
@@ -445,9 +451,10 @@ Ainsi, la composition des communautés fongiques varie principalement selon l’
     \end{minipage}
     \hfill
     \begin{minipage}[c]{0.33\textwidth}
-        \caption[Tableau des OTUs les plus abondants dans chaque microhabitat.]{Tableau des OTUs les plus abondants dans chaque microhabitat. 
+        \caption[Structuration taxonomique des ordres fongiques par microhabitat et site d'étude.]{Structuration taxonomique des ordres fongiques par microhabitat et site d'étude. 
+
         \scriptsize
-        Le dendrogramme représente le regroupement hiérarchique des Ordres selon leurs profils d'abondance relative. }
+        Carte de chaleur (heatmap) représentant l'abondance relative (Z-score des log10) des principaux ordres fongiques. Les colonnes sont regroupées par site (LOT1, LOT2, LOT3), organe (racine, feuille jeune/âgée) et position (endophyte, épiphyte). Le dendrogramme à gauche illustre le regroupement hiérarchique des ordres basé sur la similarité de leurs profils de distribution.}
         \label{fig:abondances}
 
     \end{minipage}
@@ -461,7 +468,10 @@ Ainsi, la composition des communautés fongiques varie principalement selon l’
         \end{minipage}
         \hfill
         \begin{minipage}[c]{0.25\textwidth}
-            \caption{\footnotesize Composition taxonomique des communautés fongiques associées aux différentes familles de plantes tropicales.}
+            \caption{\footnotesize Abondance relative des classes fongiques par famille d’hôte et compartiment végétal.}
+
+            \scriptsize
+            Répartition taxonomique (en pourcentage de séquences) des principales classes de champignons associées aux 15 familles de plantes épiphytes échantillonnées. Les graphiques sont séparés par organe (racines, feuilles jeunes et âgées) et par position (endophytes en haut, épiphytes en bas). Les couleurs distinguent les classes dominantes, notamment les Dothideomycetes, Sordariomycetes et Agaricomycetes.
             \label{fig:abondances_rel}
         \end{minipage}
     \end{figure}
@@ -482,7 +492,10 @@ Au niveau  des feuilles, qu’elles soient jeunes ou vieilles, les OTUs dominant
 \begin{figure}[H]
         \centering
         \includegraphics[width=\linewidth]{Figures/levins.png}
-        \caption{Indice de Levins pour les OTUs les plus abondants dans chaque microhabitat.}
+        \caption[Analyse de l'amplitude de niche des OTUs fongiques dominants par microhabitat et site.]{Analyse de l'amplitude de niche des OTUs fongiques dominants par microhabitat et site.
+
+        \scriptsize
+        Légende : Boîtes à moustaches représentant l'indice de Levins moyen pour les OTUs les plus abondants (focalisé sur les taxons présents dans plus de 1 \% des échantillons). Les scores plus faibles indiquent une spécialisation accrue, particulièrement marquée dans les racines par rapport aux feuilles. Les comparaisons statistiques ont été réalisées via des tests de Wilcoxon avec correction de Benjamini-Hochberg ($**** : p < 0,0001 ;  ** p < 0,01$).}
         \label{fig:niches_levins}
 \end{figure}
 
@@ -512,13 +525,13 @@ Au niveau  des feuilles, qu’elles soient jeunes ou vieilles, les OTUs dominant
 \end{table}
 
 \section{Discussion}
-Cette étude révèle une structuration marquée des communautés fongiques associées aux plantes épiphytes vasculaires tropicales. Grâce à un échantillonnage multi-sites et multi-microhabitats dans les Andes péruviennes, il apparaît que la diversité et la composition des assemblages fongiques sont avant tout déterminées par le microhabitat (organe et position épiphyte/endophyte). Le site géographique intervient ensuite, tandis que l’identité de la plante hôte, bien que significative, joue un rôle plus secondaire.
+Cette étude révèle une structuration marquée des communautés fongiques associées aux plantes épiphytes vasculaires tropicales. Grâce à un échantillonnage multi-sites et multi-microhabitats dans les Andes tropicales, il apparaît que la diversité et la composition des assemblages fongiques sont avant tout déterminées par le microhabitat (organe et position épiphyte/endophyte). Le site géographique intervient ensuite, tandis que l’identité de la plante hôte, bien que significative, joue un rôle plus secondaire.
 
-Le site d’échantillonnage s’impose comme un facteur structurant important. Les communautés fongiques diffèrent nettement entre les trois sites étudiés (LOT1, LOT2, LOT3). Cela reflète probablement l’influence de gradients environnementaux tels que l’altitude, le climat ou la composition floristique locale. Cependant, l’absence de mesures environnementales précises (température, humidité, lumière, etc.) limite la possibilité de relier directement ces différences à des facteurs abiotiques spécifiques.
+Le site d’échantillonnage s’impose comme un facteur structurant important. Les communautés fongiques diffèrent nettement entre les trois sites étudiés (LOT1, LOT2, LOT3). Cela reflète probablement l’influence de gradients environnementaux tels que l’altitude, le climat ou la composition floristique locale \citep{tedersoo2014global,glassman2018decomposition}. Cependant, l’absence de mesures environnementales précises (température, humidité, lumière, etc.) limite la possibilité de relier directement ces différences à des facteurs abiotiques spécifiques.
 
-Les organes de la plante (racines, feuilles jeunes, feuilles vieilles) constituent le facteur le  plus différenciant. Les racines hébergent une diversité alpha particulièrement élevée et de nombreux OTUs exclusifs, ce qui traduit une spécialisation écologique marquée. À l’inverse, les feuilles, qu’elles soient jeunes ou vieilles, présentent des communautés plus homogènes et partagent une partie de leur cortège fongique. Elles restent toutefois dominées par des groupes typiques des tissus aériens. La position (épiphyte/endophyte) module aussi la composition : chaque compartiment héberge des assemblages distincts, même si cet effet reste moins marqué que celui de l’organe ou du site.
+Les organes de la plante (racines, feuilles jeunes, feuilles vieilles) constituent le facteur le  plus différenciant. Les racines hébergent une diversité alpha particulièrement élevée et de nombreux OTUs exclusifs, ce qui traduit une spécialisation écologique marquée. À l’inverse, les feuilles, qu’elles soient jeunes ou vieilles, présentent des communautés plus homogènes et partagent une partie de leur cortège fongique. Elles restent toutefois dominées par des groupes typiques des tissus aériens. La position (épiphyte/endophyte) module aussi la composition : chaque compartiment héberge des assemblages distincts, même si cet effet reste moins marqué que celui de l’organe ou du site \citep{rodriguez_fungal_2009}.
 
-L’identité de la plante hôte explique une part significative, mais plus modeste, de la variance dans la composition des communautés fongiques. Ce résultat suggère que l’identité phylogénétique de l’hôte agit comme un filtre supplémentaire. Toutefois, les contraintes du microhabitat et du site semblent primer. Il aurait été intéressant de disposer de mesures sur les traits fonctionnels des plantes (stratégies d’acquisition de ressources, morphologie, exsudats, etc.), car ces caractéristiques pourraient expliquer plus finement la structuration des communautés fongiques que la seule appartenance à une famille ou un genre. L’absence de ces données limite la compréhension des mécanismes de filtrage écologique à l’œuvre.
+L’identité de la plante hôte explique une part significative, mais plus modeste, de la variance dans la composition des communautés fongiques \citep{kembel2014plant}. Ce résultat suggère que l’identité phylogénétique de l’hôte agit comme un filtre supplémentaire. Toutefois, les contraintes du microhabitat et du site semblent primer. Il aurait été intéressant de disposer de mesures sur les traits fonctionnels des plantes (stratégies d’acquisition de ressources, morphologie, exsudats, etc.), car ces caractéristiques pourraient expliquer plus finement la structuration des communautés fongiques que la seule appartenance à une famille ou un genre \citep{broeckling2008root}. L’absence de ces données limite la compréhension des mécanismes de filtrage écologique à l’œuvre.
 
 
 La composition taxonomique des communautés fongiques reflète la spécialisation écologique des différents microhabitats : les racines hébergent surtout des Agaricomycetes (Basidiomycota) et des Leotiomycetes, dont les Helotiales (Ascomycota), groupes typiques de symbiotes racinaires ou mycorhiziens \citep{vraalstad2002molecular}, tandis que les feuilles (jeunes ou vieilles) sont dominées par les Dothideomycetes et Sordariomycetes (Ascomycota), classes associées aux champignons foliaires, endophytes ou pathogènes opportunistes \citep{arnold_are_2000,tedersoo2014global}. La position (épiphyte/endophyte) module aussi ces profils : les épiphytes sont plus riches en Dothideomycetes et Agaricomycetes, capables de coloniser les surfaces exposées, alors que les endophytes présentent davantage de Sordariomycetes, Leotiomycetes et Helotiales, adaptés à la vie interne dans les tissus végétaux \citep{vorholt2012microbial}. 
@@ -528,13 +541,13 @@ tropicaux.
 
 L'abondance accrue d'Agaricomycetes dans les racines est due à la formation de « sols suspendus » \citep{nadkarni1981}. L’accumulation de débris organiques, de poussières et de restes d'insectes au niveau du système racinaire crée une niche écologique complexe où ces champignons opèrent une double fonction : ils décomposent activement cette matière organique tout en agissant comme symbiotes mycorhiziens \citep{martinson2010}. Ce mécanisme permet de transformer les débris accumulés en nutriments essentiels, tels que l'azote et le phosphore, assurant ainsi la nutrition et la survie de l'hôte dans un environnement aérien par définition pauvre en ressources minérales \citep{dearnaley2007, zotz_plants_2016}.
 
-Bien que l'étude se déroule globalement en zone tropicale, le gradient altitudinal induit des variations thermiques pouvant structurer les assemblages taxonomiques. La prédominance des Helotiales au niveau du LOT3 (2400 m) est cohérente avec leur écologie, ces champignons étant reconnus pour leur capacité d'adaptation aux climats froids et aux hautes altitudes \citep{Wang_psyc}. À cette altitude, les températures nocturnes et les moyennes annuelles plus basses créent un filtre environnemental excluant les taxons plus thermophiles. À l'inverse, le LOT1 (basse altitude) favorise les Hypocreales, dont l'optimum de développement se situe dans des conditions tropicales plus chaudes \citep{Tkaczuk_colony}. Ces résultats suggèrent que l'altitude agit ici comme un substitut à la latitude, faisant de la température un facteur limitant même en milieu tropical, et que la distribution de ces ordres n'est pas un artefact mais une réponse biologique réelle au climat local.
+Bien que l'étude se déroule globalement en zone tropicale, le gradient altitudinal induit des variations thermiques pouvant structurer les assemblages taxonomiques. La prédominance des Helotiales au niveau du site LOT3 (2400 m) est cohérente avec leur écologie, ces champignons étant reconnus pour leur capacité d'adaptation aux climats froids et aux hautes altitudes \citep{Wang_psyc}. À cette altitude, les températures nocturnes et les moyennes annuelles plus basses créent un filtre environnemental excluant les taxons plus thermophiles. À l'inverse, le site LOT1 (basse altitude) favorise les Hypocreales, dont l'optimum de développement se situe dans des conditions tropicales plus chaudes \citep{Tkaczuk_colony}. Ces résultats suggèrent que l'altitude agit ici comme un substitut à la latitude, faisant de la température un facteur limitant même en milieu tropical, et que la distribution de ces ordres n'est pas un artefact mais une réponse biologique réelle au climat local.
 
 L'organisation des communautés fongiques selon les microhabitats suggère également une spécialisation des niches écologiques. Les OTUs dominants dans les racines affichent souvent des indices de Levins faibles, témoignant d’une forte fidélité à ce microhabitat, tandis que ceux présents dans les feuilles ont des indices plus élevés, indiquant une plus grande plasticité écologique. Cela suggère que les racines constituent un environnement plus stable et spécialisé, favorisant des assemblages fongiques spécifiques, alors que les feuilles, exposées à des conditions plus variables (lumière, humidité, interactions biotiques), hébergent des communautés plus généralistes.
 
-Plusieurs limites doivent être soulignées. L’échantillonnage n’a pas été spécifiquement conçu pour l’étude des communautés fongiques, ce qui peut introduire des biais de représentativité. L’approche métabarcoding basée sur l’ITS ne permet pas d’assigner précisément les fonctions écologiques des OTUs détectés (symbiotes, pathogènes, saprotrophes). Enfin, l’absence de données fonctionnelles sur les plantes hôtes et de mesures environnementales fines restreint l’interprétation des patrons observés. L’usage de bases de fonées fonctionnelles (Fungal Traits) s’est avérée infructueuse du à un faible nombre de correspondance (334 OTUs correspondent à ceux de Fungal Traits sur 1027 OTUs)
+Plusieurs limites doivent être soulignées. L’échantillonnage dans le projet LOT a été mis en place pour étudier la diversité de l’ensemble des eucaryotes et micro-eucaryotes à l’echelle de l’arbre mais il n’a pas été spécifiquement optimisé pour l’étude des communautés fongiquesassociées aux plantes epiphytes, ce qui peut introduire des biais de représentativité. Par ailleurs, l’absence de données fonctionnelles sur les plantes hôtes et de mesures environnementales fines restreint l’interprétation des patrons observés. Aussi, l’approche métabarcoding basée sur l’ITS ne permet pas d’assigner avec précision l’integralité de la diversité fongique, notament celles des glomeromycetes. Pour pallier cette limite, le marqueur 18S a egalement été utilié pour les racines des plantes epiphytes, afin de mieux caracteriser les differents groupes fongiques racinaires. Le séquençage vient d’etre réalisé et les analyses pourront être menées ultérieurement. Enfin, une assignation fonctionnelles a également été tentée à l’aide de la  base de données Fungal Traits mais seulement 334 OTUs sur les 1027 OTUs identifiés ont pu être assignés. En raison de ce faible taux de couverture (32,5\%), nous n’avons pas ou approfondir l'interprétation fonctionnelle des communautés fongiques.
 
-En somme, cette étude met en lumière la complexité et la structuration fine des communautés fongiques associées aux plantes épiphytes tropicales. Elle souligne le rôle central du microhabitat et des gradients environnementaux dans la diversification fongique. Ces résultats ouvrent la voie à des recherches futures qui pourraient intégrer davantage de dimensions fonctionnelles et écologiques : traits des hôtes, interactions biotiques, dynamique temporelle. L’exploration de la spécialisation des niches et des réseaux d’interactions au sein de ces systèmes tropicaux reste un champ prometteur.
+En somme, cette étude met en lumière la complexité et la structuration fine des communautés fongiques associées aux plantes épiphytes tropicales. Elle souligne le rôle central du microhabitat et des gradients environnementaux dans la diversification fongique. Ces résultats ouvrent la voie à des recherches futures qui pourraient intégrer davantage de dimensions fonctionnelles et écologiques : traits des plantes hôtes, interactions biotiques, dynamique temporelle. L’exploration de la spécialisation des niches et des réseaux d’interactions au sein de ces systèmes tropicaux reste un champ prometteur.
 Mieux comprendre la biodiversité et le fonctionnement des écosystèmes de canopée demeure un enjeu majeur pour la recherche en écologie tropicale.
 
 
